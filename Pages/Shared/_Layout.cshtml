@@ -1,0 +1,203 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using anahged.Models
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - anahged 📚</title>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/anahged.styles.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/anahged.styles.css" asp-append-version="true" />
+        @await RenderSectionAsync("Styles", required: false)
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light navbar-bg border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand text-white" asp-area="" asp-page="/TableauDeBord">
+                        <i class="fas fa-book"></i>
+                        ANAHGED
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            @if(User.IsInRole("Archives VPL-ADP"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-page="/AdpList">
+                                        <i class="fas fa-file-contract"></i>
+                                        ADP
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-page="/VplList">
+                                        <i class="fas fa-file-alt"></i>
+                                        VPL
+                                    </a>
+                                </li>
+                                <div class="nav-divider d-none d-sm-block"></div>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-page="/TableauDeBord">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                        TABLEAU DE BORD
+                                    </a>
+                                </li>
+                            }
+                            else if(User.IsInRole("Archives CARTE"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-page="/CartesList">
+                                        <i class="fas fa-id-card"></i>
+                                        CARTES
+                                    </a>
+                                </li>
+                                <div class="nav-divider d-none d-sm-block"></div>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-page="/TableauDeBord">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                        TABLEAU DE BORD
+                                    </a>
+                                </li>
+                            }
+                            else if(User.IsInRole("Administrateur"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-page="/AdpList">
+                                        <i class="fas fa-file-contract"></i>
+                                        ADP
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-page="/VplList">
+                                        <i class="fas fa-file-alt"></i>
+                                        VPL
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-page="/CartesList">
+                                        <i class="fas fa-id-card"></i>
+                                        CARTES
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-page="/GestionDemandeDossier">
+                                        <i class="fas fa-folder-open"></i>
+                                        DEMANDE DOSSIER
+                                    </a>
+                                </li>
+                                <div class="nav-divider d-none d-sm-block"></div>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-page="/TableauDeBord">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                        TABLEAU DE BORD
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-page="/Administration">
+                                        <i class="fas fa-cogs"></i>
+                                        ADMINISTRATION
+                                    </a>
+                                </li>
+                            }
+                            else if(User.IsInRole("Archives VPLADP CARTE"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-page="/AdpList">
+                                        <i class="fas fa-file-contract"></i>
+                                        ADP
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-page="/VplList">
+                                        <i class="fas fa-file-alt"></i>
+                                        VPL
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-page="/CartesList">
+                                        <i class="fas fa-id-card"></i>
+                                        CARTES
+                                    </a>
+                                </li>
+                                <div class="nav-divider d-none d-sm-block"></div>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-page="/TableauDeBord">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                        TABLEAU DE BORD
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-page="/TableauDeBord">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                        TABLEAU DE BORD
+                                    </a>
+                                </li>
+                            }  
+                        </ul>                    
+                        <div class="ml-auto">                        
+                            @{
+                                var initiales = User.FindFirst("initiales")?.Value;
+                            }
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
+                                    <div class="user-avatar position-relative">
+                                        @initiales
+                                        <!-- Supprimer ou commenter la badge de notification si non utilisée -->
+                                        <!-- <span class="notification-badge">3</span> -->
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="z-index: 10000;">
+                                   @*  <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="fas fa-user-circle"></i>
+                                            Mon Profil
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="fas fa-cog"></i>
+                                            Paramètres
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li> *@
+                                    <li>
+                                        <a class="dropdown-item text-danger" asp-area="" asp-page="/Logout">
+                                            <i class="fas fa-sign-out-alt"></i>
+                                            Déconnexion
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2025 - anahged - <a asp-area="" asp-page="/TableauDeBord">Accueil</a>
+            </div>
+        </footer>
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
+</html>

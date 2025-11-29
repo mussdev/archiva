@@ -1,0 +1,78 @@
+﻿@page
+@model anahged.Pages.LoginModel
+@{
+    Layout = "_LoginLayout";
+}
+
+<!-- Conteneur principal pour centrer le contenu -->
+<div class="container-fluid d-flex flex-column justify-content-center align-items-center vh-100">
+    <!-- Titre et description -->
+    <div class="text-center mb-3 animate-fade-in">
+        <h1 class="display-3 fw-bold text-gradient mb-3">ANAHGED</h1>
+        <p class="lead fs-5 text-muted letter-spacing-1">Gestion Électronique des Documents</p>
+    </div>
+
+    <!-- Formulaire de connexion -->
+    <div class="p-4 rounded" style="min-width: 400px; background: linear-gradient(135deg, #10b981 0%, #374151 100%);">
+        <h4 class="text-center text-white mb-4">CONNEXION 🔐</h4>
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="form-label text-white mb-2">Nom utilisateur</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="Pwd" class="form-label text-white mb-2">Mot de passe</label>
+                <input asp-for="Pwd" class="form-control" type="password" />
+                <span asp-validation-for="Pwd" class="text-danger"></span>
+            </div>
+
+            <div class="form-group text-center mb-3">
+                <input type="submit" value="Se connecter" class="btn text-white w-100" style="background-color: #374151;" />
+            </div>
+        </form>
+        
+        <div class="text-center">
+            <a href="/ResetPassword" class="text-info">Mot de passe oublié ?</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-gradient {
+        background: linear-gradient(135deg, #10b981 0%, #374151 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .letter-spacing-1 {
+        letter-spacing: 1px;
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 1s ease-in;
+    }
+    
+    @@keyframes fadeIn {
+        from { 
+            opacity: 0; 
+            transform: translateY(-30px); 
+        }
+        to { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+    }
+    
+    .bg-light {
+        background-color: #f8f9fa !important;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

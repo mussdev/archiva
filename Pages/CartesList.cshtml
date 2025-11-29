@@ -1,0 +1,248 @@
+﻿@page
+@model anahged.Pages.CartesListModel
+@{
+    ViewData["Title"] = "Liste Cartes 🗺️";
+}
+
+<!-- Afficher les messages de succès -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- Afficher les messages d'erreur de validation -->
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="d-flex align-items-center">
+    <h3>Cartes 🗺️</h3>
+     <!-- Bouton Actions avec dropdown -->
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" 
+                    id="actionsDropdown" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false">
+                Actions
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="actionsDropdown">
+                <li><a class="dropdown-item" href="#" id="exportSelected">Télécharger la sélection</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#" id="deleteSelected">Supprimer la sélection</a></li>
+               @*  <li><a class="dropdown-item" href="#" id="exportAll">Exporter tout</a></li>
+                <li><a class="dropdown-item" href="#" id="printView">Vue impression</a></li> *@
+            </ul>
+        </div>
+    @if(User.IsInRole("Administrateur")){
+        <button type="button" class="btn text-white ms-auto" data-bs-toggle="modal" data-bs-target="#ajoutFichierModal"
+                style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">
+            Ajouter une carte
+        </button>
+    }
+</div>
+<form method="get" class="mt-3 mb-3">
+    <div class="row g-2" style="border-bottom: 5px solid #ccc; padding-bottom:10px;">
+        <div class="col">
+            <input type="text" name="ville" class="form-control" placeholder="Ville">
+        </div>
+        <div class="col">
+            <input type="text" name="quartier" class="form-control" placeholder="Quartier">
+        </div>
+        <div class="col">
+            <input type="text" name="operation" class="form-control" placeholder="Opération">
+        </div>
+        <div class="col">
+            <input type="text" name="legende" class="form-control" placeholder="Legende">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn text-white" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">Rechercher</button>
+        </div>
+    </div>
+</form>
+
+@if (ViewData["MessageRechercheCarte"] != null)
+{
+    <p style="text-align: center; color:red">@ViewData["MessageRechercheCarte"]</p>
+}
+else
+{
+   <!-- Afficher la liste de résultats -->
+
+    <div class="filter-container">
+        <div style="max-height:60vh; overflow-y:auto;margin-top:20px;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <input type="text" id="table-filter" class="form-control form-control-sm" placeholder="Filtrer par boite, code,n° logement, client, document ou ..." />
+            </div>
+            <div id="filter-stats" class="text-muted small">
+                <span id="filterStats" class="text-muted small">@Model.CartesList.Count carte(s) trouvé(s)</span>
+            </div>
+            
+            <table class="table mt-1">
+                <thead>
+                    <tr>
+                        <th style="font-size: 12px;"><input type="checkbox" id="selectAllCheckbox" style="cursor: pointer;" /></th>
+                        <th style="font-size: 12px;">N° Tube</th>
+                        <th style="font-size: 12px;">Ville</th>
+                        <th style="font-size: 12px;">Quartier</th>
+                        <th style="font-size: 12px;">Opération</th>
+                        <th style="font-size: 12px;">Legende</th>
+                        <th style="font-size: 12px;">Date carte.</th>
+                        <th style="font-size: 12px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var carte in Model.CartesList)
+                    {
+                        <tr>
+                            <td style="font-size: 12px;"><input type="checkbox" class="rowCheckbox" data-carte-id="@carte.IdCarte" style="cursor: pointer;"></td>
+                            <td style="font-size: 12px;">@carte.Tube</td>
+                            <td style="font-size: 12px;">@carte.Ville</td>
+                            <td style="font-size: 12px;">@carte.Quartier</td>
+                            <td style="font-size: 12px;">@carte.Operation</td>
+                            <td style="font-size: 12px;">@carte.Legende</td>
+                            <td style="font-size: 12px;">@carte.DateCarte</td>
+                            <td style="font-size: 12px;">
+                                <form method="post" asp-page-handler="View" asp-route-id="@carte.IdCarte" target="_blank">
+                                    <button class="btn btn-warning btn-sm">Voir 📖</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@* Formulaire pour ajouter les nouveaux fichiers *@
+<div class="modal fade" id="ajoutFichierModal" tabindex="-1" aria-labelledby="ajoutFichierModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form method="post" enctype="multipart/form-data" asp-page-handler="UploadFileCarte">
+                <div class="modal-header" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%); color:white;">
+                    <h5 class="modal-title" id="ajoutFichierModalLabel">Ajouter une carte</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="DateCarte" class="form-label">Date</label>
+                            <input type="date" name="DateCarte" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Tube" class="form-label">Tube</label>
+                            <input type="text" name="Tube" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Ville" class="form-label">Ville</label>
+                            <input type="text" name="Ville" class="form-control"  />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Quartier" class="form-label">Quartier</label>
+                            <input type="text" name="Quartier" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Operation" class="form-label">Operation</label>
+                            <input type="text" name="Operation" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Legende" class="form-label">Legende</label>
+                            <input type="text" name="Legende" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Originalite" class="form-label">Originalite</label>
+                            <input type="text" name="Originalite" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Echelle" class="form-label">Echelle</label>
+                            <input type="text" name="Echelle" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Cote" class="form-label">Cote</label>
+                            <input type="text" name="Cote" class="form-control" />
+                        </div>
+                        <div class="col-md-12">
+                            <label for="Fichier" class="form-label">Fichier numérisé (PDF)</label>
+                            <input type="file" name="Fichier" class="form-control" accept=".pdf" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+             // Récupérer les éléments du tableau
+        var table = document.querySelector('table');
+        var rows = table.querySelectorAll('tbody tr');
+        var filterStats = document.getElementById('filterStats');
+        var totalRows = rows.length;
+
+        // Récupérer le champ de filtre
+        var tableFilter = document.getElementById('table-filter');
+
+        // Fonction pour mettre à jour les statistiques
+        function updateFilterStats() {
+            var visibleRows = 0;
+            rows.forEach(function(row) {
+                if (row.style.display !== 'none') {
+                    visibleRows++;
+                }
+            });
+
+            if (tableFilter.value === '') {
+                filterStats.textContent = totalRows + ' fichier(s) trouvé(s)';
+            } else {
+                filterStats.textContent = visibleRows + ' fichier(s) sur ' + totalRows + ' trouvé(s)';
+            }
+        }
+
+        // Fonction pour filtrer les données
+        function filterData() {
+            var filterValue = tableFilter.value.toLowerCase();
+
+            rows.forEach(function(row) {
+                var rowText = row.textContent.toLowerCase();
+
+                if (rowText.indexOf(filterValue) === -1) {
+                    row.style.display = 'none';
+                } else {
+                    row.style.display = '';
+                }
+            });
+
+            // Mettre à jour les statistiques après le filtrage
+            updateFilterStats();
+        }
+
+        // Initialiser les statistiques au chargement
+        updateFilterStats();
+
+        // Ajouter un événement pour filtrer les données lors de la saisie dans le champ de filtre
+        tableFilter.addEventListener('input', filterData);
+
+        // Réinitialiser le formulaire quand le modal est fermé
+        document.getElementById('ajoutFichierModal').addEventListener('hidden.bs.modal', function () {
+            document.getElementById('uploadForm').reset();
+        });
+    </script>
+}

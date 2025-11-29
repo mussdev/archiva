@@ -1,0 +1,515 @@
+﻿@page
+@model MyApp.Namespace.GestionDemandeDossierModel
+@{
+    ViewData["Title"] = "Gestion Demande Dossier";
+    Layout = "_Layout";
+}
+
+
+@section Styles {
+    <style>
+        /* Gérer la couleur dans le tableau lors du filtrage */
+        @* .highlight {
+            background-color: #e1fffc !important;
+        } *@
+        
+        /* Styles spécifiques à la page d'administration */
+        .demadossier-container {
+            display: flex;
+            min-height: 70vh;
+            margin-top: 20px;
+        }
+        
+        .demadossier-sidebar {
+            width: 250px;
+            /*background-color: #2c3e50;*/
+            background: linear-gradient(135deg, #10b981 0%, #374151 100%);
+            color: white;
+            padding: 20px 0;
+            border-radius: 5px;
+            margin-right: 20px;
+        }
+        
+        .demadossier-content {
+            flex: 1;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .demadossier-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .demadossier-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .demadossier-menu a {
+            display: block;
+            padding: 12px 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        
+        .demadossier-menu a:hover {
+            background-color: #34495e;
+            color: white;
+            border-left: 4px solid #3498db;
+        }
+        
+        .demadossier-menu a.active {
+            background-color: #34495e;
+            color: white;
+            border-left: 4px solid #3498db;
+        }
+        
+        .demadossier-menu a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .demadossier-section {
+            display: none;
+        }
+        
+        .demadossier-section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        /* Correction de l'erreur  */
+        @@keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .demadossier-card {
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        
+        .demadossier-card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            padding: 15px 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .demadossier-card-body {
+            padding: 20px;
+        }
+        
+        .demadossier-stat {
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .demadossier-stat i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+        
+        .demadossier-stat h3 {
+            font-size: 1.5rem;
+            margin: 0;
+            font-weight: bold;
+        }
+        
+        .demadossier-stat p {
+            color: #7f8c8d;
+            margin: 0;
+        }
+        
+        .table th {
+            background-color: #f8f9fa;
+            border-top: none;
+            font-weight: 600;
+        }
+        
+        .badge-demadossier {
+            background-color: #e74c3c;
+        }
+        
+        .badge-editor {
+            background-color: #3498db;
+        }
+        
+        .badge-reader {
+            background-color: #2ecc71;
+        }
+        
+        .log-entry {
+            border-left: 3px solid #3498db;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+        }
+        
+        .log-error {
+            border-left-color: #e74c3c;
+        }
+        
+        .log-warning {
+            border-left-color: #f39c12;
+        }
+        
+        .log-success {
+            border-left-color: #2ecc71;
+        }
+
+        /* Style pour le modale */
+        .clickable-name {
+            color: #10b981;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .clickable-name:hover {
+            color: #0d9669;
+            text-decoration: underline;
+        }
+        .modal-header {
+            background: linear-gradient(135deg, #10b981 0%, #374151 100%);
+            color: white;
+        }
+        .required-field::after {
+            content: "*";
+            color: red;
+            margin-left: 4px;
+        }
+    </style>
+}
+
+<div class="container-fluid">
+    <h1 class="h3 mb-4">Gestion de demande des documents <i class="bi bi-gear-fill"></i></h1>
+    
+    <div class="demadossier-container">
+        <!-- Menu vertical d'administration -->
+        <div class="demadossier-sidebar">
+            <ul class="demadossier-menu">
+                <li><a href="#" class="demadossier-menu-link active" data-target="dashboard"><i class="bi bi-speedometer2"></i>Inventaire</a></li>
+                <li><a href="#" class="demadossier-menu-link" data-target="users"><i class="bi bi-people-fill"></i> Gestion des demandes</a></li>
+                <li><a href="#" class="demadossier-menu-link" data-target="settings"><i class="bi bi-sliders"></i> Paramètres système</a></li>
+            </ul>
+        </div>
+        
+        <!-- Contenu de l'administration -->
+        <div class="demadossier-content">
+            <!-- Tableau de bord -->
+            <div id="dashboard" class="demadossier-section active">
+                <h2 class="mb-4">Suivi</h2>
+                
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="demadossier-card">
+                            <div class="demadossier-stat">
+                                <i class="bi bi-people-fill"></i>
+                                <h3>156</h3>
+                                <p>Utilisateurs</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="demadossier-card">
+                            <div class="demadossier-stat">
+                                <i class="bi bi-shield-check"></i>
+                                <h3>8</h3>
+                                <p>Rôles</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="demadossier-card">
+                            <div class="demadossier-stat">
+                                <i class="bi bi-archive-fill"></i>
+                                <h3>2,548</h3>
+                                <p>Archives</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="demadossier-card">
+                            <div class="demadossier-stat">
+                                <i class="bi bi-clock-history"></i>
+                                <h3>12</h3>
+                                <p>Activité récente</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demadossier-card mt-4">
+                    <div class="demadossier-card-header">
+                        Activité récente
+                    </div>
+                    <div class="demadossier-card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Utilisateur</th>
+                                        <th>Action</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>admin@example.com</td>
+                                        <td>Connexion au système</td>
+                                        <td>@DateTime.Now.AddHours(-1).ToString("dd/MM/yyyy HH:mm")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>user@example.com</td>
+                                        <td>Modification d'un document</td>
+                                        <td>@DateTime.Now.AddHours(-3).ToString("dd/MM/yyyy HH:mm")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>archivist@example.com</td>
+                                        <td>Ajout de nouveaux archives</td>
+                                        <td>@DateTime.Now.AddHours(-5).ToString("dd/MM/yyyy HH:mm")</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gestion des demandes de dossiers -->
+            <div id="users" class="demadossier-section">
+                <h2 class="mb-4">Gestion des demandes</h2>
+                
+                <div class="demadossier-card">
+                    <div class="demadossier-card-header">
+                        <span>Liste des demandes</span>
+                        <!-- Bouton Nouvelle demande -->
+                        <button class="btn btn-sm text-white" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);" 
+                                data-bs-toggle="modal" data-bs-target="#nouvelleDemandeModal">
+                            <i class="bi bi-plus-circle"></i> Nouvelle demande
+                        </button>
+                    </div>
+                    <!-- ... reste du contenu ... -->
+                </div>
+            </div>
+
+            <!-- Modal de création d'une nouvelle demande dossier -->
+            <div class="modal fade" id="nouvelleDemandeModal" tabindex="-1" aria-labelledby="nouvelleDemandeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="nouvelleDemandeModalLabel">Nouvelle demande de dossier</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="nouvelleDemandeForm">
+                                @Html.AntiForgeryToken()
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="typeDocument" class="form-label required-field">Type de document</label>
+                                        <select class="form-select" id="typeDocument" required>
+                                            <option value="">Sélectionner un type</option>
+                                            <option value="fiche">Document physique</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="urgence" class="form-label">Niveau d'urgence</label>
+                                        <select class="form-select" id="urgence">
+                                            <option value="normal">Normal</option>
+                                            <option value="urgent">Urgent</option>
+                                            <option value="tres-urgent">Très urgent</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="date" class="form-label required-field">Date</label>
+                                        <input type="date" class="form-control" id="datedelademande">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="typeDocument" class="form-label required-field">N° Dossier</label>
+                                        <input type="text" class="form-control" id="numdossier">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="urgence" class="form-label">Opération</label>
+                                        <input type="text" class="form-control" id="operation">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="urgence" class="form-label">N° Logement</label>
+                                        <input type="text" class="form-control" id="logement">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="statutDemande" class="form-label required-field">Statut de la demande</label>
+                                        <input type="text" class="form-control" id="statutDemande">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="urgence" class="form-label">Champ</label>
+                                        <input type="text" class="form-control" id="operation">
+                                    </div>
+                                   <div class="col-md-4">
+                                        <label for="dateLimite" class="form-label">Date retour souhaitée</label>
+                                        <input type="date" class="form-control" id="dateretour">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label required-field">Motif de la demande</label>
+                                    <textarea class="form-control" id="description" rows="4" required placeholder="Donnez les raisons de votre demande..."></textarea>
+                                </div>
+                                
+                                
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn text-white" data-bs-dismiss="modal" style="background: #374151;">Annuler</button>
+                            <button type="button" class="btn text-white" id="soumettreDemande" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">Soumettre la demande</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toast pour les notifications -->
+            <div class="toast-container">
+                <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            Demande envoyée avec succès!
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+            
+            
+
+@section Scripts {
+     <!-- Scripts Bootstrap et JavaScript personnalisé -->
+ @*    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> *@
+    <script>
+
+    // Code javascript pour gérer d'autres interactions si nécessaire
+         document.addEventListener('DOMContentLoaded', function() {
+            // Gestion du menu d'administration
+            document.querySelectorAll('.demadossier-menu-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Retirer la classe active de tous les liens et sections
+                    document.querySelectorAll('.demadossier-menu-link').forEach(l => l.classList.remove('active'));
+                    document.querySelectorAll('.demadossier-section').forEach(s => s.classList.remove('active'));
+                    
+                    // Ajouter la classe active au lien cliqué
+                    this.classList.add('active');
+                    
+                    // Afficher la section correspondante
+                    const targetId = this.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+                    
+                    // Mettre à jour l'URL sans recharger la page
+                    history.pushState(null, null, `#${targetId}`);
+                });
+            });
+            
+            // Vérifier si une ancre est présente dans l'URL au chargement de la page
+            if (window.location.hash) {
+                const targetId = window.location.hash.substring(1);
+                const targetLink = document.querySelector(`.demadossier-menu-link[data-target="${targetId}"]`);
+                
+                if (targetLink) {
+                    targetLink.click();
+                }
+            }
+
+            // Gestion de la soumission de nouvelle demande
+            const soumettreDemandeBtn = document.getElementById('soumettreDemande');
+            if (soumettreDemandeBtn) {
+                soumettreDemandeBtn.addEventListener('click', function() {
+                    const typeDocument = document.getElementById('typeDocument').value;
+                    const description = document.getElementById('description').value;
+                    
+                    // Validation basique
+                    if (!typeDocument || !description) {
+                        alert('Veuillez remplir tous les champs obligatoires.');
+                        return;
+                    }
+                    
+                    // Ici, vous ajouterez l'appel AJAX pour soumettre la demande
+                    console.log('Soumission de la demande:', {
+                        typeDocument,
+                        description,
+                        urgence: document.getElementById('urgence').value,
+                        dateLimite: document.getElementById('dateLimite').value
+                    });
+                    
+                    // Afficher un message de succès
+                    alert('Votre demande a été soumise avec succès!');
+                    
+                    // Fermer la modale
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('nouvelleDemandeModal'));
+                    modal.hide();
+                    
+                    // Réinitialiser le formulaire
+                    document.getElementById('nouvelleDemandeForm').reset();
+                });
+            }
+
+            // Filtrage des utilisateurs (si nécessaire)
+            const filterInput = document.getElementById('filterInput');
+            if (filterInput) {
+                const tableBody = document.getElementById('userTableBody');
+                const rows = tableBody ? tableBody.getElementsByTagName('tr') : [];
+                const filterStats = document.getElementById('filterStats');
+                
+                if (filterStats) {
+                    filterStats.textContent = `${rows.length} utilisateur(s)`;
+                    
+                    filterInput.addEventListener('input', function() {
+                        const filterText = this.value.toLowerCase();
+                        let visibleCount = 0;
+                        
+                        for (let i = 0; i < rows.length; i++) {
+                            const cells = rows[i].getElementsByTagName('td');
+                            let found = false;
+                            
+                            for (let j = 0; j < cells.length - 1; j++) {
+                                const cellText = cells[j].textContent.toLowerCase();
+                                if (cellText.includes(filterText)) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            
+                            if (found) {
+                                rows[i].style.display = '';
+                                visibleCount++;
+                                if (filterText) {
+                                    rows[i].classList.add('highlight');
+                                } else {
+                                    rows[i].classList.remove('highlight');
+                                }
+                            } else {
+                                rows[i].style.display = 'none';
+                                rows[i].classList.remove('highlight');
+                            }
+                        }
+                        
+                        filterStats.textContent = `${visibleCount} utilisateur${visibleCount !== 1 ? 's' : ''}`;
+                    });
+                }
+            }
+        });
+    </script>
+}

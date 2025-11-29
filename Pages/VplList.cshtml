@@ -1,0 +1,775 @@
+﻿@page
+@model anahged.Pages.VplListModel
+@{
+    ViewData["Title"] = "Liste Vpl 📚";
+}
+@section Styles {
+    <style>
+        /* Style pour le modale */
+        .clickable-name {
+            color: #10b981;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .clickable-name:hover {
+            color: #0d9669;
+            text-decoration: underline;
+        }
+        .modal-header {
+            background: linear-gradient(135deg, #10b981 0%, #374151 100%);
+            color: white;
+        }
+        .required-field::after {
+            content: "*";
+            color: red;
+            margin-left: 4px;
+        }
+
+        /* Style pour les cases à cocher */
+        #selectAllCheckbox {
+            transform: scale(1.2);
+            margin: 0;
+        }
+
+        .rowCheckbox {
+            transform: scale(1.1);
+            margin: 0;
+        }
+        
+        /* Alignement vertical */
+        th:first-child, td:first-child {
+            text-align: center;
+            vertical-align: middle;
+            width: 40px;
+        }
+    </style>
+}
+
+
+<!-- Afficher les messages de succès -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- Afficher les messages d'erreur de validation -->
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="d-flex align-items-center">
+    <h3>VPL 📚</h3>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" 
+                id="actionsDropdown" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false">
+            Actions
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="actionsDropdown">
+            <li><a class="dropdown-item" href="#" id="exportSelected">Télécharger la sélection</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#" id="deleteSelected">Supprimer la sélection</a></li>
+        </ul>
+    </div>
+    <span class="ms-auto">
+        @if(User.IsInRole("Administrateur"))
+        {
+            <button type="button" class="btn text-white ms-auto" data-bs-toggle="modal" data-bs-target="#ajoutFichierModal"
+                    style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">
+                Ajouter un fichier
+            </button>
+        }      
+    </span>
+</div>
+<form method="get" class="mt-3 mb-3">
+    <div class="row g-2" style="border-bottom: 5px solid #ccc; padding-bottom:10px;">
+        <div class="col">
+            <input type="text" name="boite" class="form-control" placeholder="Boite">
+        </div>
+        <div class="col">
+            <input type="text" name="code" class="form-control" placeholder="Code">
+        </div>
+        <div class="col">
+            <input type="text" name="logement" class="form-control" placeholder="N° Logement">
+        </div>
+        <div class="col">
+            <input type="text" name="client" class="form-control" placeholder="Client">
+        </div> 
+        <div class="col">
+            <input type="text" name="document" class="form-control" placeholder="Document">
+        </div>
+        <div class="col">
+            <input type="text" name="annee" class="form-control" placeholder="Annee">
+        </div>  
+        <div class="col-auto">
+            <button type="submit" class="btn text-white" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">Rechercher</button>
+        </div>
+    </div>
+</form>
+
+@if (ViewData["MessageRechercheVpl"] != null)
+{
+    <p style="text-align: center; color:red">@ViewData["MessageRechercheVpl"]</p>
+}
+else
+{
+    // Afficher la liste de résultats
+    <div class="filter-container">
+        <div style="max-height:60vh; overflow-y:auto;margin-top:20px;">
+            <!--<input type="text" id="table-filter" class="form-control" placeholder="Filtrer dans le tableau...">-->
+            <div class="filter-input">
+                <input type="text" id="table-filter" class="form-control form-control-sm" placeholder="Filtrer par boite, code,n° logement, client, document ou ...">
+            </div>
+            <div class="filter-stats">
+                <span id="filterStats" class="text-muted small">@Model.VplList.Count() fichier(s) trouvé(s)</span>
+            </div>
+            <table class="table mt-1">
+                <thead>
+                    <tr>
+                        <th style="font-size: 12px;"><input type="checkbox" id="selectAllCheckbox" style="cursor: pointer;" /></th>
+                        <th style="font-size: 12px;">Document</th>
+                        <th style="font-size: 12px;">N° Boite</th>
+                        <th style="font-size: 12px;">Code</th>
+                        <th style="font-size: 12px;">N° Logement</th>
+                        <th style="font-size: 12px;">Client</th>
+                        <th style="font-size: 12px;">Fonction</th>
+                        <th style="font-size: 12px;">Tél.</th>
+                        <th style="font-size: 12px;">Adresse</th>
+                        <th style="font-size: 12px;">Annee</th>
+                        <th style="font-size: 12px;">Ville</th>
+                        <th style="font-size: 12px;">Commune/Ville</th>
+                        <th style="font-size: 12px;">Date doc.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var vpl in Model.VplList)
+                    {
+                        <tr>
+                            <td style="font-size: 12px;"><input type="checkbox" class="rowCheckbox" data-vpl-id="@vpl.IdVpl" style="cursor: pointer;"></td>
+                            <td style="font-size: 12px;">
+                                <span class="clickable-name" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#vplModal"
+                                    data-vpl-id="@vpl.IdVpl"
+                                    data-document="@(string.IsNullOrEmpty(vpl.Document) ? "" : char.ToUpper(vpl.Document[0]) + vpl.Document.Substring(1).ToLower())"
+                                    data-contact="@vpl.Contact"
+                                    data-datedocument="@vpl.DateDocument"
+                                    data-annee="@vpl.Annee"
+                                    data-fonctions="@vpl.Fonctions"
+                                    data-client="@vpl.Client"
+                                    data-code="@vpl.Code"
+                                    data-boite="@vpl.Boite"
+                                    data-logement="@vpl.Logement"
+                                    data-adresse="@vpl.Adresse"
+                                    data-communequartier="@vpl.CommuneQuartier"
+                                    data-ville="@vpl.Ville"
+                                    data-fichier="@(vpl.Lien ??"")">
+                                    @(string.IsNullOrEmpty(vpl.Document) ? "" : char.ToUpper(vpl.Document[0]) + vpl.Document.Substring(1).ToLower())
+                                </span>
+                            </td>
+                            <td style="font-size: 12px;">@vpl.Boite</td>
+                            <td style="font-size: 12px;">@vpl.Code</td>
+                            <td style="font-size: 12px;">@vpl.Logement</td>
+                            <td style="font-size: 12px;">@vpl.Client</td>
+                            <td style="font-size: 12px;">@vpl.Fonctions</td>
+                            <td style="font-size: 12px;">@vpl.Contact</td>
+                            <td style="font-size: 12px;">@vpl.Adresse</td>
+                            <td style="font-size: 12px;">@vpl.Annee</td>
+                            <td style="font-size: 12px;">@vpl.Ville</td>
+                            <td style="font-size: 12px;">@vpl.CommuneQuartier</td>
+                            <td style="font-size: 12px;">@vpl.DateDocument</td>
+                            <td style="font-size: 12px;">
+                                <form method="post" asp-page-handler="View" asp-route-id="@vpl.IdVpl" target="_blank">
+                                    <button class="btn btn-warning">Voir 📖</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@* Formulaire pour ajouter les nouveaux fichiers *@
+<div class="modal fade" id="ajoutFichierModal" tabindex="-1" aria-labelledby="ajoutFichierModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form method="post" enctype="multipart/form-data" asp-page-handler="UploadFileVpl">
+                <div class="modal-header" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%); color:white;">
+                    <h5 class="modal-title" id="ajoutFichierModalLabel">Ajouter un fichier VPL</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="Boite" class="form-label">N° Boite</label>
+                            <input type="text" name="Boite" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Code" class="form-label">Code</label>
+                            <input type="text" name="Code" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Logement" class="form-label">N° Logement</label>
+                            <input type="text" name="Logement" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Client" class="form-label">Client</label>
+                            <input type="text" name="Client" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Annee" class="form-label">Année</label>
+                            <input type="text" name="Annee" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Ville" class="form-label">Ville</label>
+                            <input type="text" name="Ville" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Document" class="form-label">Description Doc.</label>
+                            <input type="text" name="Document" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="CommuneQuartier" class="form-label">Commune/Quartier</label>
+                            <input type="text" name="CommuneQuartier" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Adresse" class="form-label">Adresse</label>
+                            <input type="text" name="Adresse" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Contact" class="form-label">Contact</label>
+                            <input type="text" name="Contact" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Fonctions" class="form-label">Fonctions</label>
+                            <input type="text" name="Fonctions" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="DateDocument" class="form-label">Date Document</label>
+                            <input type="date" name="DateDocument" class="form-control" required />
+                        </div>
+                        <div class="col-md-12">
+                            <label for="Fichier" class="form-label">Fichier numérisé (PDF)</label>
+                            <input type="file" name="Fichier" class="form-control" accept=".pdf" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* Methode pour modifier un fichier ADP *@
+<div class="modal fade" id="vplModal" tabindex="-1" aria-labelledby="vplModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="vplModalLabel">Modifier un fichier VPL</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="vplForm">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="vplId">
+                    <input type="hidden" id="deleteFileFlag" name="DeleteFile" value="false">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="boite" class="form-label required-field">N° Boite</label>
+                            <input type="text" name="Boite" id="boite" class="form-control"/>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="code" class="form-label required-field">Code</label>
+                            <input type="text" name="Code" id="code" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="logement" class="form-label required-field">N° Logement</label>
+                            <input type="text" name="Logement" id="logement" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="client" class="form-label required-field">Client</label>
+                            <input type="text" name="Client" id="client" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="annee" class="form-label">Année</label>
+                            <input type="text" name="Annee" id="annee" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ville" class="form-label">Ville</label>
+                            <input type="text" name="Ville" id="ville" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="document" class="form-label">Description Doc.</label>
+                            <input type="text" name="Document" id="document" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="communequartier" class="form-label">Commune/Quartier</label>
+                            <input type="text" name="CommuneQuartier" id="communequartier" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="adresse" class="form-label">Adresse</label>
+                            <input type="text" name="Adresse" id="adresse" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="contact" class="form-label">Contact</label>
+                            <input type="text" name="Contact" id="contact" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="fonctions" class="form-label">Fonctions</label>
+                            <input type="text" name="Fonctions" id="fonctions" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="datedocument" class="form-label">Date Document</label>
+                            <input type="date" name="DateDocument" id="datedocument" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="fichier" class="form-label required-field">Fichier numérisé (PDF)</label>
+                            <input type="file" name="Fichier" id="fichier" class="form-control" accept=".pdf"/>
+                            <div class="d-flex align-items-center mt-2">
+                                <button type="button" id="deleteCurrentFile" class="btn btn-outline-danger btn-sm p-1 me-2" style="display: none;" title="Supprimer le fichier actuel">
+                                    ❌
+                                </button>
+                                <small id="currentFile" class="form-text text-muted"></small>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn text-white" data-bs-dismiss="modal" style="background: #374151;">Annuler</button>
+                <button type="button" class="btn btn-danger" id="deletevpl">Supprimer</button>
+                <button type="button" class="btn text-white" id="savevpl" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Ajouter un événement pour filtrer les données lors de la saisie dans le champ de filtre
+       //  tableFilter.addEventListener('input', filterData);
+       // Récupérer les éléments du tableau
+        var table = document.querySelector('table');
+        var rows = table.querySelectorAll('tbody tr');
+        var filterStats = document.getElementById('filterStats');
+        var totalRows = rows.length;
+
+        // Récupérer le champ de filtre
+        var tableFilter = document.getElementById('table-filter');
+
+        // Fonction pour mettre à jour les statistiques
+        function updateFilterStats() {
+            var visibleRows = 0;
+            rows.forEach(function(row) {
+                if (row.style.display !== 'none') {
+                    visibleRows++;
+                }
+            });
+
+            if (tableFilter.value === '') {
+                filterStats.textContent = totalRows + ' fichier(s) trouvé(s)';
+            } else {
+                filterStats.textContent = visibleRows + ' fichier(s) sur ' + totalRows + ' trouvé(s)';
+            }
+        }
+
+        // Fonction pour filtrer les données
+        function filterData() {
+            var filterValue = tableFilter.value.toLowerCase();
+
+            rows.forEach(function(row) {
+                var rowText = row.textContent.toLowerCase();
+
+                if (rowText.indexOf(filterValue) === -1) {
+                    row.style.display = 'none';
+                } else {
+                    row.style.display = '';
+                }
+            });
+
+            // Mettre à jour les statistiques après le filtrage
+            updateFilterStats();
+        }
+
+        // Initialiser les statistiques au chargement
+        updateFilterStats();
+
+        // Ajouter un événement pour filtrer les données lors de la saisie dans le champ de filtre
+        tableFilter.addEventListener('input', filterData);
+
+        // Réinitialiser le formulaire quand le modal est fermé
+        document.getElementById('ajoutFichierModal').addEventListener('hidden.bs.modal', function () {
+            document.getElementById('uploadForm').reset();
+        });
+
+         // === GESTION DES CASES À COCHER ===
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            const rowCheckboxes = document.querySelectorAll('.rowCheckbox');
+            
+            // Case "Tout sélectionner"
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('change', function() {
+                    rowCheckboxes.forEach(checkbox => {
+                        checkbox.checked = selectAllCheckbox.checked;
+                    });
+                });
+            }
+            
+            // Cases individuelles
+            rowCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    // Décocher "Tout sélectionner" si une case est décochée
+                    if (!this.checked && selectAllCheckbox.checked) {
+                        selectAllCheckbox.checked = false;
+                    }
+                    // Cocher "Tout sélectionner" si toutes les cases sont cochées
+                    else if (this.checked) {
+                        const allChecked = Array.from(rowCheckboxes).every(cb => cb.checked);
+                        selectAllCheckbox.checked = allChecked;
+                    }
+                });
+            });
+            
+            // Mettre à jour "Tout sélectionner" lors du filtrage
+            const tableFilter = document.getElementById('table-filter');
+            if (tableFilter) {
+                tableFilter.addEventListener('input', function() {
+                    // Réinitialiser "Tout sélectionner" lors du filtrage
+                    selectAllCheckbox.checked = false;
+                });
+            }
+        });
+
+        // Fonction pour obtenir les IDs des éléments sélectionnés
+        function getSelectedVplIds() {
+            const selectedCheckboxes = document.querySelectorAll('.rowCheckbox:checked');
+            const selectedIds = Array.from(selectedCheckboxes).map(checkbox => {
+                return checkbox.getAttribute('data-vpl-id');
+            });
+            return selectedIds;
+        }
+
+        // Exemple d'utilisation pour une action groupée
+        function performGroupAction() {
+            const selectedIds = getSelectedVplIds();
+            if (selectedIds.length === 0) {
+                alert('Veuillez sélectionner au moins un élément');
+                return;
+            }
+            
+            console.log('IDs sélectionnés :', selectedIds);
+            // Ici vous pouvez ajouter votre logique (suppression groupée, export, etc.)
+        }
+
+        // === GESTION DU MODAL DE MODIFICATION ADP ===
+        const vplModal = document.getElementById('vplModal');
+        if (vplModal) {
+            vplModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+
+                // Réinitialiser le flag de suppression
+                document.getElementById('deleteFileFlag').value = 'false';
+                
+                // Extraire les données des attributs data-*
+                const vplId = button.getAttribute('data-vpl-id');
+                const documentValue  = button.getAttribute('data-document');
+                const contact = button.getAttribute('data-contact');
+                const datedocument = button.getAttribute('data-datedocument');
+                const annee = button.getAttribute('data-annee');
+                const fonctions = button.getAttribute('data-fonctions');
+                const client = button.getAttribute('data-client');
+                const code = button.getAttribute('data-code');
+                const boite = button.getAttribute('data-boite');
+                const logement = button.getAttribute('data-logement');
+                const adresse = button.getAttribute('data-adresse');
+                const communequartier = button.getAttribute('data-communequartier');
+                const ville = button.getAttribute('data-ville');
+                const fichier = button.getAttribute('data-fichier');
+
+                // Convertir la date du format dd/MM/yyyy vers yyyy-MM-dd pour l'input date
+                let htmlDate = '';
+                if (datedocument) {
+                    const parts = datedocument.split('/');
+                    if (parts.length === 3) {
+                        htmlDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // yyyy-MM-dd
+                    }
+                }
+                
+                // Mettre à jour le contenu de la modale VPL
+                document.getElementById('vplId').value = vplId;
+                document.getElementById('boite').value = boite;
+                document.getElementById('code').value = code;
+                document.getElementById('logement').value = logement;
+                document.getElementById('client').value = client;
+                document.getElementById('annee').value = annee;
+                document.getElementById('ville').value = ville;
+                document.getElementById('document').value = documentValue;
+                document.getElementById('communequartier').value = communequartier;
+                document.getElementById('adresse').value = adresse;
+                document.getElementById('contact').value = contact;
+                document.getElementById('fonctions').value = fonctions;
+                document.getElementById('datedocument').value = htmlDate;
+            
+                // Mettre à jour le nom du fichier actuel et gérer le bouton de suppression
+                const deleteFileBtn = document.getElementById('deleteCurrentFile');
+                const currentFileElement = document.getElementById('currentFile');
+                
+                if(fichier && fichier.trim() !== ''){
+                    let filename = fichier.split('\\').pop().split('/').pop();
+                    currentFileElement.textContent = `Fichier actuel : ${filename}`;
+                    // Stocker le nom du fichier actuel dans un data attribute
+                    deleteFileBtn.setAttribute('data-current-filename', filename);
+                    // Afficher le bouton de suppression
+                    deleteFileBtn.style.display = 'block';
+                } else {
+                    currentFileElement.textContent = 'Aucun fichier associé';
+                    // Cacher le bouton de suppression
+                    deleteFileBtn.style.display = 'none';
+                }
+                // Mettre à jour le titre de la modale
+                document.getElementById('vplModalLabel').textContent = `Modifier ${documentValue}`;
+            });
+        }
+
+        // Gestion de la suppression du fichier actuel
+        document.getElementById('deleteCurrentFile').addEventListener('click', function() {
+            const vplId = document.getElementById('vplId').value;
+            
+            if (confirm('Êtes-vous sûr de vouloir supprimer le fichier actuel ? Cette action est irréversible.')) {
+                // Créer FormData pour envoyer la requête
+                const formData = new FormData();
+                formData.append('id', vplId);
+                
+                // Récupérer le token anti-falsification
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                
+                // Appeler le handler de suppression via AJAX
+                fetch(`?handler=DeleteFileVpl`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'RequestVerificationToken': token
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        throw new Error('Erreur lors de la suppression');
+                    }
+                })
+                .then(message => {
+                    // Mettre à jour l'interface
+                    document.getElementById('deleteFileFlag').value = 'true';
+                    document.getElementById('currentFile').textContent = 'Fichier supprimé avec succès';
+                    document.getElementById('deleteCurrentFile').style.display = 'none';
+                    document.getElementById('fichier').value = '';
+                    
+                    // Afficher un message de succès
+                    alert('Fichier supprimé avec succès !');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Erreur lors de la suppression du fichier');
+                });
+            }
+        });
+
+        // Réinitialiser le flag de suppression si l'utilisateur sélectionne un nouveau fichier
+        document.getElementById('fichier').addEventListener('change', function() {
+            if (this.files.length > 0) {
+                document.getElementById('deleteFileFlag').value = 'false';
+                // Ne pas cacher le bouton de suppression si on veut permettre de supprimer l'ancien même avec un nouveau fichier
+                // document.getElementById('deleteCurrentFile').style.display = 'none';
+            }
+        });
+
+        // Gestion de l'enregistrement des modifications
+        document.getElementById('savevpl').addEventListener('click', function() {
+            const form = document.getElementById('vplForm');
+            const formData = new FormData(form);
+            const vplId = document.getElementById('vplId').value;
+            
+            // Ajouter l'ID ADP au FormData
+            formData.append('IdVpl', vplId);
+            
+            // Récupérer le token anti-falsification
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            
+            // Envoyer la requête de mise à jour
+            fetch(`?handler=UpdateVpl`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'RequestVerificationToken': token
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Fermer le modal et recharger la page
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('vplModal'));
+                    modal.hide();
+                    location.reload();
+                } else {
+                    alert('Erreur lors de la mise à jour');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Erreur lors de la mise à jour');
+            });
+        });
+
+        // Gestion de la suppression complète de VPL
+        document.getElementById('deletevpl').addEventListener('click', function() {
+            const vplId = document.getElementById('vplId').value;
+            
+            if (confirm('Êtes-vous sûr de vouloir supprimer complètement cet enregistrement VPL ? Cette action est irréversible.')) {
+                const formData = new FormData();
+                formData.append('id', vplId);
+                
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                
+                fetch(`?handler=Deletevpl`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'RequestVerificationToken': token
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Fermer le modal et recharger la page
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('vplModal'));
+                        modal.hide();
+                        location.reload();
+                    } else {
+                        alert('Erreur lors de la suppression');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Erreur lors de la suppression');
+                });
+            }
+        });
+
+        // === TÉLÉCHARGEMENT DES FICHIERS SÉLECTIONNÉS EN ZIP ===
+        document.getElementById('exportSelected').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const selectedIds = getSelectedVplIds();
+            console.log('IDs sélectionnés:', selectedIds); // Debug
+            
+            if (selectedIds.length === 0) {
+                alert('Veuillez sélectionner au moins un fichier à télécharger');
+                return;
+            }
+            
+            // Afficher un message de traitement
+            alert(`Préparation du téléchargement de ${selectedIds.length} fichier(s)...`);
+            
+            // Créer un formulaire pour envoyer les IDs au serveur
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '?handler=DownloadSelectedFiles';
+            
+            // Ajouter le token anti-falsification
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            const tokenInput = document.createElement('input');
+            tokenInput.type = 'hidden';
+            tokenInput.name = '__RequestVerificationToken';
+            tokenInput.value = token;
+            form.appendChild(tokenInput);
+            
+            // Ajouter chaque ID sélectionné
+            selectedIds.forEach(id => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selectedIds';
+                input.value = id;
+                form.appendChild(input);
+                console.log('ID ajouté au formulaire:', id); // Debug
+            });
+            
+            // Soumettre le formulaire
+            document.body.appendChild(form);
+            console.log('Soumission du formulaire...'); // Debug
+            form.submit();
+            document.body.removeChild(form);
+        });
+        
+        // === SUPPRESSION DES FICHIERS SÉLECTIONNÉS ===
+        document.getElementById('deleteSelected').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const selectedIds = getSelectedVplIds();
+            if (selectedIds.length === 0) {
+                alert('Veuillez sélectionner au moins un fichier à supprimer');
+                return;
+            }
+            
+            if (confirm(`Êtes-vous sûr de vouloir supprimer ${selectedIds.length} fichier(s) sélectionné(s) ? Cette action est irréversible.`)) {
+                // Créer un formulaire pour envoyer les IDs au serveur
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '?handler=DeleteSelectedFiles';
+                
+                // Ajouter le token anti-falsification
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                const tokenInput = document.createElement('input');
+                tokenInput.type = 'hidden';
+                tokenInput.name = '__RequestVerificationToken';
+                tokenInput.value = token;
+                form.appendChild(tokenInput);
+                
+                // Ajouter chaque ID sélectionné
+                selectedIds.forEach(id => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'selectedIds';
+                    input.value = id;
+                    form.appendChild(input);
+                });
+                
+                // Soumettre le formulaire
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+
+    </script>
+}
+

@@ -1,0 +1,1003 @@
+﻿@page
+@model anahged.Pages.AdministrationModel
+@{
+    ViewData["Title"] = "Administration ⚙️";
+    Layout = "_Layout"; // Utilisez votre layout existant
+}
+
+
+@section Styles {
+    <style>
+        /* Gérer la couleur dans le tableau lors du filtrage */
+        @* .highlight {
+            background-color: #e1fffc !important;
+        } *@
+        
+        /* Styles spécifiques à la page d'administration */
+        .admin-container {
+            display: flex;
+            min-height: 70vh;
+            margin-top: 20px;
+        }
+        
+        .admin-sidebar {
+            width: 250px;
+            /*background-color: #2c3e50;*/
+            background: linear-gradient(135deg, #10b981 0%, #374151 100%);
+            color: white;
+            padding: 20px 0;
+            border-radius: 5px;
+            margin-right: 20px;
+        }
+        
+        .admin-content {
+            flex: 1;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .admin-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .admin-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .admin-menu a {
+            display: block;
+            padding: 12px 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        
+        .admin-menu a:hover {
+            background-color: #34495e;
+            color: white;
+            border-left: 4px solid #3498db;
+        }
+        
+        .admin-menu a.active {
+            background-color: #34495e;
+            color: white;
+            border-left: 4px solid #3498db;
+        }
+        
+        .admin-menu a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .admin-section {
+            display: none;
+        }
+        
+        .admin-section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        /* Correction de l'erreur  */
+        @@keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .admin-card {
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        
+        .admin-card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            padding: 15px 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-card-body {
+            padding: 20px;
+        }
+        
+        .admin-stat {
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .admin-stat i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+        
+        .admin-stat h3 {
+            font-size: 1.5rem;
+            margin: 0;
+            font-weight: bold;
+        }
+        
+        .admin-stat p {
+            color: #7f8c8d;
+            margin: 0;
+        }
+        
+        .table th {
+            background-color: #f8f9fa;
+            border-top: none;
+            font-weight: 600;
+        }
+        
+        .badge-admin {
+            background-color: #e74c3c;
+        }
+        
+        .badge-editor {
+            background-color: #3498db;
+        }
+        
+        .badge-reader {
+            background-color: #2ecc71;
+        }
+        
+        .log-entry {
+            border-left: 3px solid #3498db;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+        }
+        
+        .log-error {
+            border-left-color: #e74c3c;
+        }
+        
+        .log-warning {
+            border-left-color: #f39c12;
+        }
+        
+        .log-success {
+            border-left-color: #2ecc71;
+        }
+
+        /* Style pour le modale */
+        .clickable-name {
+            color: #10b981;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .clickable-name:hover {
+            color: #0d9669;
+            text-decoration: underline;
+        }
+        .modal-header {
+            background: linear-gradient(135deg, #10b981 0%, #374151 100%);
+            color: white;
+        }
+        .required-field::after {
+            content: "*";
+            color: red;
+            margin-left: 4px;
+        }
+    </style>
+}
+
+<div class="container-fluid">
+    <h1 class="h3 mb-4">Administration <i class="bi bi-gear-fill"></i></h1>
+    
+    <div class="admin-container">
+        <!-- Menu vertical d'administration -->
+        <div class="admin-sidebar">
+            <ul class="admin-menu">
+                <li><a href="#" class="admin-menu-link active" data-target="dashboard"><i class="bi bi-speedometer2"></i> Tableau de bord</a></li>
+                <li><a href="#" class="admin-menu-link" data-target="roles"><i class="bi bi-shield-check"></i> Gestion des rôles</a></li>
+                <li><a href="#" class="admin-menu-link" data-target="users"><i class="bi bi-people-fill"></i> Gestion des utilisateurs</a></li>
+                <li><a href="#" class="admin-menu-link" data-target="settings"><i class="bi bi-sliders"></i> Paramètres système</a></li>
+                <li><a href="#" class="admin-menu-link" data-target="logs"><i class="bi bi-clipboard-check"></i> Journalisation</a></li>
+            </ul>
+        </div>
+        
+        <!-- Contenu de l'administration -->
+        <div class="admin-content">
+            <!-- Tableau de bord -->
+            <div id="dashboard" class="admin-section active">
+                <h2 class="mb-4">Tableau de bord d'administration</h2>
+                
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="admin-card">
+                            <div class="admin-stat">
+                                <i class="bi bi-people-fill"></i>
+                                <h3>156</h3>
+                                <p>Utilisateurs</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="admin-card">
+                            <div class="admin-stat">
+                                <i class="bi bi-shield-check"></i>
+                                <h3>8</h3>
+                                <p>Rôles</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="admin-card">
+                            <div class="admin-stat">
+                                <i class="bi bi-archive-fill"></i>
+                                <h3>2,548</h3>
+                                <p>Archives</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="admin-card">
+                            <div class="admin-stat">
+                                <i class="bi bi-clock-history"></i>
+                                <h3>12</h3>
+                                <p>Activité récente</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="admin-card mt-4">
+                    <div class="admin-card-header">
+                        Activité récente
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Utilisateur</th>
+                                        <th>Action</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>admin@example.com</td>
+                                        <td>Connexion au système</td>
+                                        <td>@DateTime.Now.AddHours(-1).ToString("dd/MM/yyyy HH:mm")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>user@example.com</td>
+                                        <td>Modification d'un document</td>
+                                        <td>@DateTime.Now.AddHours(-3).ToString("dd/MM/yyyy HH:mm")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>archivist@example.com</td>
+                                        <td>Ajout de nouveaux archives</td>
+                                        <td>@DateTime.Now.AddHours(-5).ToString("dd/MM/yyyy HH:mm")</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gestion des rôles -->
+            <div id="roles" class="admin-section">
+                <h2 class="mb-4">Gestion des rôles</h2>
+                
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <span>Liste des rôles</span>
+                        <button class="btn text-white btn-sm" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">
+                            <i class="bi bi-plus-circle"></i> Nouveau rôle
+                        </button>
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>N°</th>
+                                        <th>Description R.</th>
+                                        <th>Perm. Vpl & adp</th>
+                                        <th>Perm. carte</th>
+                                        <th>Perm. Vpl Adp carte</th>
+                                        <th>Permi. Administrateur</th>
+                                        <th>Perm. Superviseur</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var role in Model.RoleList)
+                                    {
+                                        <tr>
+                                            <td>@role.GroupeId</td>
+                                            <td>@role.NomGroupe</td>
+                                            <td>
+                                                @if (role.VplAdp == 1)
+                                                {
+                                                    <span class="badge bg-success">Oui</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">Non</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (role.Carte == 1)
+                                                {
+                                                    <span class="badge bg-success">Oui</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">Non</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (role.VpladpCarte == 1)
+                                                {
+                                                    <span class="badge bg-success">Oui</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">Non</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (role.Administrateur == 1)
+                                                {
+                                                    <span class="badge bg-success">Oui</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">Non</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (role.Superviseur == 1)
+                                                {
+                                                    <span class="badge bg-success">Oui</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">Non</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gestion des utilisateurs -->
+             <div id="users" class="admin-section">
+                <h2 class="mb-4">Gestion des utilisateurs</h2>
+                
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <span>Liste des utilisateurs</span>
+                        <button class="btn btn-sm text-white" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);" data-bs-toggle="modal" data-bs-target="#createUserModal">
+                            <i class="bi bi-plus-circle"></i> Nouvel utilisateur
+                        </button>
+                    </div>
+                    <div class="admin-card-body">
+                        <!-- Barre de filtrage -->
+                <div class="filter-container">
+                        <div class="filter-input">
+                            <input type="text" id="filterInput" class="form-control form-control-sm" placeholder="Filtrer par nom, prénom, email ou rôle...">
+                        </div>
+                        <div class="filter-stats">
+                            <span id="filterStats" class="text-muted small">@Model.UserList.Count() utilisateur(s)</span>
+                        </div>
+                    </div>
+                        <div class="table-responsive" style="max-height:40vh; overflow-y:auto;margin-top:0px;">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <tr>
+                                            <th>Nom</th>
+                                            <th>Prénoms</th>
+                                            <th>Tél.</th>
+                                            <th>Email</th>
+                                            <th>Rôles</th>
+                                            <th>Actif</th>
+                                        </tr>
+                                    </tr>
+                                </thead>
+                                <tbody id="userTableBody">
+                                    @foreach (var user in Model.UserList)
+                                    {
+                                        <tr>
+                                            <td>
+                                              <!--  <a href="" class="" style="color:#10b981; text-decoration: none"></a> -->
+                                                <span class="clickable-name" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#userModal"
+                                                    data-user-id="@user.UserId"
+                                                    data-nom="@user.NomUser"
+                                                    data-contact="@user.Contact"
+                                                    data-prenom="@user.PrenomUser"
+                                                    data-email="@user.Email"
+                                                    data-role="@user.GroupeId"
+                                                    data-actif="@user.Actif">
+                                                    @user.NomUser
+                                                </span>
+                                            </td>
+                                            <td>@user.PrenomUser</td>
+                                            <td>@user.Contact</td>
+                                            <td>@user.Email</td>
+                                            <td>@user.Groupe!.NomGroupe</td>
+                                            <td>
+                                                @if (user.Actif ==1)
+                                                {
+                                                    <span class="badge bg-success">Oui</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">Non</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de modification utilisateur -->
+            <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="userModalLabel">Modifier l'utilisateur</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="userForm">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" id="userId">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="nom" class="form-label required-field">Nom</label>
+                                        <input type="text" class="form-control" id="nom" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="prenom" class="form-label required-field">Prénom</label>
+                                        <input type="text" class="form-control" id="prenom" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="email" class="form-label required-field">Email</label>
+                                        <input type="email" class="form-control" id="email" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="email" class="form-label required-field">Tél.</label>
+                                        <input type="contact" class="form-control" id="contact" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="role" class="form-label required-field">Rôle</label>
+                                    <select class="form-select" id="role" required>
+                                        <option value="">Sélectionner un rôle</option>
+                                        <!-- Ajoutez ici les options de rôle dynamiques si nécessaire -->
+                                        @foreach (var role in Model.RoleList)
+                                        {
+                                            <option value="@role.GroupeId">@role.NomGroupe</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="actif" checked style="background-color:#10b981;">
+                                        <label class="form-check-label" for="actif">Utilisateur actif</label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn text-white" data-bs-dismiss="modal" style="background: #374151;">Annuler</button>
+                            <button type="button" class="btn btn-danger" id="deleteUser">Supprimer</button>
+                            <button type="button" class="btn text-white" id="saveUser" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">Enregistrer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de création d'utilisateur -->
+            <div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createUserModalLabel">Créer un nouvel utilisateur</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="createUserForm">
+                                @Html.AntiForgeryToken()
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="createNom" class="form-label required-field">Nom</label>
+                                        <input type="text" class="form-control" id="createNom" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="createPrenom" class="form-label required-field">Prénom</label>
+                                        <input type="text" class="form-control" id="createPrenom" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="createEmail" class="form-label required-field">Email</label>
+                                        <input type="email" class="form-control" id="createEmail" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="createContact" class="form-label required-field">Tél.</label>
+                                        <input type="contact" class="form-control" id="createContact" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="createPassword" class="form-label required-field">Mot de passe</label>
+                                    <input type="password" class="form-control" id="createPassword" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="createConfirmPassword" class="form-label required-field">Confirmer le mot de passe</label>
+                                    <input type="password" class="form-control" id="createConfirmPassword" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="createRole" class="form-label required-field">Rôle</label>
+                                    <select class="form-select" id="createRole" required>
+                                        <option value="">Sélectionner un rôle</option>
+                                        @foreach (var role in Model.RoleList)
+                                        {
+                                            <option value="@role.GroupeId">@role.NomGroupe</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="createActif" checked style="background-color:#10b981;">
+                                        <label class="form-check-label" for="actif">Utilisateur actif</label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn text-white" data-bs-dismiss="modal" style="background: #374151;">Annuler</button>
+                            <button type="button" class="btn text-white" id="createUser" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">Créer l'utilisateur</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toast pour les notifications -->
+            <div class="toast-container">
+                <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            Utilisateur créé avec succès!
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Paramètres système -->
+            <div id="settings" class="admin-section">
+                <h2 class="mb-4">Paramètres système</h2>
+                
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        Configuration de l'application
+                    </div>
+                    <div class="admin-card-body">
+                        <form>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="appName" class="form-label">Nom de l'application</label>
+                                    <input type="text" class="form-control" id="appName" value="ANAHGED">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="maxFileSize" class="form-label">Taille maximale des fichiers (MB)</label>
+                                    <input type="number" class="form-control" id="maxFileSize" value="100">
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="backupFrequency" class="form-label">Fréquence de sauvegarde</label>
+                                    <select class="form-select" id="backupFrequency">
+                                        <option selected>Quotidienne</option>
+                                        <option>Hebdomadaire</option>
+                                        <option>Mensuelle</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="sessionTimeout" class="form-label">Délai d'expiration de session (minutes)</label>
+                                    <input type="number" class="form-control" id="sessionTimeout" value="60">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="maintenanceMode">
+                                    <label class="form-check-label" for="maintenanceMode">
+                                        Mode maintenance
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Enregistrer les paramètres</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Journalisation -->
+            <div id="logs" class="admin-section">
+                <h2 class="mb-4">Journalisation des activités</h2>
+                
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        Logs système
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="mb-3">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-primary active">Tous</button>
+                                <button type="button" class="btn btn-outline-primary">Connexions</button>
+                                <button type="button" class="btn btn-outline-primary">Modifications</button>
+                                <button type="button" class="btn btn-outline-primary">Erreurs</button>
+                            </div>
+                        </div>
+                        
+                        <div class="log-entry log-success">
+                            <div class="d-flex justify-content-between">
+                                <strong>admin</strong>
+                                <small>@DateTime.Now.AddHours(-1).ToString("dd/MM/yyyy HH:mm")</small>
+                            </div>
+                            <div>Connexion réussie</div>
+                        </div>
+                        
+                        <div class="log-entry">
+                            <div class="d-flex justify-content-between">
+                                <strong>user1</strong>
+                                <small>@DateTime.Now.AddHours(-2).ToString("dd/MM/yyyy HH:mm")</small>
+                            </div>
+                            <div>Document ADP-2023-001 modifié</div>
+                        </div>
+                        
+                        <div class="log-entry log-warning">
+                            <div class="d-flex justify-content-between">
+                                <strong>system</strong>
+                                <small>@DateTime.Now.AddHours(-4).ToString("dd/MM/yyyy HH:mm")</small>
+                            </div>
+                            <div>Sauvegarde automatique terminée</div>
+                        </div>
+                        
+                        <div class="log-entry log-error">
+                            <div class="d-flex justify-content-between">
+                                <strong>editor2</strong>
+                                <small>@DateTime.Now.AddHours(-6).ToString("dd/MM/yyyy HH:mm")</small>
+                            </div>
+                            <div>Échec de l'upload du fichier (taille excessive)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+     <!-- Scripts Bootstrap et JavaScript personnalisé -->
+ @*    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> *@
+    <script>
+
+    // Code javascript pour gérer d'autres interactions si nécessaire
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser les toasts
+        const successToast = new bootstrap.Toast(document.getElementById('successToast'));
+        // Gestion du menu d'administration
+        document.querySelectorAll('.admin-menu-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Retirer la classe active de tous les liens et sections
+                document.querySelectorAll('.admin-menu-link').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+                
+                // Ajouter la classe active au lien cliqué
+                this.classList.add('active');
+                
+                // Afficher la section correspondante
+                const targetId = this.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+                
+                // Mettre à jour l'URL sans recharger la page
+                history.pushState(null, null, `#${targetId}`);
+            });
+        });
+        
+        // Vérifier si une ancre est présente dans l'URL au chargement de la page
+        if (window.location.hash) {
+            const targetId = window.location.hash.substring(1);
+            const targetLink = document.querySelector(`.admin-menu-link[data-target="${targetId}"]`);
+            
+            if (targetLink) {
+                targetLink.click();
+            }
+        }
+
+        // Filtrage des utilisateurs
+        const filterInput = document.getElementById('filterInput');
+        const tableBody = document.getElementById('userTableBody');
+        const rows = tableBody.getElementsByTagName('tr');
+        const filterStats = document.getElementById('filterStats');
+        
+        // Initialiser le compteur
+        filterStats.textContent = `${rows.length} utilisateur(s)`;
+        
+        filterInput.addEventListener('input', function() {
+            const filterText = this.value.toLowerCase();
+            let visibleCount = 0;
+            
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let found = false;
+                
+                // Vérifier chaque cellule (sauf la dernière colonne Actif)
+                for (let j = 0; j < cells.length - 1; j++) {
+                    const cellText = cells[j].textContent.toLowerCase();
+                    if (cellText.includes(filterText)) {
+                        found = true;
+                        break;
+                    }
+                }
+                
+                // Afficher ou masquer la ligne en fonction du résultat
+                if (found) {
+                    rows[i].style.display = '';
+                    visibleCount++;
+                    
+                    // Mettre en évidence le texte correspondant
+                    if (filterText) {
+                        rows[i].classList.add('highlight');
+                    } else {
+                        rows[i].classList.remove('highlight');
+                    }
+                } else {
+                    rows[i].style.display = 'none';
+                    rows[i].classList.remove('highlight');
+                }
+            }
+            
+            // Mettre à jour le compteur
+            filterStats.textContent = `${visibleCount} utilisateur${visibleCount !== 1 ? 's' : ''}`;
+        });
+
+        // Gestion du modal de modification d'utilisateur
+        const userModal = document.getElementById('userModal');
+        if (userModal) {
+            userModal.addEventListener('show.bs.modal', function (event) {
+                // Le bouton qui a déclenché la modale
+                const button = event.relatedTarget;
+                
+                // Extraire les données des attributs data-*
+                const userId = button.getAttribute('data-user-id');
+                const nom = button.getAttribute('data-nom');
+                const prenom = button.getAttribute('data-prenom');
+                const email = button.getAttribute('data-email');
+                const contact = button.getAttribute('data-contact');
+                const role = button.getAttribute('data-role');
+                const actif = button.getAttribute('data-actif');
+                
+                // Mettre à jour le contenu de la modale
+                document.getElementById('userId').value = userId;
+                document.getElementById('nom').value = nom;
+                document.getElementById('prenom').value = prenom;
+                document.getElementById('email').value = email;
+                document.getElementById('contact').value = contact;
+                document.getElementById('role').value = role;
+                document.getElementById('actif').checked = actif === '1';
+                
+                // Mettre à jour le titre de la modale
+                document.getElementById('userModalLabel').textContent = `Modifier ${prenom} ${nom}`;
+            });
+        }
+
+        // Gestion de la sauvegarde
+        const saveUserButton = document.getElementById('saveUser');
+        if (saveUserButton) {
+            saveUserButton.addEventListener('click', function() {
+                const userId = document.getElementById('userId').value;
+                const nom = document.getElementById('nom').value;
+                const prenom = document.getElementById('prenom').value;
+                const email = document.getElementById('email').value;
+                const contact = document.getElementById('contact').value;
+                const role = document.getElementById('role').value;
+                const actif = document.getElementById('actif').checked ? 1 : 0;
+                
+                // Appel AJAX à la méthode OnPostEditUserAsync
+                fetch('?handler=EditUser', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: new URLSearchParams({
+                        'userId': userId,
+                        'nom': nom,
+                        'prenom': prenom,
+                        'email': email,
+                        'contact': contact,
+                        'groupeId': role,
+                        'actif': actif
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        // Fermer la modale et actualiser la page
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('userModal'));
+                        modal.hide();
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Une erreur est survenue');
+                });
+            });
+        }
+
+        // Gestion de la suppression
+        const deleteUserButton = document.getElementById('deleteUser');
+        if (deleteUserButton) {
+            deleteUserButton.addEventListener('click', function() {
+                const userId = document.getElementById('userId').value;
+                const nom = document.getElementById('nom').value;
+                const prenom = document.getElementById('prenom').value;
+                
+                if(confirm(`Êtes-vous sûr de vouloir supprimer l'utilisateur ${prenom} ${nom} ?`)) {
+                    // Appel AJAX à la méthode OnPostDeleteUserAsync
+                    fetch('?handler=DeleteUser', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                        },
+                        body: new URLSearchParams({
+                            'userId': userId
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.message);
+                            // Fermer la modale et actualiser la page
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('userModal'));
+                            modal.hide();
+                            location.reload();
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Une erreur est survenue');
+                    });
+                }
+            });
+        }
+
+        // Gestion de la création d'utilisateur
+        const createUserButton = document.getElementById('createUser');
+        if (createUserButton) {
+            createUserButton.addEventListener('click', function() {
+                const nom = document.getElementById('createNom').value;
+                const prenom = document.getElementById('createPrenom').value;
+                const contact = document.getElementById('createContact').value;
+                const email = document.getElementById('createEmail').value;
+                const password = document.getElementById('createPassword').value;
+                const confirmPassword = document.getElementById('createConfirmPassword').value;
+                const role = document.getElementById('createRole').value;
+                const actif = document.getElementById('createActif').checked ? 1 : 0;
+
+                // Validation
+                if (!nom || !prenom || !contact || !email || !password || !confirmPassword || !role) {
+                    alert('Veuillez remplir tous les champs obligatoires.');
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    alert('Les mots de passe ne correspondent pas.');
+                    return;
+                }
+
+                if (password.length < 6) {
+                    alert('Le mot de passe doit contenir au moins 6 caractères.');
+                    return;
+                }
+
+                // Appel AJAX à la méthode OnPostCreateUserAsync
+                fetch('?handler=CreateUser', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify({
+                        nom: nom,
+                        prenom: prenom,
+                        email: email,
+                        contact: contact,
+                        password: password,
+                        groupeId: parseInt(role),
+                        actif: actif
+                    })
+                })
+                .then(response => {
+                // Vérifier si la réponse est OK (statut 200-299)
+                if (!response.ok) {
+                    // Si ce n'est pas le cas, essayer de lire le message d'erreur
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || 'Erreur serveur');
+                    }).catch(() => {
+                        // Si le parsing JSON échoue, utiliser le texte brut
+                        return response.text().then(text => {
+                            throw new Error(text || 'Erreur serveur');
+                        });
+                    });
+                }
+                // Si la réponse est OK, parser le JSON
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Afficher le toast de succès
+                    const successToast = new bootstrap.Toast(document.getElementById('successToast'));
+                    successToast.show();
+                    
+                    // Fermer la modale
+                    const createUserModal = bootstrap.Modal.getInstance(document.getElementById('createUserModal'));
+                    createUserModal.hide();
+                    
+                    // Réinitialiser le formulaire
+                    document.getElementById('createUserForm').reset();
+                    
+                    // Actualiser la page après un délai pour voir le toast
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Une erreur est survenue: ' + error.message);
+            });
+            });
+        }
+
+        
+   
+    });
+    </script>
+}

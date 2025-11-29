@@ -1,0 +1,228 @@
+﻿@page
+@model anahged.Pages.TableauDeBordModel
+@{
+    ViewData["Title"] = "Tableau de bord 📊";
+}
+
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .dashboard-header {
+            background: linear-gradient(135deg, #10b981 0%, #374151 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 1rem 1rem;
+        }
+        .section-title {
+            color: #374151;
+            margin: 2rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+            font-weight: 600;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s;
+            height: 100%;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+        }
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            color: #374151;
+        }
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            text-align: center;
+            font-weight: 500;
+        }
+        /* Couleurs pour ADP */
+        .card-adp-boite .stat-icon { background-color: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .card-adp-logement .stat-icon { background-color: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .card-adp-fichiers .stat-icon { background-color: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .card-adp-total .stat-icon { background-color: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+        
+        /* Couleurs pour VPL */
+        .card-vpl-boite .stat-icon { background-color: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .card-vpl-logement .stat-icon { background-color: rgba(236, 72, 153, 0.1); color: #ec4899; }
+        .card-vpl-fichiers .stat-icon { background-color: rgba(249, 115, 22, 0.1); color: #f97316; }
+        .card-vpl-total .stat-icon { background-color: rgba(217, 70, 239, 0.1); color: #d946ef; }
+        
+        /* Couleurs pour Cartes */
+        .card-carte-boite .stat-icon { background-color: rgba(6, 182, 212, 0.1); color: #06b6d4; }
+        .card-carte-logement .stat-icon { background-color: rgba(14, 165, 233, 0.1); color: #0ea5e9; }
+        .card-carte-fichiers .stat-icon { background-color: rgba(99, 102, 241, 0.1); color: #6366f1; }
+        .card-carte-total .stat-icon { background-color: rgba(168, 85, 247, 0.1); color: #a855f7; }
+    </style>
+}
+
+<header class="dashboard-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1><i class="fas fa-chart-bar me-2"></i>Inventaire Archives et Demande de dossiers</h1>
+                <p class="lead mb-0">Tableau de bord de gestion des archives</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <i class="fas fa-archive fa-3x opacity-75"></i>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- Section ADP -->
+    <h3 class="section-title"><i class="fas fa-folder me-2"></i>Traitement de demande de dossiers</h3>
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="stat-card card-adp-boite text-center">
+                <div class="stat-icon">
+                    <i class="fas fa-archive"></i>
+                </div>
+                <div class="stat-value">@* @Model.NbrBoiteAdp.ToString("N0")  *@0</div>
+                <div class="stat-label">Demande en cours</div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="stat-card card-adp-logement text-center">
+                <div class="stat-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="stat-value">@* @Model.NbrLogementAdp.ToString("N0") *@ 0</div>
+                <div class="stat-label">Demande réjétée</div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="stat-card card-adp-fichiers text-center">
+                <div class="stat-icon">
+                    <i class="fas fa-file"></i>
+                </div>
+                <div class="stat-value">@* @Model.NbrFichersAdp.ToString("N0") *@ 0</div>
+                <div class="stat-label">Dossiers sortis</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section ADP -->
+    <h3 class="section-title"><i class="fas fa-folder me-2"></i>ADP</h3>
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="stat-card card-adp-boite text-center">
+                <div class="stat-icon">
+                    <i class="fas fa-archive"></i>
+                </div>
+                <div class="stat-value">@Model.NbrBoiteAdp.ToString("N0")</div>
+                <div class="stat-label">Boîtes archivées</div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="stat-card card-adp-logement text-center">
+                <div class="stat-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="stat-value">@Model.NbrLogementAdp.ToString("N0")</div>
+                <div class="stat-label">Logements répertoriés</div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="stat-card card-adp-fichiers text-center">
+                <div class="stat-icon">
+                    <i class="fas fa-file"></i>
+                </div>
+                <div class="stat-value">@Model.NbrFichersAdp.ToString("N0")</div>
+                <div class="stat-label">Fichiers numérisés</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section VPL -->
+    <h3 class="section-title"><i class="fas fa-file-alt me-2"></i>VPL</h3>
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="stat-card card-vpl-boite text-center">
+                <div class="stat-icon">
+                    <i class="fas fa-archive"></i>
+                </div>
+                <div class="stat-value">@Model.NbrBoiteVpl.ToString("N0")</div>
+                <div class="stat-label">Boîtes archivées</div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="stat-card card-vpl-logement text-center">
+                <div class="stat-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="stat-value">@Model.NbrLogementVpl.ToString("N0")</div>
+                <div class="stat-label">Logements répertoriés</div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="stat-card card-vpl-fichiers text-center">
+                <div class="stat-icon">
+                    <i class="fas fa-file"></i>
+                </div>
+                <div class="stat-value">@Model.NbrFichersVpl.ToString("N0")</div>
+                <div class="stat-label">Fichiers numérisés</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Cartes -->
+    <h3 class="section-title"><i class="fas fa-map me-2"></i>Cartes</h3>
+    <div class="row mb-5 justify-content-center">
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="stat-card card-carte-boite text-center">
+                <div class="stat-icon">
+                    <i class="fas fa-archive"></i>
+                </div>
+                <div class="stat-value">@Model.NbrTube.ToString("N0")</div>
+                <div class="stat-label">Tubes archivés</div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="stat-card card-carte-logement text-center">
+                <div class="stat-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="stat-value">@Model.NbrCartes.ToString("N0")</div>
+                <div class="stat-label">Cartes répertoriées</div>
+            </div>
+        </div>
+    </div>
+</main>

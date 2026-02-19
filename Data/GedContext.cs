@@ -29,14 +29,24 @@ public partial class GedContext : DbContext
 
     public virtual DbSet<HistoriqueVpl> HistoriqueVpls { get; set; }
 
+    public virtual DbSet<Operation> Operations { get; set; }
+
+    public virtual DbSet<Statut> Statuts { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
+
+    public virtual DbSet<Userstatut> Userstatuts { get; set; }
+
+    public virtual DbSet<Validationsfile> Validationsfiles { get; set; }
+
+    public virtual DbSet<Ville> Villes { get; set; }
 
     public virtual DbSet<Vpl> Vpls { get; set; }
 
-    /*    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-   #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-           => optionsBuilder.UseMySql("server=localhost;port=3306;database=bdsicogi;user=root", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.2.0-mysql"));
-    */
+    /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseMySql("server=127.0.0.1;database=bdsicogi;user=root", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.2.0-mysql"));
+ */
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -53,6 +63,8 @@ public partial class GedContext : DbContext
                 .UseCollation("latin1_swedish_ci");
 
             entity.HasIndex(e => e.Lien, "cle_lien").IsUnique();
+
+            entity.HasIndex(e => e.IdOpe, "idx_adp_idope");
 
             entity.HasIndex(e => e.Boite, "index_boite");
 
@@ -127,6 +139,16 @@ public partial class GedContext : DbContext
                 .HasColumnName("ville")
                 .UseCollation("utf8mb3_general_ci")
                 .HasCharSet("utf8mb3");
+            entity.Property(e => e.NumDossierAdp)
+                .HasMaxLength(55)
+                .HasColumnName("numDossierAdp")
+                .UseCollation("utf8mb3_general_ci")
+                .HasCharSet("utf8mb3");
+
+            entity.HasOne(d => d.IdOpeNavigation).WithMany(p => p.Adps)
+                .HasForeignKey(d => d.IdOpe)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("fk_adp_operations");
         });
 
         modelBuilder.Entity<Carte>(entity =>
@@ -137,6 +159,8 @@ public partial class GedContext : DbContext
                 .ToTable("carte")
                 .HasCharSet("latin1")
                 .UseCollation("latin1_swedish_ci");
+
+            entity.HasIndex(e => e.IdOpe, "idx_carte_idope");
 
             entity.Property(e => e.IdCarte).HasColumnName("id_carte");
             entity.Property(e => e.Cote)
@@ -187,6 +211,16 @@ public partial class GedContext : DbContext
                 .HasColumnName("ville")
                 .UseCollation("utf8mb3_general_ci")
                 .HasCharSet("utf8mb3");
+            entity.Property(e => e.NumDossierCarte)
+                .HasMaxLength(55)
+                .HasColumnName("numDossierCarte")
+                .UseCollation("utf8mb3_general_ci")
+                .HasCharSet("utf8mb3");
+
+            entity.HasOne(d => d.IdOpeNavigation).WithMany(p => p.Cartes)
+                .HasForeignKey(d => d.IdOpe)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("fk_carte_operations");
         });
 
         modelBuilder.Entity<Groupe>(entity =>
@@ -304,6 +338,49 @@ public partial class GedContext : DbContext
                 .HasConstraintName("historique_vpl_ibfk_2");
         });
 
+        modelBuilder.Entity<Operation>(entity =>
+        {
+            entity.HasKey(e => e.IdOpe).HasName("PRIMARY");
+
+            entity.ToTable("operations");
+
+            entity.HasIndex(e => e.CodeOpe, "CodeOpe").IsUnique();
+
+            entity.HasIndex(e => e.IdVille, "idx_operations_idville");
+
+            entity.Property(e => e.CodeOpe).HasMaxLength(20);
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp");
+            entity.Property(e => e.DescriptionOpe).HasMaxLength(100);
+            entity.Property(e => e.UpdatedAt)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasColumnType("timestamp");
+
+            entity.HasOne(d => d.IdVilleNavigation).WithMany(p => p.Operations)
+                .HasForeignKey(d => d.IdVille)
+                .HasConstraintName("fk_operations_villes");
+        });
+
+        modelBuilder.Entity<Statut>(entity =>
+        {
+            entity.HasKey(e => e.IdStatut).HasName("PRIMARY");
+
+            entity.ToTable("statuts");
+
+            entity.HasIndex(e => e.CodeStatut, "CodeStatut").IsUnique();
+
+            entity.Property(e => e.CodeStatut).HasMaxLength(20);
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp");
+            entity.Property(e => e.DescriptionStatut).HasMaxLength(100);
+            entity.Property(e => e.NoteStatut).HasColumnType("text");
+            entity.Property(e => e.UpdatedAt)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasColumnType("timestamp");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.UserId).HasName("PRIMARY");
@@ -333,6 +410,63 @@ public partial class GedContext : DbContext
                 .HasColumnName("pwd");
         });
 
+        modelBuilder.Entity<Userstatut>(entity =>
+        {
+            entity.HasKey(e => e.IdUserStatut).HasName("PRIMARY");
+
+            entity.ToTable("userstatuts");
+
+            entity.HasIndex(e => e.IdStatut, "FK_UserStatuts_Statut");
+
+            entity.HasIndex(e => new { e.UserId, e.IdStatut }, "UQ_UserStatut").IsUnique();
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp");
+        });
+
+        modelBuilder.Entity<Validationsfile>(entity =>
+        {
+            entity.HasKey(e => e.IdValidation).HasName("PRIMARY");
+
+            entity.ToTable("validationsfiles");
+
+            entity.HasIndex(e => e.IdAdp, "UQ_Adp_Validation").IsUnique();
+
+            entity.HasIndex(e => e.IdCarte, "UQ_Cartes_Validation").IsUnique();
+
+            entity.HasIndex(e => e.IdStatut, "UQ_Statut_Validation").IsUnique();
+
+            entity.HasIndex(e => e.UserId, "UQ_User_Validation").IsUnique();
+
+            entity.HasIndex(e => e.IdVpl, "UQ_Vpl_Validation").IsUnique();
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp");
+            entity.Property(e => e.DateValidation).HasColumnType("datetime");
+            entity.Property(e => e.IdStatut).HasDefaultValueSql("'1'");
+            entity.Property(e => e.MotifRejet).HasColumnType("text");
+        });
+
+        modelBuilder.Entity<Ville>(entity =>
+        {
+            entity.HasKey(e => e.IdVille).HasName("PRIMARY");
+
+            entity.ToTable("villes");
+
+            entity.HasIndex(e => e.CodeVille, "CodeVille").IsUnique();
+
+            entity.Property(e => e.CodeVille).HasMaxLength(20);
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp");
+            entity.Property(e => e.DescriptionVille).HasMaxLength(100);
+            entity.Property(e => e.UpdatedAt)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasColumnType("timestamp");
+        });
+
         modelBuilder.Entity<Vpl>(entity =>
         {
             entity.HasKey(e => e.IdVpl).HasName("PRIMARY");
@@ -341,6 +475,8 @@ public partial class GedContext : DbContext
                 .ToTable("vpl")
                 .HasCharSet("latin1")
                 .UseCollation("latin1_swedish_ci");
+
+            entity.HasIndex(e => e.IdOpe, "idx_vpl_idope");
 
             entity.HasIndex(e => e.Boite, "index_boite");
 
@@ -415,18 +551,20 @@ public partial class GedContext : DbContext
                 .HasColumnName("ville")
                 .UseCollation("utf8mb3_general_ci")
                 .HasCharSet("utf8mb3");
+            entity.Property(e => e.NumDossierVpl)
+                .HasMaxLength(55)
+                .HasColumnName("numDossierVpl")
+                .UseCollation("utf8mb3_general_ci")
+                .HasCharSet("utf8mb3");
+
+            entity.HasOne(d => d.IdOpeNavigation).WithMany(p => p.Vpls)
+                .HasForeignKey(d => d.IdOpe)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("fk_vpl_operations");
         });
 
         OnModelCreatingPartial(modelBuilder);
-        
-        // Relation User -> Groupe
-        modelBuilder.Entity<User>()
-        .HasOne(u => u.Groupe)
-        .WithMany(g => g.Users)
-        .HasForeignKey(u => u.GroupeId)
-        .OnDelete(DeleteBehavior.Restrict);
     }
-
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

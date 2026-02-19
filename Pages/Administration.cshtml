@@ -7,195 +7,24 @@
 
 
 @section Styles {
-    <style>
-        /* Gérer la couleur dans le tableau lors du filtrage */
-        @* .highlight {
-            background-color: #e1fffc !important;
-        } *@
-        
-        /* Styles spécifiques à la page d'administration */
-        .admin-container {
-            display: flex;
-            min-height: 70vh;
-            margin-top: 20px;
-        }
-        
-        .admin-sidebar {
-            width: 250px;
-            /*background-color: #2c3e50;*/
-            background: linear-gradient(135deg, #10b981 0%, #374151 100%);
-            color: white;
-            padding: 20px 0;
-            border-radius: 5px;
-            margin-right: 20px;
-        }
-        
-        .admin-content {
-            flex: 1;
-            padding: 20px;
-            background-color: white;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        
-        .admin-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .admin-menu li {
-            margin-bottom: 5px;
-        }
-        
-        .admin-menu a {
-            display: block;
-            padding: 12px 20px;
-            color: #ecf0f1;
-            text-decoration: none;
-            transition: all 0.3s;
-            border-left: 4px solid transparent;
-        }
-        
-        .admin-menu a:hover {
-            background-color: #34495e;
-            color: white;
-            border-left: 4px solid #3498db;
-        }
-        
-        .admin-menu a.active {
-            background-color: #34495e;
-            color: white;
-            border-left: 4px solid #3498db;
-        }
-        
-        .admin-menu a i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-        }
-        
-        .admin-section {
-            display: none;
-        }
-        
-        .admin-section.active {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-        
-        /* Correction de l'erreur  */
-        @@keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .admin-card {
-            border: none;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-        
-        .admin-card-header {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
-            padding: 15px 20px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .admin-card-body {
-            padding: 20px;
-        }
-        
-        .admin-stat {
-            text-align: center;
-            padding: 15px;
-        }
-        
-        .admin-stat i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: #3498db;
-        }
-        
-        .admin-stat h3 {
-            font-size: 1.5rem;
-            margin: 0;
-            font-weight: bold;
-        }
-        
-        .admin-stat p {
-            color: #7f8c8d;
-            margin: 0;
-        }
-        
-        .table th {
-            background-color: #f8f9fa;
-            border-top: none;
-            font-weight: 600;
-        }
-        
-        .badge-admin {
-            background-color: #e74c3c;
-        }
-        
-        .badge-editor {
-            background-color: #3498db;
-        }
-        
-        .badge-reader {
-            background-color: #2ecc71;
-        }
-        
-        .log-entry {
-            border-left: 3px solid #3498db;
-            padding: 10px 15px;
-            margin-bottom: 10px;
-            background-color: #f8f9fa;
-        }
-        
-        .log-error {
-            border-left-color: #e74c3c;
-        }
-        
-        .log-warning {
-            border-left-color: #f39c12;
-        }
-        
-        .log-success {
-            border-left-color: #2ecc71;
-        }
-
-        /* Style pour le modale */
-        .clickable-name {
-            color: #10b981;
-            text-decoration: none;
-            cursor: pointer;
-            font-weight: 500;
-        }
-        .clickable-name:hover {
-            color: #0d9669;
-            text-decoration: underline;
-        }
-        .modal-header {
-            background: linear-gradient(135deg, #10b981 0%, #374151 100%);
-            color: white;
-        }
-        .required-field::after {
-            content: "*";
-            color: red;
-            margin-left: 4px;
-        }
-    </style>
+    <link href="~/css/administration.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/importVille.css"/>
+    <link rel="stylesheet" href="~/css/operation.css"/>
 }
-
+<!-- Toast de succès -->
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1100;">
+    <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <strong class="me-auto">Succès</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="successToastMessage">
+            <!-- Le message sera injecté dynamiquement ici -->
+        </div>
+    </div>
+</div>
 <div class="container-fluid">
     <h1 class="h3 mb-4">Administration <i class="bi bi-gear-fill"></i></h1>
-    
     <div class="admin-container">
         <!-- Menu vertical d'administration -->
         <div class="admin-sidebar">
@@ -203,6 +32,9 @@
                 <li><a href="#" class="admin-menu-link active" data-target="dashboard"><i class="bi bi-speedometer2"></i> Tableau de bord</a></li>
                 <li><a href="#" class="admin-menu-link" data-target="roles"><i class="bi bi-shield-check"></i> Gestion des rôles</a></li>
                 <li><a href="#" class="admin-menu-link" data-target="users"><i class="bi bi-people-fill"></i> Gestion des utilisateurs</a></li>
+                <li><a href="#" class="admin-menu-link" data-target="operations"><i class="bi bi-people-fill"></i>Opérations</a></li>
+                <li><a href="#" class="admin-menu-link" data-target="villes"><i class="bi bi-people-fill"></i>Villes</a></li>
+                <li><a href="#" class="admin-menu-link" data-target="statuts"><i class="bi bi-people-fill"></i> Gestion des statuts</a></li>
                 <li><a href="#" class="admin-menu-link" data-target="settings"><i class="bi bi-sliders"></i> Paramètres système</a></li>
                 <li><a href="#" class="admin-menu-link" data-target="logs"><i class="bi bi-clipboard-check"></i> Journalisation</a></li>
             </ul>
@@ -213,7 +45,6 @@
             <!-- Tableau de bord -->
             <div id="dashboard" class="admin-section active">
                 <h2 class="mb-4">Tableau de bord d'administration</h2>
-                
                 <div class="row">
                     <div class="col-md-3">
                         <div class="admin-card">
@@ -429,8 +260,9 @@
                                                     data-contact="@user.Contact"
                                                     data-prenom="@user.PrenomUser"
                                                     data-email="@user.Email"
-                                                    data-role="@user.GroupeId"
-                                                    data-actif="@user.Actif">
+                                                    data-role="@user.GroupeId"      
+                                                    data-actif="@user.Actif"
+                                                    data-statuts="@(user.Userstatuts != null ? string.Join(",", user.Userstatuts.Select(s => s.IdStatut)) : "")">
                                                     @user.NomUser
                                                 </span>
                                             </td>
@@ -489,16 +321,71 @@
                                         <input type="contact" class="form-control" id="contact" required>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="role" class="form-label required-field">Rôle</label>
-                                    <select class="form-select" id="role" required>
-                                        <option value="">Sélectionner un rôle</option>
-                                        <!-- Ajoutez ici les options de rôle dynamiques si nécessaire -->
-                                        @foreach (var role in Model.RoleList)
-                                        {
-                                            <option value="@role.GroupeId">@role.NomGroupe</option>
-                                        }
-                                    </select>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="createPassword" class="form-label ">Mot de passe</label>
+                                        <input type="password" class="form-control" id="createPasswordEdit" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="createConfirmPassword" class="form-label">Confirmer le mot de passe</label>
+                                        <input type="password" class="form-control" id="createConfirmPasswordEdit" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="role" class="form-label required-field">Rôle</label>
+                                        <select class="form-select" id="role" required>
+                                            <option value="">Sélectionner un rôle</option>
+                                            <!-- Ajoutez ici les options de rôle dynamiques si nécessaire -->
+                                            @foreach (var role in Model.RoleList)
+                                            {
+                                                <option value="@role.GroupeId">@role.NomGroupe</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- Checklist des statuts -->
+                                        <label class="form-label">Statuts attribués</label>
+                                        <div class="card border-1 bg-light" style="max-height: 200px; overflow-y: auto;">
+                                            <div class="card-body p-2">
+                                                @if (Model.StatutList != null && Model.StatutList.Any())
+                                                {
+                                                    int count = 1;
+                                                    foreach (var statut in Model.StatutList)
+                                                    {
+                                                        <div class="form-check mb-1">
+                                                            <input class="form-check-input user-statut-checkbox-edit" 
+                                                                type="checkbox" 
+                                                                value="@statut.IdStatut" 
+                                                                id="userStatut-edit-@statut.IdStatut"
+                                                                data-code="@statut.CodeStatut">
+                                                            <label class="form-check-label small" for="userStatut-edit-@statut.IdStatut">
+                                                                <strong>@statut.DescriptionStatut</strong>
+                                                            </label>
+                                                        </div>
+                                                        count++;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="text-muted small">
+                                                        Aucun statut disponible
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div class="card-footer p-2 bg-transparent border-0">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="checkAllUserStatutsEdit">
+                                                        <label class="form-check-label small" for="checkAllUserStatutsEdit">
+                                                            Tout sélectionner
+                                                        </label>
+                                                    </div>
+                                                    <span class="badge bg-secondary" id="selectedStatutsCountEdit">0</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
@@ -548,23 +435,70 @@
                                         <input type="contact" class="form-control" id="createContact" required>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="createPassword" class="form-label required-field">Mot de passe</label>
-                                    <input type="password" class="form-control" id="createPassword" required>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="createPassword" class="form-label required-field">Mot de passe</label>
+                                        <input type="password" class="form-control" id="createPassword" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="createConfirmPassword" class="form-label required-field">Confirmer le mot de passe</label>
+                                        <input type="password" class="form-control" id="createConfirmPassword" required>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="createConfirmPassword" class="form-label required-field">Confirmer le mot de passe</label>
-                                    <input type="password" class="form-control" id="createConfirmPassword" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="createRole" class="form-label required-field">Rôle</label>
-                                    <select class="form-select" id="createRole" required>
-                                        <option value="">Sélectionner un rôle</option>
-                                        @foreach (var role in Model.RoleList)
-                                        {
-                                            <option value="@role.GroupeId">@role.NomGroupe</option>
-                                        }
-                                    </select>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="createRole" class="form-label required-field">Rôle</label>
+                                        <select class="form-select" id="createRole" required>
+                                            <option value="">Sélectionner un rôle</option>
+                                            @foreach (var role in Model.RoleList)
+                                            {
+                                                <option value="@role.GroupeId">@role.NomGroupe</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- Checklist des statuts -->
+                                        <label class="form-label">Statuts attribués</label>
+                                        <div class="card border-1 bg-light" style="max-height: 200px; overflow-y: auto;">
+                                            <div class="card-body p-2">
+                                                @if (Model.StatutList != null && Model.StatutList.Any())
+                                                {
+                                                    int count = 1;
+                                                    foreach (var statut in Model.StatutList)
+                                                    {
+                                                        <div class="form-check mb-1">
+                                                            <input class="form-check-input user-statut-checkbox" 
+                                                                type="checkbox" 
+                                                                value="@statut.IdStatut" 
+                                                                id="userStatut-@statut.IdStatut"
+                                                                data-code="@statut.CodeStatut">
+                                                            <label class="form-check-label small" for="userStatut-@statut.IdStatut">
+                                                                <strong>@statut.DescriptionStatut</strong>
+                                                            </label>
+                                                        </div>
+                                                        count++;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="text-muted small">
+                                                        Aucun statut disponible
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div class="card-footer p-2 bg-transparent border-0">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="checkAllUserStatuts">
+                                                        <label class="form-check-label small" for="checkAllUserStatuts">
+                                                            Tout sélectionner
+                                                        </label>
+                                                    </div>
+                                                    <span class="badge bg-secondary" id="selectedStatutsCount">0</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
@@ -572,11 +506,697 @@
                                         <label class="form-check-label" for="actif">Utilisateur actif</label>
                                     </div>
                                 </div>
+                                
+                                <!-- Champ caché pour stocker les IDs des statuts sélectionnés -->
+                                <input type="hidden" id="selectedUserStatutIds" name="selectedUserStatutIds" />
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn text-white" data-bs-dismiss="modal" style="background: #374151;">Annuler</button>
                             <button type="button" class="btn text-white" id="createUser" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">Créer l'utilisateur</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestion des statuts -->
+            @Html.AntiForgeryToken()
+            <div id="statuts" class="admin-section">
+                <h2 class="mb-4">Gestion des statuts</h2>      
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        
+                        <div class="d-flex gap-2 align-items-center">
+                            <span>Liste des statuts</span>
+                            <!-- Bouton Actions avec dropdown -->
+                            <div class="dropdown">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" 
+                                        id="actionsDropdownStatuts" 
+                                        data-bs-toggle="dropdown" 
+                                        aria-expanded="false">
+                                    Actions
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="actionsDropdownStatuts">
+                                    <li><a class="dropdown-item" href="#" id="deleteSelected">Supprimer la sélection</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button class="btn text-white btn-sm" data-bs-toggle="modal" data-bs-target="#createStatutModal" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">
+                            <i class="bi bi-plus-circle"></i> Nouveau statut
+                        </button>
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="selectAllCheckboxStatuts" style="cursor: pointer;" /></th>
+                                        <th>N°</th>
+                                        <th>Code</th>
+                                        <th>Description</th>
+                                        <th>Note</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   <!-- Code pour afficher les statuts -->
+                                    @{ int counter = 1; }
+                                    @foreach (var statut in Model.StatutList)
+                                    {
+                                        <tr>
+                                        <td><input type="checkbox" class="statut-checkbox" data-statut-id="@statut.IdStatut" /></td>
+                                        <td>@counter</td>
+                                        <td>
+                                            <span class="clickable-name"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editStatutModal"
+                                                data-statut-id="@statut.IdStatut"
+                                                data-code-statut="@statut.CodeStatut"
+                                                data-description-statut="@statut.DescriptionStatut"
+                                                data-note-statut="@statut.NoteStatut">
+                                                @statut.CodeStatut
+                                            </span>
+
+                                        </td>
+                                        <td>@statut.DescriptionStatut</td>
+                                        <td>@statut.NoteStatut</td>
+                                        </tr>
+                                        counter++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modale de création des statuts -->
+            <div class="modal fade" id="createStatutModal" tabindex="-1" aria-labelledby="createStatutModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createStatutModalLabel">Créer un nouveau statut</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="createStatutForm">
+                                @Html.AntiForgeryToken()
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="createCodeStatut" class="form-label required-field">Code</label>
+                                        <input type="text" class="form-control" id="createCodeStatut" name="codeStatut" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="createDescriptionStatut" class="form-label required-field">Description</label>
+                                        <input type="text" class="form-control" id="createDescriptionStatut" name="descriptionStatut" required>
+                                    </div>
+                                </div>                        
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="createNoteStatut" class="form-label">Note</label>
+                                        <textarea class="form-control" id="createNoteStatut" name="noteStatut" rows="3"></textarea>
+                                    </div>
+                                </div>                     
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn text-white" data-bs-dismiss="modal" style="background: #374151;">Annuler</button>
+                            <button type="button" class="btn text-white" id="createStatut" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">Créer statut</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modale de modification des statuts -->
+            <div class="modal fade" id="editStatutModal" tabindex="-1" aria-labelledby="editStatutModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editStatutModalLabel">Modifier le statut</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editStatutForm">
+                                @Html.AntiForgeryToken()
+                                <!-- Champ caché pour l'ID du statut -->
+                                <input type="hidden" id="editStatutId" name="idStatut" />
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="editCodeStatut" class="form-label required-field">Code</label>
+                                        <input type="text" class="form-control" id="editCodeStatut" name="codeStatut" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="editDescriptionStatut" class="form-label required-field">Description</label>
+                                        <input type="text" class="form-control" id="editDescriptionStatut" name="descriptionStatut" required>
+                                    </div>
+                                </div>                        
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="editNoteStatut" class="form-label">Note</label>
+                                        <textarea class="form-control" id="editNoteStatut" name="noteStatut" rows="3"></textarea>
+                                    </div>
+                                </div>                     
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn text-white" data-bs-dismiss="modal" style="background: #374151;">Annuler</button>
+                            <button type="button" class="btn text-white" id="saveStatutChanges" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">Enregistrer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestion des opérations -->
+            @Html.AntiForgeryToken()
+            <div id="operations" class="admin-section">
+                <h2 class="mb-4">Opérations</h2>      
+                <div class="admin-card">
+                    <div class="admin-card-header"> 
+                        <div class="d-flex gap-2 align-items-center">
+                            <span>Liste des opérations</span>
+                            <!-- Bouton Actions avec dropdown -->
+                            <div class="dropdown">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" 
+                                        id="actionsDropdownOperation" 
+                                        data-bs-toggle="dropdown" 
+                                        aria-expanded="false">
+                                    Actions
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="actionsDropdownOperation">
+                                    <li><a class="dropdown-item" href="#" id="deleteSelectedOperations">Supprimer la sélection</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2 align-items-center">
+                            <!-- Boutons -->
+                            <button class="btn text-white btn-sm" data-bs-toggle="modal" data-bs-target="#importOperationModal" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">
+                                <i class="bi bi-plus-circle"></i> Importer opération
+                            </button>
+                            <button class="btn text-white btn-sm" data-bs-toggle="modal" data-bs-target="#createOpeModal" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">
+                                <i class="bi bi-plus-circle"></i> Nouvelle opération
+                            </button>
+                        </div>
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="selectAllCheckboxOperation" style="cursor: pointer;" /></th>
+                                        <th>N°</th>
+                                        <th>Code</th>
+                                        <th>Description</th>
+                                        <th>Ville</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   <!-- Code pour afficher les opérations -->
+                                    @{ int counterOpe = 1; }
+                                    @foreach (var operation in Model.OperationList)
+                                    {
+                                        <tr>
+                                        <td><input type="checkbox" class="operation-checkbox" data-operation-id="@operation.IdOpe" /></td>
+                                        <td>@counterOpe</td>
+                                        <td>
+                                            <span class="clickable-name"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editOperationModal"
+                                                data-operation-id="@operation.IdOpe"
+                                                data-code-operation="@operation.CodeOpe"
+                                                data-description-operation="@operation.DescriptionOpe"
+                                                data-ville-id="@(operation.IdVille)">
+                                                @operation.CodeOpe
+                                            </span>
+                                        </td>
+                                        <td>@operation.DescriptionOpe</td>
+                                        <td>@operation.IdVilleNavigation?.DescriptionVille</td>
+                                        </tr>
+                                        counterOpe++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modale de création des opérations -->
+            <div class="modal fade" id="createOpeModal" tabindex="-1" aria-labelledby="createOpeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createOpeModalLabel">
+                                <i class="bi bi-plus-circle me-2"></i>Nouvelle opération
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="createOpeForm">
+                                @Html.AntiForgeryToken()
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="createCodeOpe" class="form-label required-field">Code</label>
+                                        <input type="text" class="form-control" id="createCodeOpe" name="codeOpe" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="createDescriptionOpe" class="form-label required-field">Description</label>
+                                        <input type="text" class="form-control" id="createDescriptionOpe" name="descriptionOpe" required>
+                                    </div>
+                                </div>                        
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="createVilleOpe" class="form-label required-field">Ville/Commune</label>
+                                        <select class="form-select" id="createVilleOpe" name="villeId">
+                                            <option value="">Sélectionner une ville</option>
+                                            @foreach (var ville in Model.VilleList)
+                                            {
+                                                <option value="@ville.IdVille">@ville.DescriptionVille</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>                     
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <button type="button" class="btn text-white" id="createOpe" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">
+                                <i class="bi bi-plus-circle me-1"></i>Créer opération
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modale de modification des opérations -->
+            <div class="modal fade" id="editOperationModal" tabindex="-1" aria-labelledby="editOperationModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editOperationModalLabel">Modifier l'opération</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editOperationForm">
+                                @Html.AntiForgeryToken()
+                                <!-- Champ caché pour l ID de opération -->
+                                <input type="hidden" id="editOperationId" name="idOpe" />
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="editCodeOpe" class="form-label required-field">Code</label>
+                                        <input type="text" class="form-control" id="editCodeOpe" name="codeOpe" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="editDescriptionOpe" class="form-label required-field">Description</label>
+                                        <input type="text" class="form-control" id="editDescriptionOpe" name="descriptionOpe" required>
+                                    </div>
+                                </div>                        
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="editVilleOpe" class="form-label">Ville/Commune</label>
+                                        <select class="form-select" id="editVilleOpe" name="villeId">
+                                            <option value="">Sélectionner une ville</option>
+                                            @foreach (var ville in Model.VilleList)
+                                            {
+                                                <option value="@ville.IdVille">@ville.DescriptionVille</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>                     
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn text-white" data-bs-dismiss="modal" style="background: #374151;">Annuler</button>
+                            <button type="button" class="btn text-white" id="saveOperationChanges" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">Enregistrer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- importation des opérations -->
+            <div class="modal fade" id="importOperationModal" tabindex="-1" aria-labelledby="importOperationModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="importOperationModalLabel">
+                                <i class="bi bi-upload me-2"></i>Importer des opérations depuis Excel
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Instructions et gabarit -->
+                            <div class="alert alert-info mb-4">
+                                <h6 class="alert-heading"><i class="bi bi-info-circle me-2"></i>Instructions d'importation</h6>
+                                <ul class="mb-0">
+                                    <li>Téléchargez le modèle Excel pour importer un format correct</li>
+                                    <li>Le fichier doit contenir les colonnes <strong>CodeOperation</strong> et <strong>DescriptionOperation</strong></li>
+                                    <li>Assurez-vous que les données sont dans la première feuille</li>
+                                    <li>Format supporté : .xlsx, .xls (max 5MB)</li>
+                                </ul>
+                            </div>
+
+                            <!-- Bouton pour télécharger le gabarit -->
+                            <div class="mb-4">
+                                <a href="#" id="downloadTemplateOperation" class="btn btn-outline-primary">
+                                    <i class="bi bi-download me-2"></i>Télécharger le gabarit Excel
+                                </a>
+                            </div>
+
+                            <!-- Formulaire upload -->
+                            <form id="importOperationForm" enctype="multipart/form-data">
+                                @Html.AntiForgeryToken()
+                                <div class="mb-3">
+                                    <label for="excelFile" class="form-label required-field">
+                                        <i class="bi bi-file-earmark-excel me-2"></i>Sélectionner le fichier Excel
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="file" 
+                                            class="form-control" 
+                                            id="excelFile" 
+                                            name="excelFile" 
+                                            accept=".xlsx,.xls"
+                                            required>
+                                        <button class="btn btn-outline-secondary" type="button" id="clearFileBtn">
+                                            <i class="bi bi-x-circle"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-text">
+                                        Formats acceptés : .xlsx, .xls (taille max : 5MB)
+                                    </div>
+                                </div>
+
+                                <!-- Options importation -->
+                                <div class="card mb-4">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0">Options d'importation</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="skipFirstRow" checked>
+                                            <label class="form-check-label" for="skipFirstRow">
+                                                Ignorer la première ligne (en-têtes)
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="overwriteExistingOperations">
+                                            <label class="form-check-label" for="overwriteExistingOperations">
+                                                Écraser les opérations existantes avec le même code
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Aperçu des données (masqué initialement) -->
+                                <div id="previewSection" class="d-none">
+                                    <h6 class="mb-3">
+                                        <i class="bi bi-table me-2"></i>Aperçu des données
+                                    </h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-bordered" id="previewTable">
+                                            <thead>
+                                                <tr class="table-light">
+                                                    <th>CodeOperation</th>
+                                                    <th>DescriptionOperation</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="previewData">
+                                                <!-- Données chargées dynamiquement -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="alert alert-warning mt-2" id="previewStats">
+                                        <!-- Statistiques importation -->
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- Message de statut -->
+                            <div id="importStatusOperation" class="d-none">
+                                <div class="progress mb-3">
+                                    <div id="importProgressOperation" class="progress-bar progress-bar-striped progress-bar-animated" 
+                                        role="progressbar" style="width: 0%">0%</div>
+                                </div>
+                                <div id="importMessageOperation" class="text-center"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <button type="button" id="importSubmitBtnOperation" class="btn text-white" disabled
+                                    style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">
+                                <i class="bi bi-upload me-2"></i>Importer les opérations
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fin des opération -->
+
+            <!-- Gestion des villes -->
+            @Html.AntiForgeryToken()
+            <div id="villes" class="admin-section">
+                <h2 class="mb-4">Gestion des villes</h2>      
+                <div class="admin-card">
+                    <div class="admin-card-header">  
+                        <div class="d-flex gap-2 align-items-center">
+                            <span>Liste des villes</span>
+                            <!-- Bouton Actions avec dropdown -->
+                            <div class="dropdown">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" 
+                                        id="actionsDropdownVille" 
+                                        data-bs-toggle="dropdown" 
+                                        aria-expanded="false">
+                                    Actions
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="actionsDropdownVille">
+                                    <li><a class="dropdown-item" href="#" id="deleteSelectedVille">Supprimer la sélection</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn text-white btn-sm" data-bs-toggle="modal" data-bs-target="#importVilleModal" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">
+                                <i class="bi bi-plus-circle"></i> Importer les villes
+                            </button>
+                            <button class="btn text-white btn-sm" data-bs-toggle="modal" data-bs-target="#createVilleModal" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">
+                                <i class="bi bi-plus-circle"></i> Nouvelle ville
+                            </button>
+                        </div>
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="selectAllCheckboxVille" style="cursor: pointer;" /></th>
+                                        <th>N°</th>
+                                        <th>Code</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   <!-- Code pour afficher les villes -->
+                                    @{ int counterVilles = 1; }
+                                    @foreach (var ville in Model.VilleList)
+                                    {
+                                        <tr>
+                                        <td><input type="checkbox" class="ville-checkbox" data-ville-id="@ville.IdVille" /></td>
+                                        <td>@counterVilles</td>
+                                        <td>
+                                            <span class="clickable-name"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editVilleModal"
+                                                data-ville-id="@ville.IdVille"
+                                                data-code-ville="@ville.CodeVille"
+                                                data-description-ville="@ville.DescriptionVille">
+                                                @ville.CodeVille
+                                            </span>
+
+                                        </td>
+                                        <td>@ville.DescriptionVille</td>
+                                        </tr>
+                                        counterVilles++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modale de création des villes -->
+             <div class="modal fade" id="createVilleModal" tabindex="-1" aria-labelledby="createVilleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createVilleModalLabel">Créer une nouvelle ville</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="createVilleForm">
+                                @Html.AntiForgeryToken()
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="createCodeVille" class="form-label required-field">Code</label>
+                                        <input type="text" class="form-control" id="createCodeVille" name="codeVille" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="createDescriptionVille" class="form-label required-field">Description</label>
+                                        <input type="text" class="form-control" id="createDescriptionVille" name="descriptionVille" required>
+                                    </div>
+                                </div                    
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn text-white" data-bs-dismiss="modal" style="background: #374151;">Annuler</button>
+                            <button type="button" class="btn text-white" id="createVille" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">Créer Ville</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modale de modification des villes -->
+            <div class="modal fade" id="editVilleModal" tabindex="-1" aria-labelledby="editVilleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editVilleModalLabel">Modifier la ville</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editVilleForm">
+                                @Html.AntiForgeryToken()
+                                <!-- Champ caché pour l'ID de la ville -->
+                                <input type="hidden" id="editVilleId" name="editVilleId" />
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="editCodeVille" class="form-label required-field">Code</label>
+                                        <input type="text" class="form-control" id="editCodeVille" name="editCodeVille" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="editDescriptionVille" class="form-label required-field">Description</label>
+                                        <input type="text" class="form-control" id="editDescriptionVille" name="editDescriptionVille" required>
+                                    </div>
+                                </div>                   
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn text-white" data-bs-dismiss="modal" style="background: #374151;">Annuler</button>
+                            <button type="button" class="btn text-white" id="saveVilleChanges" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">Enregistrer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modale importation des villes -->
+            <div class="modal fade" id="importVilleModal" tabindex="-1" aria-labelledby="importVilleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="importVilleModalLabel">
+                                <i class="bi bi-upload me-2"></i>Importer des villes depuis Excel
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Instructions et gabarit -->
+                            <div class="alert alert-info mb-4">
+                                <h6 class="alert-heading"><i class="bi bi-info-circle me-2"></i>Instructions d'importation</h6>
+                                <ul class="mb-0">
+                                    <li>Téléchargez le modèle Excel pour importer un format correct</li>
+                                    <li>Le fichier doit contenir les colonnes <strong>CodeVille</strong> et <strong>DescriptionVille</strong></li>
+                                    <li>Assurez-vous que les données sont dans la première feuille</li>
+                                    <li>Format supporté : .xlsx, .xls (max 5MB)</li>
+                                </ul>
+                            </div>
+
+                            <!-- Bouton pour télécharger le gabarit -->
+                            <div class="mb-4">
+                                <a href="#" id="downloadTemplate" class="btn btn-outline-primary">
+                                    <i class="bi bi-download me-2"></i>Télécharger le gabarit Excel
+                                </a>
+                            </div>
+
+                            <!-- Formulaire d'upload -->
+                            <form id="importVilleForm" enctype="multipart/form-data">
+                                @Html.AntiForgeryToken()
+                                <div class="mb-3">
+                                    <label for="excelFile" class="form-label required-field">
+                                        <i class="bi bi-file-earmark-excel me-2"></i>Sélectionner le fichier Excel
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="file" 
+                                            class="form-control" 
+                                            id="excelFile" 
+                                            name="excelFile" 
+                                            accept=".xlsx,.xls"
+                                            required>
+                                        <button class="btn btn-outline-secondary" type="button" id="clearFileBtn">
+                                            <i class="bi bi-x-circle"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-text">
+                                        Formats acceptés : .xlsx, .xls (taille max : 5MB)
+                                    </div>
+                                </div>
+
+                                <!-- Options importation -->
+                                <div class="card mb-4">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0">Options d'importation</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="skipFirstRow" checked>
+                                            <label class="form-check-label" for="skipFirstRow">
+                                                Ignorer la première ligne (en-têtes)
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="overwriteExisting">
+                                            <label class="form-check-label" for="overwriteExisting">
+                                                Écraser les villes existantes avec le même code
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Aperçu des données (masqué initialement) -->
+                                <div id="previewSection" class="d-none">
+                                    <h6 class="mb-3">
+                                        <i class="bi bi-table me-2"></i>Aperçu des données
+                                    </h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-bordered" id="previewTable">
+                                            <thead>
+                                                <tr class="table-light">
+                                                    <th>CodeVille</th>
+                                                    <th>DescriptionVille</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="previewData">
+                                                <!-- Données chargées dynamiquement -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="alert alert-warning mt-2" id="previewStats">
+                                        <!-- Statistiques importation -->
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- Message de statut -->
+                            <div id="importStatus" class="d-none">
+                                <div class="progress mb-3">
+                                    <div id="importProgress" class="progress-bar progress-bar-striped progress-bar-animated" 
+                                        role="progressbar" style="width: 0%">0%</div>
+                                </div>
+                                <div id="importMessage" class="text-center"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <button type="button" id="importSubmitBtn" class="btn text-white" disabled
+                                    style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">
+                                <i class="bi bi-upload me-2"></i>Importer les villes
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -702,302 +1322,7 @@
 </div>
 
 @section Scripts {
-     <!-- Scripts Bootstrap et JavaScript personnalisé -->
- @*    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> *@
-    <script>
-
-    // Code javascript pour gérer d'autres interactions si nécessaire
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialiser les toasts
-        const successToast = new bootstrap.Toast(document.getElementById('successToast'));
-        // Gestion du menu d'administration
-        document.querySelectorAll('.admin-menu-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Retirer la classe active de tous les liens et sections
-                document.querySelectorAll('.admin-menu-link').forEach(l => l.classList.remove('active'));
-                document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
-                
-                // Ajouter la classe active au lien cliqué
-                this.classList.add('active');
-                
-                // Afficher la section correspondante
-                const targetId = this.getAttribute('data-target');
-                document.getElementById(targetId).classList.add('active');
-                
-                // Mettre à jour l'URL sans recharger la page
-                history.pushState(null, null, `#${targetId}`);
-            });
-        });
-        
-        // Vérifier si une ancre est présente dans l'URL au chargement de la page
-        if (window.location.hash) {
-            const targetId = window.location.hash.substring(1);
-            const targetLink = document.querySelector(`.admin-menu-link[data-target="${targetId}"]`);
-            
-            if (targetLink) {
-                targetLink.click();
-            }
-        }
-
-        // Filtrage des utilisateurs
-        const filterInput = document.getElementById('filterInput');
-        const tableBody = document.getElementById('userTableBody');
-        const rows = tableBody.getElementsByTagName('tr');
-        const filterStats = document.getElementById('filterStats');
-        
-        // Initialiser le compteur
-        filterStats.textContent = `${rows.length} utilisateur(s)`;
-        
-        filterInput.addEventListener('input', function() {
-            const filterText = this.value.toLowerCase();
-            let visibleCount = 0;
-            
-            for (let i = 0; i < rows.length; i++) {
-                const cells = rows[i].getElementsByTagName('td');
-                let found = false;
-                
-                // Vérifier chaque cellule (sauf la dernière colonne Actif)
-                for (let j = 0; j < cells.length - 1; j++) {
-                    const cellText = cells[j].textContent.toLowerCase();
-                    if (cellText.includes(filterText)) {
-                        found = true;
-                        break;
-                    }
-                }
-                
-                // Afficher ou masquer la ligne en fonction du résultat
-                if (found) {
-                    rows[i].style.display = '';
-                    visibleCount++;
-                    
-                    // Mettre en évidence le texte correspondant
-                    if (filterText) {
-                        rows[i].classList.add('highlight');
-                    } else {
-                        rows[i].classList.remove('highlight');
-                    }
-                } else {
-                    rows[i].style.display = 'none';
-                    rows[i].classList.remove('highlight');
-                }
-            }
-            
-            // Mettre à jour le compteur
-            filterStats.textContent = `${visibleCount} utilisateur${visibleCount !== 1 ? 's' : ''}`;
-        });
-
-        // Gestion du modal de modification d'utilisateur
-        const userModal = document.getElementById('userModal');
-        if (userModal) {
-            userModal.addEventListener('show.bs.modal', function (event) {
-                // Le bouton qui a déclenché la modale
-                const button = event.relatedTarget;
-                
-                // Extraire les données des attributs data-*
-                const userId = button.getAttribute('data-user-id');
-                const nom = button.getAttribute('data-nom');
-                const prenom = button.getAttribute('data-prenom');
-                const email = button.getAttribute('data-email');
-                const contact = button.getAttribute('data-contact');
-                const role = button.getAttribute('data-role');
-                const actif = button.getAttribute('data-actif');
-                
-                // Mettre à jour le contenu de la modale
-                document.getElementById('userId').value = userId;
-                document.getElementById('nom').value = nom;
-                document.getElementById('prenom').value = prenom;
-                document.getElementById('email').value = email;
-                document.getElementById('contact').value = contact;
-                document.getElementById('role').value = role;
-                document.getElementById('actif').checked = actif === '1';
-                
-                // Mettre à jour le titre de la modale
-                document.getElementById('userModalLabel').textContent = `Modifier ${prenom} ${nom}`;
-            });
-        }
-
-        // Gestion de la sauvegarde
-        const saveUserButton = document.getElementById('saveUser');
-        if (saveUserButton) {
-            saveUserButton.addEventListener('click', function() {
-                const userId = document.getElementById('userId').value;
-                const nom = document.getElementById('nom').value;
-                const prenom = document.getElementById('prenom').value;
-                const email = document.getElementById('email').value;
-                const contact = document.getElementById('contact').value;
-                const role = document.getElementById('role').value;
-                const actif = document.getElementById('actif').checked ? 1 : 0;
-                
-                // Appel AJAX à la méthode OnPostEditUserAsync
-                fetch('?handler=EditUser', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-                    },
-                    body: new URLSearchParams({
-                        'userId': userId,
-                        'nom': nom,
-                        'prenom': prenom,
-                        'email': email,
-                        'contact': contact,
-                        'groupeId': role,
-                        'actif': actif
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert(data.message);
-                        // Fermer la modale et actualiser la page
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('userModal'));
-                        modal.hide();
-                        location.reload();
-                    } else {
-                        alert(data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Une erreur est survenue');
-                });
-            });
-        }
-
-        // Gestion de la suppression
-        const deleteUserButton = document.getElementById('deleteUser');
-        if (deleteUserButton) {
-            deleteUserButton.addEventListener('click', function() {
-                const userId = document.getElementById('userId').value;
-                const nom = document.getElementById('nom').value;
-                const prenom = document.getElementById('prenom').value;
-                
-                if(confirm(`Êtes-vous sûr de vouloir supprimer l'utilisateur ${prenom} ${nom} ?`)) {
-                    // Appel AJAX à la méthode OnPostDeleteUserAsync
-                    fetch('?handler=DeleteUser', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-                        },
-                        body: new URLSearchParams({
-                            'userId': userId
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert(data.message);
-                            // Fermer la modale et actualiser la page
-                            const modal = bootstrap.Modal.getInstance(document.getElementById('userModal'));
-                            modal.hide();
-                            location.reload();
-                        } else {
-                            alert(data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Une erreur est survenue');
-                    });
-                }
-            });
-        }
-
-        // Gestion de la création d'utilisateur
-        const createUserButton = document.getElementById('createUser');
-        if (createUserButton) {
-            createUserButton.addEventListener('click', function() {
-                const nom = document.getElementById('createNom').value;
-                const prenom = document.getElementById('createPrenom').value;
-                const contact = document.getElementById('createContact').value;
-                const email = document.getElementById('createEmail').value;
-                const password = document.getElementById('createPassword').value;
-                const confirmPassword = document.getElementById('createConfirmPassword').value;
-                const role = document.getElementById('createRole').value;
-                const actif = document.getElementById('createActif').checked ? 1 : 0;
-
-                // Validation
-                if (!nom || !prenom || !contact || !email || !password || !confirmPassword || !role) {
-                    alert('Veuillez remplir tous les champs obligatoires.');
-                    return;
-                }
-
-                if (password !== confirmPassword) {
-                    alert('Les mots de passe ne correspondent pas.');
-                    return;
-                }
-
-                if (password.length < 6) {
-                    alert('Le mot de passe doit contenir au moins 6 caractères.');
-                    return;
-                }
-
-                // Appel AJAX à la méthode OnPostCreateUserAsync
-                fetch('?handler=CreateUser', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-                    },
-                    body: JSON.stringify({
-                        nom: nom,
-                        prenom: prenom,
-                        email: email,
-                        contact: contact,
-                        password: password,
-                        groupeId: parseInt(role),
-                        actif: actif
-                    })
-                })
-                .then(response => {
-                // Vérifier si la réponse est OK (statut 200-299)
-                if (!response.ok) {
-                    // Si ce n'est pas le cas, essayer de lire le message d'erreur
-                    return response.json().then(errorData => {
-                        throw new Error(errorData.message || 'Erreur serveur');
-                    }).catch(() => {
-                        // Si le parsing JSON échoue, utiliser le texte brut
-                        return response.text().then(text => {
-                            throw new Error(text || 'Erreur serveur');
-                        });
-                    });
-                }
-                // Si la réponse est OK, parser le JSON
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    // Afficher le toast de succès
-                    const successToast = new bootstrap.Toast(document.getElementById('successToast'));
-                    successToast.show();
-                    
-                    // Fermer la modale
-                    const createUserModal = bootstrap.Modal.getInstance(document.getElementById('createUserModal'));
-                    createUserModal.hide();
-                    
-                    // Réinitialiser le formulaire
-                    document.getElementById('createUserForm').reset();
-                    
-                    // Actualiser la page après un délai pour voir le toast
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
-                } else {
-                    alert(data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Une erreur est survenue: ' + error.message);
-            });
-            });
-        }
-
-        
-   
-    });
-    </script>
+    <script src="~/js/users.js"></script>
+    <script src="~/js/importVille.js"></script>
+    <script src="~/js/operation.js"></script>
 }

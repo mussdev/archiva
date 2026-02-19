@@ -20,20 +20,25 @@ public partial class Adp
     public string DateDocument { get; set; } = null!;
 
     public string Client { get; set; } = null!;
+    public string? NumDossierAdp { get; set; }
 
-    public string Fonctions { get; set; } = string.Empty;
+    public string? Fonctions { get; set; }
 
-    public string Adresse { get; set; } = string.Empty;
+    public string? Adresse { get; set; }
 
-    public string Contact { get; set; } = string.Empty;
+    public string? Contact { get; set; }
 
-    public string Ville { get; set; } = string.Empty;
+    public string? Ville { get; set; }
 
-    public string CommuneQuartier { get; set; } = string.Empty;
+    public string? CommuneQuartier { get; set; }
 
-    public string Cote { get; set; } = string.Empty;
+    public string? Cote { get; set; }
 
     public string Lien { get; set; } = null!;
 
+    public int? IdOpe { get; set; }
+
     public virtual ICollection<HistoriqueAdp> HistoriqueAdps { get; set; } = new List<HistoriqueAdp>();
+
+    public virtual Operation? IdOpeNavigation { get; set; }
 }

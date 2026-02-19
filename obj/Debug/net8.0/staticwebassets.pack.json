@@ -1,431 +1,475 @@
 {
   "Files": [
     {
-      "Id": "C:\\projets_apps\\anahged\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\anahged.bundle.scp.css",
+      "Id": "C:\\projets_apps\\archiva\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\anahged.bundle.scp.css",
       "PackagePath": "staticwebassets\\anahged.q0586pojj2.bundle.scp.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\ADP\\1997\\971700\\00001\\00001\\dr05.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\1997\\971700\\00001\\00001\\dr05.pdf",
       "PackagePath": "staticwebassets\\ADP\\1997\\971700\\00001\\00001\\dr05.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\ADP\\NewADP\\bulletin-vote-1212025-sante.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\bulletin-vote-1212025-sante.pdf",
       "PackagePath": "staticwebassets\\ADP\\NewADP\\bulletin-vote-1212025-sante.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\ADP\\NewADP\\bulletin-vote-diaby.pdf",
-      "PackagePath": "staticwebassets\\ADP\\NewADP\\bulletin-vote-diaby.pdf"
-    },
-    {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\ADP\\NewADP\\catographie_interaction_application_21052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\catographie_interaction_application_21052025.pdf",
       "PackagePath": "staticwebassets\\ADP\\NewADP\\catographie_interaction_application_21052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\ADP\\NewADP\\commission-gimmo.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\commission-gimmo.pdf",
       "PackagePath": "staticwebassets\\ADP\\NewADP\\commission-gimmo.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\CARTES\\A103\\A103C08.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\draft-etat-periodique-commission-loyer-GI.pdf",
+      "PackagePath": "staticwebassets\\ADP\\NewADP\\draft-etat-periodique-commission-loyer-GI.pdf"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\A103\\A103C08.pdf",
       "PackagePath": "staticwebassets\\CARTES\\A103\\A103C08.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\CARTES\\NewCARTES\\161835ba-579a-4ef7-896a-083cd8b1df2d_catographie_interaction_application_22052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\161835ba-579a-4ef7-896a-083cd8b1df2d_catographie_interaction_application_22052025.pdf",
       "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\161835ba-579a-4ef7-896a-083cd8b1df2d_catographie_interaction_application_22052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\CARTES\\NewCARTES\\32c26901-4234-4b02-b46d-a47cbf661c69_catographie_interaction_application_22052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\32c26901-4234-4b02-b46d-a47cbf661c69_catographie_interaction_application_22052025.pdf",
       "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\32c26901-4234-4b02-b46d-a47cbf661c69_catographie_interaction_application_22052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\CARTES\\NewCARTES\\7c092fd5-4e36-4bd3-9930-fb2c222efb2a_CVDOSSO.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\7c092fd5-4e36-4bd3-9930-fb2c222efb2a_CVDOSSO.pdf",
       "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\7c092fd5-4e36-4bd3-9930-fb2c222efb2a_CVDOSSO.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\CARTES\\NewCARTES\\catographie_interaction_application_21052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\bulletin-vote-1212025-sante.pdf",
+      "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\bulletin-vote-1212025-sante.pdf"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\bulletin-vote-anah-17112025.pdf",
+      "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\bulletin-vote-anah-17112025.pdf"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\bulletin-vote-diaby.pdf",
+      "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\bulletin-vote-diaby.pdf"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\catographie_interaction_application_21052025.pdf",
       "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\catographie_interaction_application_21052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\CARTES\\NewCARTES\\imm0157f.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\imm0157f.pdf",
       "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\imm0157f.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\1977\\590401\\02750\\07025\\cc01.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\1977\\590401\\02750\\07025\\cc01.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\1977\\590401\\02750\\07025\\cc01.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\06d1e015-fa00-4279-b9a2-82476c2730e3_catographie_interaction_application_22052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\06d1e015-fa00-4279-b9a2-82476c2730e3_catographie_interaction_application_22052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\06d1e015-fa00-4279-b9a2-82476c2730e3_catographie_interaction_application_22052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\0c9ed162-52e6-4083-914f-ac76ae745c8c_catographie_interaction_application_21052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\0c9ed162-52e6-4083-914f-ac76ae745c8c_catographie_interaction_application_21052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\0c9ed162-52e6-4083-914f-ac76ae745c8c_catographie_interaction_application_21052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\114ee953-9d8e-40a6-bbef-b1da46be296a_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\114ee953-9d8e-40a6-bbef-b1da46be296a_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\114ee953-9d8e-40a6-bbef-b1da46be296a_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\1bdb9598-64ed-404e-86d5-6727c03a8377_catographie_interaction_application_21052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\1bdb9598-64ed-404e-86d5-6727c03a8377_catographie_interaction_application_21052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\1bdb9598-64ed-404e-86d5-6727c03a8377_catographie_interaction_application_21052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\1cd94716-0046-416f-88dc-fca1b9deee58_catographie_interaction_application_22052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\1cd94716-0046-416f-88dc-fca1b9deee58_catographie_interaction_application_22052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\1cd94716-0046-416f-88dc-fca1b9deee58_catographie_interaction_application_22052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\1ed68181-d964-4f39-8ff3-d7cb9da4e678_catographie_interaction_application_21052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\1ed68181-d964-4f39-8ff3-d7cb9da4e678_catographie_interaction_application_21052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\1ed68181-d964-4f39-8ff3-d7cb9da4e678_catographie_interaction_application_21052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\37e69d82-198d-49ce-9401-5e1b54dd7de4_catographie_interaction_application_21052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\37e69d82-198d-49ce-9401-5e1b54dd7de4_catographie_interaction_application_21052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\37e69d82-198d-49ce-9401-5e1b54dd7de4_catographie_interaction_application_21052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\47d14b74-65de-48f8-9849-08c063fb33ee_DOSSOVazoumanalettre-motivation-Ageroute-1.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\47d14b74-65de-48f8-9849-08c063fb33ee_DOSSOVazoumanalettre-motivation-Ageroute-1.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\47d14b74-65de-48f8-9849-08c063fb33ee_DOSSOVazoumanalettre-motivation-Ageroute-1.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\49a9a837-227b-47c0-b29a-a93304fff81f_catographie_interaction_application_21052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\49a9a837-227b-47c0-b29a-a93304fff81f_catographie_interaction_application_21052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\49a9a837-227b-47c0-b29a-a93304fff81f_catographie_interaction_application_21052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\4dc88ea2-679d-4fb7-95c1-435d7300d0fd_catographie_interaction_application_22052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\4dc88ea2-679d-4fb7-95c1-435d7300d0fd_catographie_interaction_application_22052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\4dc88ea2-679d-4fb7-95c1-435d7300d0fd_catographie_interaction_application_22052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\4fa3175b-93e7-4ec4-b284-b6c00a4422b8_catographie_interaction_application_21052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\4fa3175b-93e7-4ec4-b284-b6c00a4422b8_catographie_interaction_application_21052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\4fa3175b-93e7-4ec4-b284-b6c00a4422b8_catographie_interaction_application_21052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\6381109d-7605-41a8-b0b8-e2a697faac01_catographie_interaction_application_21052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\6381109d-7605-41a8-b0b8-e2a697faac01_catographie_interaction_application_21052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\6381109d-7605-41a8-b0b8-e2a697faac01_catographie_interaction_application_21052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\6c70b4c1-d5c6-4075-ac9c-cea74cc1af57_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\6c70b4c1-d5c6-4075-ac9c-cea74cc1af57_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\6c70b4c1-d5c6-4075-ac9c-cea74cc1af57_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\77605bf5-9f14-4d70-be9b-0b647f1be7b7_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\77605bf5-9f14-4d70-be9b-0b647f1be7b7_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\77605bf5-9f14-4d70-be9b-0b647f1be7b7_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\781c309f-0164-47f5-bff7-5ecec876a2d6_catographie_interaction_application_21052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\781c309f-0164-47f5-bff7-5ecec876a2d6_catographie_interaction_application_21052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\781c309f-0164-47f5-bff7-5ecec876a2d6_catographie_interaction_application_21052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\7a7282b2-6c19-4e98-ae89-b820f903af88_catographie_interaction_application_21052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\7a7282b2-6c19-4e98-ae89-b820f903af88_catographie_interaction_application_21052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\7a7282b2-6c19-4e98-ae89-b820f903af88_catographie_interaction_application_21052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\81ee0400-3d95-4482-9df0-c4eb3dad0275_catographie_interaction_application_21052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\81ee0400-3d95-4482-9df0-c4eb3dad0275_catographie_interaction_application_21052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\81ee0400-3d95-4482-9df0-c4eb3dad0275_catographie_interaction_application_21052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\8bfcf00a-ec97-46aa-8740-693bd736d2f0_catographie_interaction_application_21052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\8bfcf00a-ec97-46aa-8740-693bd736d2f0_catographie_interaction_application_21052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\8bfcf00a-ec97-46aa-8740-693bd736d2f0_catographie_interaction_application_21052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\a284903f-84a0-4460-925d-55d7a788901f_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\a284903f-84a0-4460-925d-55d7a788901f_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\a284903f-84a0-4460-925d-55d7a788901f_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\a40624aa-bfa9-45b7-82af-adaba739c3e3_CVDOSSONew.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\a40624aa-bfa9-45b7-82af-adaba739c3e3_CVDOSSONew.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\a40624aa-bfa9-45b7-82af-adaba739c3e3_CVDOSSONew.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\afd086ae-0e44-42ab-9590-66792961fb3a_catographie_interaction_application_21052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\afd086ae-0e44-42ab-9590-66792961fb3a_catographie_interaction_application_21052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\afd086ae-0e44-42ab-9590-66792961fb3a_catographie_interaction_application_21052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\bulletin-vote-1112025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\bulletin-vote-1112025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\bulletin-vote-1112025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\bulletin-vote-1212025.pdf",
-      "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\bulletin-vote-1212025.pdf"
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\bulletin-vote-1212025-sante.pdf",
+      "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\bulletin-vote-1212025-sante.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\bulletin-vote-diaby.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\bulletin-vote-diaby.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\bulletin-vote-diaby.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\c81c00e2-4d76-46af-81fb-a5aa4f6dc74d_catographie_interaction_application_22052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\c81c00e2-4d76-46af-81fb-a5aa4f6dc74d_catographie_interaction_application_22052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\c81c00e2-4d76-46af-81fb-a5aa4f6dc74d_catographie_interaction_application_22052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\catographie_interaction_application_21052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\catographie_interaction_application_21052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\catographie_interaction_application_21052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\ce1b7da9-a2fb-4949-a229-553d673fed85_catographie_interaction_application_21052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\ce1b7da9-a2fb-4949-a229-553d673fed85_catographie_interaction_application_21052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\ce1b7da9-a2fb-4949-a229-553d673fed85_catographie_interaction_application_21052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\d2fa645f-8bd7-42c8-8941-3b275827ef1a_catographie_interaction_application_22052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\d2fa645f-8bd7-42c8-8941-3b275827ef1a_catographie_interaction_application_22052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\d2fa645f-8bd7-42c8-8941-3b275827ef1a_catographie_interaction_application_22052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\doc-22025-04-201519.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\doc-22025-04-201519.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\doc-22025-04-201519.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\e6c2e294-9fcb-4c51-a782-bad3b876b722_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\e6c2e294-9fcb-4c51-a782-bad3b876b722_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\e6c2e294-9fcb-4c51-a782-bad3b876b722_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\e8dc46e5-af4b-497a-a696-a351e11a6a59_catographie_interaction_application_22052025.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\e8dc46e5-af4b-497a-a696-a351e11a6a59_catographie_interaction_application_22052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\e8dc46e5-af4b-497a-a696-a351e11a6a59_catographie_interaction_application_22052025.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\fd8ad449-257f-4589-8c7c-d0f172a2070c_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\fd8ad449-257f-4589-8c7c-d0f172a2070c_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\fd8ad449-257f-4589-8c7c-d0f172a2070c_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\SICOGI\\NewSICOGI\\imm0157f.pdf",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\imm0157f.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\imm0157f.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\css\\site.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\css\\administration.css",
+      "PackagePath": "staticwebassets\\css\\administration.css"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\css\\adp.css",
+      "PackagePath": "staticwebassets\\css\\adp.css"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\css\\importVille.css",
+      "PackagePath": "staticwebassets\\css\\importVille.css"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\css\\operation.css",
+      "PackagePath": "staticwebassets\\css\\operation.css"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\favicon.ico",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\js\\site.js",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\js\\adp.js",
+      "PackagePath": "staticwebassets\\js\\adp.js"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\js\\importVille.js",
+      "PackagePath": "staticwebassets\\js\\importVille.js"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\js\\operation.js",
+      "PackagePath": "staticwebassets\\js\\operation.js"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\js\\users.js",
+      "PackagePath": "staticwebassets\\js\\users.js"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\LICENSE",
       "PackagePath": "staticwebassets\\lib\\bootstrap"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\jquery\\LICENSE.txt",
       "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\jquery\\dist\\jquery.js",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
     },
     {
-      "Id": "C:\\projets_apps\\anahged\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {

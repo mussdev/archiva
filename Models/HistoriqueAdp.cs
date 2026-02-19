@@ -13,7 +13,7 @@ public partial class HistoriqueAdp
 
     public DateTime DateHisto { get; set; }
 
-    public DateOnly DateVu { get; set; } = DateOnly.MinValue;
+    public DateOnly? DateVu { get; set; }
 
     public virtual Adp IdAdpNavigation { get; set; } = null!;
 

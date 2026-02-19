@@ -17,81 +17,85 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = anahged
 build_property.RootNamespace = anahged
-build_property.ProjectDir = C:\projets_apps\anahged\
+build_property.ProjectDir = C:\projets_apps\archiva\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\projets_apps\anahged
+build_property.MSBuildProjectDirectory = C:\projets_apps\archiva
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/projets_apps/anahged/Pages/Administration.cshtml]
+[C:/projets_apps/archiva/Pages/Administration.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/anahged/Pages/AdpList.cshtml]
+[C:/projets_apps/archiva/Pages/AdpList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRwTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/anahged/Pages/CartesList.cshtml]
+[C:/projets_apps/archiva/Pages/CartesList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FydGVzTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/anahged/Pages/Error.cshtml]
+[C:/projets_apps/archiva/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/anahged/Pages/Error/Database.cshtml]
+[C:/projets_apps/archiva/Pages/Error/Database.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3JcRGF0YWJhc2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/anahged/Pages/GestionDemandeDossier.cshtml]
+[C:/projets_apps/archiva/Pages/GestionDemandeDossier.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VzdGlvbkRlbWFuZGVEb3NzaWVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/anahged/Pages/Index.cshtml]
+[C:/projets_apps/archiva/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/anahged/Pages/Login.cshtml]
+[C:/projets_apps/archiva/Pages/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/anahged/Pages/Logout.cshtml]
+[C:/projets_apps/archiva/Pages/Logout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9nb3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/anahged/Pages/Privacy.cshtml]
+[C:/projets_apps/archiva/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/anahged/Pages/Shared/_LoginLayout.cshtml]
+[C:/projets_apps/archiva/Pages/Shared/_LoginLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9Mb2dpbkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/anahged/Pages/Shared/_ValidationScriptsPartial.cshtml]
+[C:/projets_apps/archiva/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/anahged/Pages/TableauDeBord.cshtml]
+[C:/projets_apps/archiva/Pages/TableauDeBord.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGFibGVhdURlQm9yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/anahged/Pages/VplList.cshtml]
+[C:/projets_apps/archiva/Pages/ValidationsAdpVpl.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmFsaWRhdGlvbnNBZHBWcGwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/projets_apps/archiva/Pages/VplList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVnBsTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/anahged/Pages/_ViewImports.cshtml]
+[C:/projets_apps/archiva/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/anahged/Pages/_ViewStart.cshtml]
+[C:/projets_apps/archiva/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/anahged/Pages/Shared/_Layout.cshtml]
+[C:/projets_apps/archiva/Pages/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-uio45hhyoy

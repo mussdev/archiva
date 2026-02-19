@@ -4,6 +4,31 @@
     ViewData["Title"] = "Liste Cartes 🗺️";
 }
 
+@section Styles {
+    <style>
+        /* Style pour le modale */
+        .clickable-name {
+            color: #10b981;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .clickable-name:hover {
+            color: #0d9669;
+            text-decoration: underline;
+        }
+        .modal-header {
+            background: linear-gradient(135deg, #10b981 0%, #374151 100%);
+            color: white;
+        }
+        .required-field::after {
+            content: "*";
+            color: red;
+            margin-left: 4px;
+        }
+    </style>
+}
+
 <!-- Afficher les messages de succès -->
 @if (TempData["SuccessMessage"] != null)
 {
@@ -94,10 +119,13 @@ else
                     <tr>
                         <th style="font-size: 12px;"><input type="checkbox" id="selectAllCheckbox" style="cursor: pointer;" /></th>
                         <th style="font-size: 12px;">N° Tube</th>
+                        <th style="font-size: 12px;">Legende</th>
                         <th style="font-size: 12px;">Ville</th>
                         <th style="font-size: 12px;">Quartier</th>
                         <th style="font-size: 12px;">Opération</th>
-                        <th style="font-size: 12px;">Legende</th>
+                        <th style="font-size: 12px;">Originalite</th>
+                        <th style="font-size: 12px;">Echelle</th>
+                        <th style="font-size: 12px;">Côte</th>
                         <th style="font-size: 12px;">Date carte.</th>
                         <th style="font-size: 12px;">Action</th>
                     </tr>
@@ -108,14 +136,34 @@ else
                         <tr>
                             <td style="font-size: 12px;"><input type="checkbox" class="rowCheckbox" data-carte-id="@carte.IdCarte" style="cursor: pointer;"></td>
                             <td style="font-size: 12px;">@carte.Tube</td>
+                            <td style="font-size: 12px;">
+                                <span class="clickable-name" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#carteModal"
+                                        data-carte-id="@carte.IdCarte"
+                                        data-legende="@(string.IsNullOrEmpty(carte.Legende) ? "" : char.ToUpper(carte.Legende[0]) + carte.Legende.Substring(1).ToLower())"
+                                        data-tube="@carte.Tube"
+                                        data-datecarte="@carte.DateCarte"
+                                        data-ville="@carte.Ville"
+                                        data-quartier="@carte.Quartier"
+                                        data-operation="@carte.Operation"
+                                        data-originalite="@carte.Originalite"
+                                        data-echelle="@carte.Echelle"
+                                        data-cote="@carte.Cote"
+                                        data-fichier="@(carte.Lien ??"")">
+                                        @(string.IsNullOrEmpty(carte.Legende) ? "" : char.ToUpper(carte.Legende[0]) + carte.Legende.Substring(1).ToLower())
+                                    </span>                      
+                            </td>
                             <td style="font-size: 12px;">@carte.Ville</td>
                             <td style="font-size: 12px;">@carte.Quartier</td>
                             <td style="font-size: 12px;">@carte.Operation</td>
-                            <td style="font-size: 12px;">@carte.Legende</td>
+                            <td style="font-size: 12px;">@carte.Originalite</td>
+                            <td style="font-size: 12px;">@carte.Echelle</td>
+                            <td style="font-size: 12px;">@carte.Cote</td>
                             <td style="font-size: 12px;">@carte.DateCarte</td>
                             <td style="font-size: 12px;">
                                 <form method="post" asp-page-handler="View" asp-route-id="@carte.IdCarte" target="_blank">
-                                    <button class="btn btn-warning btn-sm">Voir 📖</button>
+                                    <button class="btn btn-warning btn-sm">👁️ Voir</button>
                                 </form>
                             </td>
                         </tr>
@@ -188,6 +236,92 @@ else
     </div>
 </div>
 
+@* Methode pour modifier un fichier carte *@
+<div class="modal fade" id="carteModal" tabindex="-1" aria-labelledby="carteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="carteModalLabel">Modifier une carte</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="carteForm">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="carteId">
+                    <input type="hidden" id="deleteFileFlag" name="DeleteFile" value="false">
+                    <div class="row mb-3">
+                         <div class="col-md-6">
+                            <label for="dateCarte" class="form-label required-field">Date d'édition</label>
+                            <input type="date" name="DateCarte" id="dateCarte" class="form-control"/>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="tube" class="form-label required-field">Tube</label>
+                            <input type="text" name="Tube" id="tube" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="ville" class="form-label required-field">Ville</label>
+                            <input type="text" name="Ville" id="ville" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="quartier" class="form-label required-field">Quartier</label>
+                            <input type="text" name="Quartier" id="quartier" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="operation" class="form-label">Operation</label>
+                            <input type="text" name="Operation" id="operation" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="legende" class="form-label">Legende</label>
+                            <input type="text" name="Legende" id="legende" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="originalite" class="form-label">Originalite</label>
+                            <input type="text" name="Originalite" id="originalite" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="echelle" class="form-label">Echelle</label>
+                            <input type="text" name="Echelle" id="echelle" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="cote" class="form-label">Cote</label>
+                            <input type="text" name="Cote" id="cote" class="form-control" />
+                        </div>
+                        @* <div class="col-md-6">
+                            <label for="contact" class="form-label">Contact</label>
+                            <input type="text" name="Contact" id="contact" class="form-control" />
+                        </div> *@
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="fichier" class="form-label required-field">Fichier numérisé (PDF)</label>
+                            <input type="file" name="Fichier" id="fichier" class="form-control" accept=".pdf"/>
+                            <div class="d-flex align-items-center mt-2">
+                                <button type="button" id="deleteCurrentFile" class="btn btn-outline-danger btn-sm p-1 me-2" style="display: none;" title="Supprimer le fichier actuel">
+                                    ❌
+                                </button>
+                                <small id="currentFile" class="form-text text-muted"></small>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn text-white" data-bs-dismiss="modal" style="background: #374151;">Annuler</button>
+                <button type="button" class="btn btn-danger" id="deletecarte">Supprimer</button>
+                <button type="button" class="btn text-white" id="savecarte" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @section Scripts {
     <script>
@@ -244,5 +378,336 @@ else
         document.getElementById('ajoutFichierModal').addEventListener('hidden.bs.modal', function () {
             document.getElementById('uploadForm').reset();
         });
+
+         // === GESTION DES CASES À COCHER ===
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            const rowCheckboxes = document.querySelectorAll('.rowCheckbox');
+            
+            // Case "Tout sélectionner"
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('change', function() {
+                    rowCheckboxes.forEach(checkbox => {
+                        checkbox.checked = selectAllCheckbox.checked;
+                    });
+                });
+            }
+            
+            // Cases individuelles
+            rowCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    // Décocher "Tout sélectionner" si une case est décochée
+                    if (!this.checked && selectAllCheckbox.checked) {
+                        selectAllCheckbox.checked = false;
+                    }
+                    // Cocher "Tout sélectionner" si toutes les cases sont cochées
+                    else if (this.checked) {
+                        const allChecked = Array.from(rowCheckboxes).every(cb => cb.checked);
+                        selectAllCheckbox.checked = allChecked;
+                    }
+                });
+            });
+            
+            // Mettre à jour "Tout sélectionner" lors du filtrage
+            const tableFilter = document.getElementById('table-filter');
+            if (tableFilter) {
+                tableFilter.addEventListener('input', function() {
+                    // Réinitialiser "Tout sélectionner" lors du filtrage
+                    selectAllCheckbox.checked = false;
+                });
+            }
+        });
+
+        // Fonction pour obtenir les IDs des éléments sélectionnés
+        function getSelectedCartesIds() {
+            const selectedCheckboxes = document.querySelectorAll('.rowCheckbox:checked');
+            const selectedIds = Array.from(selectedCheckboxes).map(checkbox => {
+                return checkbox.getAttribute('data-carte-id');
+            });
+            return selectedIds;
+        }
+
+        // Exemple d'utilisation pour une action groupée
+        function performGroupAction() {
+            const selectedIds = getSelectedCartesIds();
+            if (selectedIds.length === 0) {
+                alert('Veuillez sélectionner au moins un élément');
+                return;
+            }
+            
+            console.log('IDs sélectionnés :', selectedIds);
+            // Ici vous pouvez ajouter votre logique (suppression groupée, export, etc.)
+        }
+
+        // === GESTION DU MODAL DE MODIFICATION Carte ===
+        const carteModal = document.getElementById('carteModal');
+        if (carteModal) {
+            carteModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+
+                // Réinitialiser le flag de suppression
+                document.getElementById('deleteFileFlag').value = 'false';
+                
+                // Extraire TOUTES les données des attributs data-*
+                const carteId = button.getAttribute('data-carte-id');
+                const legendeValue = button.getAttribute('data-legende');
+                const tube = button.getAttribute('data-tube');
+                const datecarte = button.getAttribute('data-datecarte');
+                const ville = button.getAttribute('data-ville');
+                const quartier = button.getAttribute('data-quartier');
+                const operation = button.getAttribute('data-operation');
+                const originalite = button.getAttribute('data-originalite'); // Ajouté
+                const echelle = button.getAttribute('data-echelle');
+                const cote = button.getAttribute('data-cote');
+                const fichier = button.getAttribute('data-fichier');
+
+                // Convertir la date du format dd/MM/yyyy vers yyyy-MM-dd pour l'input date
+                let htmlDate = '';
+                if (datecarte) {
+                    const parts = datecarte.split('/');
+                    if (parts.length === 3) {
+                        htmlDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // yyyy-MM-dd
+                    }
+                }
+                
+                // Mettre à jour TOUS les champs du formulaire
+                document.getElementById('carteId').value = carteId;
+                document.getElementById('legende').value = legendeValue || '';
+                document.getElementById('tube').value = tube || '';
+                document.getElementById('dateCarte').value = htmlDate; // Note: id="dateCarte" dans le HTML
+                document.getElementById('ville').value = ville || '';
+                document.getElementById('quartier').value = quartier || '';
+                document.getElementById('operation').value = operation || '';
+                document.getElementById('originalite').value = originalite || ''; // Ajouté
+                document.getElementById('echelle').value = echelle || '';
+                document.getElementById('cote').value = cote || '';
+                
+                // Mettre à jour le nom du fichier actuel et gérer le bouton de suppression
+                const deleteFileBtn = document.getElementById('deleteCurrentFile');
+                const currentFileElement = document.getElementById('currentFile');
+                
+                if(fichier && fichier.trim() !== ''){
+                    let filename = fichier.split('\\').pop().split('/').pop();
+                    currentFileElement.textContent = `Fichier actuel : ${filename}`;
+                    deleteFileBtn.setAttribute('data-current-filename', filename);
+                    deleteFileBtn.style.display = 'block';
+                } else {
+                    currentFileElement.textContent = 'Aucun fichier associé';
+                    deleteFileBtn.style.display = 'none';
+                }
+                
+                // Mettre à jour le titre de la modale
+                document.getElementById('carteModalLabel').textContent = `Modifier ${legendeValue || 'la carte'}`;
+            });
+        }
+
+        // Gestion de la suppression du fichier actuel
+        document.getElementById('deleteCurrentFile').addEventListener('click', function() {
+            const carteId = document.getElementById('carteId').value;
+            
+            if (confirm('Êtes-vous sûr de vouloir supprimer le fichier actuel ? Cette action est irréversible.')) {
+                // Créer FormData pour envoyer la requête
+                const formData = new FormData();
+                formData.append('id', carteId);
+                
+                // Récupérer le token anti-falsification
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                
+                // Appeler le handler de suppression via AJAX
+                fetch(`?handler=DeleteFileCarte`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'RequestVerificationToken': token
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        throw new Error('Erreur lors de la suppression');
+                    }
+                })
+                .then(message => {
+                    // Mettre à jour l'interface
+                    document.getElementById('deleteFileFlag').value = 'true';
+                    document.getElementById('currentFile').textContent = 'Fichier supprimé avec succès';
+                    document.getElementById('deleteCurrentFile').style.display = 'none';
+                    document.getElementById('fichier').value = '';
+                    
+                    // Afficher un message de succès
+                    alert('Fichier supprimé avec succès !');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Erreur lors de la suppression du fichier');
+                });
+            }
+        });
+
+
+        // Réinitialiser le flag de suppression si l'utilisateur sélectionne un nouveau fichier
+        document.getElementById('fichier').addEventListener('change', function() {
+            if (this.files.length > 0) {
+                document.getElementById('deleteFileFlag').value = 'false';
+                // Ne pas cacher le bouton de suppression si on veut permettre de supprimer l'ancien même avec un nouveau fichier
+                // document.getElementById('deleteCurrentFile').style.display = 'none';
+            }
+        });
+
+        // Gestion de l'enregistrement des modifications
+        document.getElementById('savecarte').addEventListener('click', function() {
+            const form = document.getElementById('carteForm');
+            const formData = new FormData(form);
+            const carteId = document.getElementById('carteId').value;
+            
+            // Ajouter l'ID ADP au FormData
+            formData.append('IdCarte', carteId);
+            
+            // Récupérer le token anti-falsification
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            
+            // Envoyer la requête de mise à jour
+            fetch(`?handler=UpdateCarte`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'RequestVerificationToken': token
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Fermer le modal et recharger la page
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('carteModal'));
+                    modal.hide();
+                    location.reload();
+                } else {
+                    alert('Erreur lors de la mise à jour');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Erreur lors de la mise à jour');
+            });
+        });
+
+        // Gestion de la suppression complète de carte
+        document.getElementById('deletecarte').addEventListener('click', function() {
+            const carteId = document.getElementById('carteId').value;
+            
+            if (confirm('Êtes-vous sûr de vouloir supprimer complètement cet enregistrement carte ? Cette action est irréversible.')) {
+                const formData = new FormData();
+                formData.append('id', carteId);
+                
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                
+                fetch(`?handler=Deletecarte`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'RequestVerificationToken': token
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Fermer le modal et recharger la page
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('carteModal'));
+                        modal.hide();
+                        location.reload();
+                    } else {
+                        alert('Erreur lors de la suppression');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Erreur lors de la suppression');
+                });
+            }
+        });
+
+        // === TÉLÉCHARGEMENT DES FICHIERS SÉLECTIONNÉS EN ZIP ===
+        document.getElementById('exportSelected').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const selectedIds = getSelectedCartesIds();
+            console.log('IDs sélectionnés:', selectedIds); // Debug
+            
+            if (selectedIds.length === 0) {
+                alert('Veuillez sélectionner au moins un fichier à télécharger');
+                return;
+            }
+            
+            // Afficher un message de traitement
+            alert(`Préparation du téléchargement de ${selectedIds.length} fichier(s)...`);
+            
+            // Créer un formulaire pour envoyer les IDs au serveur
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '?handler=DownloadSelectedFiles';
+            
+            // Ajouter le token anti-falsification
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            const tokenInput = document.createElement('input');
+            tokenInput.type = 'hidden';
+            tokenInput.name = '__RequestVerificationToken';
+            tokenInput.value = token;
+            form.appendChild(tokenInput);
+            
+            // Ajouter chaque ID sélectionné
+            selectedIds.forEach(id => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selectedIds';
+                input.value = id;
+                form.appendChild(input);
+                console.log('ID ajouté au formulaire:', id); // Debug
+            });
+            
+            // Soumettre le formulaire
+            document.body.appendChild(form);
+            console.log('Soumission du formulaire...'); // Debug
+            form.submit();
+            document.body.removeChild(form);
+        });
+        
+        // === SUPPRESSION DES FICHIERS SÉLECTIONNÉS ===
+        document.getElementById('deleteSelected').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const selectedIds = getSelectedCartesIds();
+            if (selectedIds.length === 0) {
+                alert('Veuillez sélectionner au moins un fichier à supprimer');
+                return;
+            }
+            
+            if (confirm(`Êtes-vous sûr de vouloir supprimer ${selectedIds.length} fichier(s) sélectionné(s) ? Cette action est irréversible.`)) {
+                // Créer un formulaire pour envoyer les IDs au serveur
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '?handler=DeleteSelectedFiles';
+                
+                // Ajouter le token anti-falsification
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                const tokenInput = document.createElement('input');
+                tokenInput.type = 'hidden';
+                tokenInput.name = '__RequestVerificationToken';
+                tokenInput.value = token;
+                form.appendChild(tokenInput);
+                
+                // Ajouter chaque ID sélectionné
+                selectedIds.forEach(id => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'selectedIds';
+                    input.value = id;
+                    form.appendChild(input);
+                });
+                
+                // Soumettre le formulaire
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+
     </script>
 }

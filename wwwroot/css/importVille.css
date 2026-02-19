@@ -1,0 +1,37 @@
+/* Ajoutez dans votre fichier CSS */
+.required-field::after {
+    content: " *";
+    color: #dc3545;
+}
+
+.progress-bar {
+    transition: width 0.3s ease;
+}
+
+#previewTable {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#previewTable thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;
+    z-index: 10;
+}
+
+/* Style pour le champ fichier */
+.form-control[type="file"] {
+    padding: 0.375rem 0.75rem;
+}
+
+/* Animation de chargement */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.loading {
+    animation: pulse 1.5s infinite;
+}

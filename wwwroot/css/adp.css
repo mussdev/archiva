@@ -1,0 +1,38 @@
+  /* Style pour le modale */
+        .clickable-name {
+            color: #10b981;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .clickable-name:hover {
+            color: #0d9669;
+            text-decoration: underline;
+        }
+        .modal-header {
+            background: linear-gradient(135deg, #10b981 0%, #374151 100%);
+            color: white;
+        }
+        .required-field::after {
+            content: "*";
+            color: red;
+            margin-left: 4px;
+        }
+
+        /* Style pour les cases à cocher */
+        #selectAllCheckbox {
+            transform: scale(1.2);
+            margin: 0;
+        }
+        
+        .rowCheckbox {
+            transform: scale(1.1);
+            margin: 0;
+        }
+        
+        /* Alignement vertical */
+        th:first-child, td:first-child {
+            text-align: center;
+            vertical-align: middle;
+            width: 40px;
+        }

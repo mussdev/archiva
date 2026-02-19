@@ -1,0 +1,1119 @@
+﻿@page
+@model anahged.Pages.ValidationsAdpVplModel
+@{
+    ViewData["Title"] = "Validations des fichiers ADP et VPL";
+}
+
+@section styles {
+    <style>
+        /* Styles pour les onglets */
+        .nav-tabs .nav-link {
+            color: #495057;
+            border: 1px solid transparent;
+            border-top-left-radius: 0.25rem;
+            border-top-right-radius: 0.25rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .nav-tabs .nav-link:hover {
+            border-color: #e9ecef #e9ecef #dee2e6;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: #0d6efd;
+            background-color: #fff;
+            border-color: #dee2e6 #dee2e6 #fff;
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-top: none;
+            border-radius: 0 0 0.25rem 0.25rem;
+            background-color: #fff;
+        }
+        
+        /* Badges pour les types */
+        .badge-adp {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .badge-vpl {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        /* Style pour les statuts */
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .status-validated {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* Boutons d'action */
+        .btn-action {
+            padding: 4px 8px;
+            margin: 0 2px;
+            font-size: 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .btn-view {
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+        }
+        
+        .btn-view:hover {
+            background-color: #138496;
+        }
+        
+        .btn-validate {
+            background-color: #28a745;
+            color: white;
+            border: none;
+        }
+        
+        .btn-validate:hover {
+            background-color: #218838;
+        }
+        
+        .btn-reject {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+        }
+        
+        .btn-reject:hover {
+            background-color: #c82333;
+        }
+        
+        /* Filtres */
+        .filter-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        /* Table */
+        .validation-table {
+            font-size: 14px;
+        }
+        
+        .validation-table th {
+            background-color: #f1f3f4;
+            font-weight: 600;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        .table-responsive {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        /* Statistiques */
+        .stats-card {
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .stats-adp {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+        }
+        
+        .stats-vpl {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+        
+        .stats-total {
+            background: linear-gradient(135deg, #e7b615 0%, #d4a506 100%);
+            color: white;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        /* Modal de validation */
+        .modal-content {
+            border-radius: 10px;
+        }
+        
+        .modal-header {
+            background-color: #f8f9fa;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        /* Champs de recherche */
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box input {
+            padding-left: 40px;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+        
+        /* Badge de notification dans l'onglet */
+        .nav-link .badge {
+            font-size: 10px;
+            margin-left: 5px;
+        }
+        
+        /* Actions groupées */
+        .bulk-actions {
+            background-color: #e9ecef;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        /* Spacing */
+        .btn-group-spacing {
+            margin-right: 10px;
+        }
+    </style>
+}
+
+<!-- Afficher les messages de succès -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- Afficher les messages d'erreur de validation -->
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <strong>Erreurs de validation :</strong>
+        <ul class="mb-0 mt-2">
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- Contenu principal de la page -->
+<div id="validations-adp-vpl-page" class="container mt-4">
+    <div class="d-flex align-items-center mb-4">
+        <h3 class="mb-0">📚 Validation des fichiers ADP & VPL</h3>
+        <div class="ms-auto">
+            <button class="btn btn-outline-secondary btn-sm" onclick="refreshData()">
+                <i class="bi bi-arrow-clockwise"></i> Actualiser
+            </button>
+        </div>
+    </div>
+    
+    <!-- Statistiques -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="stats-card stats-adp">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-1">Fichiers ADP en attente</h6>
+                        <div class="stat-number" id="adpPending">0</div>
+                    </div>
+                    <i class="bi bi-file-earmark-text-fill fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="stats-card stats-vpl">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-1">Fichiers VPL en attente</h6>
+                        <div class="stat-number" id="vplPending">0</div>
+                    </div>
+                    <i class="bi bi-folder-fill fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Onglets -->
+    <ul class="nav nav-tabs" id="validationTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="adp-tab" data-bs-toggle="tab" data-bs-target="#adp" type="button" role="tab">
+                ADP <span class="badge badge-adp" id="badgeAdp">0</span>
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="vpl-tab" data-bs-toggle="tab" data-bs-target="#vpl" type="button" role="tab">
+                VPL <span class="badge badge-vpl" id="badgeVpl">0</span>
+            </button>
+        </li>
+    </ul>
+    
+    <!-- Contenu des onglets -->
+    <div class="tab-content" id="validationTabsContent">
+        
+        <!-- Onglet ADP -->
+        <div class="tab-pane fade show active" id="adp" role="tabpanel">
+            <!-- Actions groupées pour ADP -->
+            <div class="bulk-actions">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="selectAllAdp">
+                    <label class="form-check-label" for="selectAllAdp">
+                        Tout sélectionner
+                    </label>
+                </div>
+                <div class="btn-group btn-group-spacing gap-2">
+                    <button class="btn btn-success btn-sm" onclick="validateSelected('adp')">
+                        <i class="bi bi-check-circle"></i> Valider la sélection
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="rejectSelected('adp')">
+                        <i class="bi bi-x-circle"></i> Rejeter la sélection
+                    </button>
+                </div>
+                <span class="ms-auto text-muted" id="selectedCountAdp">0 fichier(s) sélectionné(s)</span>
+            </div>
+            
+            <div class="filter-section">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="search-box">
+                            <i class="bi bi-search"></i>
+                            <input type="text" class="form-control" id="searchAdp" placeholder="Rechercher par document, client...">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="boiteFilterAdp">
+                            <option value="">Toutes les boîtes</option>
+                            <!-- Options pour les boîtes ADP -->
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="codeFilterAdp">
+                            <option value="">Tous les codes</option>
+                            <!-- Options pour les codes ADP -->
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" id="statusFilterAdp">
+                            <option value="">Tous statuts</option>
+                            <option value="pending">En attente</option>
+                            <option value="validated">Validés</option>
+                            <option value="rejected">Rejetés</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover validation-table" id="tableAdp">
+                    <thead>
+                        <tr>
+                            <th width="40"></th>
+                            <th>Document</th>
+                            <th>Boîte</th>
+                            <th>Code</th>
+                            <th>Logement</th>
+                            <th>Client</th>
+                            <th>Date doc.</th>
+                            <th>Agent N</th>
+                            <th>Statut</th>
+                            <th width="150">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyAdp">
+                        <!-- Données ADP chargées dynamiquement -->
+                        <tr>
+                            <td colspan="10" class="text-center py-5">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Chargement...</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center mt-3">
+                <div id="paginationAdp"></div>
+            </div>
+        </div>
+        
+        <!-- Onglet VPL -->
+        <div class="tab-pane fade" id="vpl" role="tabpanel">
+            <!-- Actions groupées pour VPL -->
+            <div class="bulk-actions">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="selectAllVpl">
+                    <label class="form-check-label" for="selectAllVpl">
+                        Tout sélectionner
+                    </label>
+                </div>
+                <div class="btn-group btn-group-spacing gap-2">
+                    <button class="btn btn-success btn-sm" onclick="validateSelected('vpl')">
+                        <i class="bi bi-check-circle"></i> Valider la sélection
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="rejectSelected('vpl')">
+                        <i class="bi bi-x-circle"></i> Rejeter la sélection
+                    </button>
+                </div>
+                <span class="ms-auto text-muted" id="selectedCountVpl">0 fichier(s) sélectionné(s)</span>
+            </div>
+            
+            <div class="filter-section">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="search-box">
+                            <i class="bi bi-search"></i>
+                            <input type="text" class="form-control" id="searchVpl" placeholder="Rechercher par document, client...">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" id="dossierFilterVpl">
+                            <option value="">Tous les dossiers</option>
+                            <!-- Options pour les dossiers VPL -->
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" id="statusFilterVpl">
+                            <option value="">Tous statuts</option>
+                            <option value="pending">En attente</option>
+                            <option value="validated">Validés</option>
+                            <option value="rejected">Rejetés</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover validation-table" id="tableVpl">
+                    <thead>
+                        <tr>
+                            <th width="40"></th>
+                            <th>Document</th>
+                            <th>Référence VPL</th>
+                            <th>Dossier</th>
+                            <th>Client</th>
+                            <th>Type document</th>
+                            <th>Date création</th>
+                            <th>Agent N</th>
+                            <th>Statut</th>
+                            <th width="150">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyVpl">
+                        <!-- Données VPL chargées dynamiquement -->
+                        <tr>
+                            <td colspan="10" class="text-center py-5">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Chargement...</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center mt-3">
+                <div id="paginationVpl"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour commentaire (rejet) -->
+<div class="modal fade" id="rejectModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Rejeter le document</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="rejectComment" class="form-label">Commentaire (obligatoire) :</label>
+                    <textarea class="form-control" id="rejectComment" rows="4" placeholder="Expliquez pourquoi vous rejetez ce document..."></textarea>
+                    <div class="form-text">Ce commentaire sera visible par l'agent qui a enregistré le document.</div>
+                </div>
+                <div id="rejectFileInfo"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-danger" onclick="confirmReject()">Confirmer le rejet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour prévisualisation -->
+<div class="modal fade" id="previewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewTitle">Prévisualisation du document</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="previewContent">
+                    <!-- Contenu chargé dynamiquement -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-success" onclick="validateFromPreview()">Valider</button>
+                <button type="button" class="btn btn-danger" onclick="rejectFromPreview()">Rejeter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Variables globales
+        let currentRejectId = null;
+        let currentRejectType = null;
+        let currentPreviewId = null;
+        let currentPreviewType = null;
+        let selectedFiles = {
+            adp: [],
+            vpl: []
+        };
+        
+        // Données factices pour démo
+        const mockAdpData = [
+            {
+                id: 1,
+                type: 'adp',
+                document: 'Attestation de vente 29',
+                boite: '009828',
+                code: '010102',
+                logement: '1246',
+                client: 'Test Client 30',
+                dateDoc: '12/11/2025',
+                agentN: 'Agent Dupont',
+                status: 'pending',
+                dateEnregistrement: '2025-11-12 10:30:00'
+            },
+            {
+                id: 2,
+                type: 'adp',
+                document: 'Contrat de location',
+                boite: '009829',
+                code: '010103',
+                logement: '1247',
+                client: 'Test Client 31',
+                dateDoc: '13/11/2025',
+                agentN: 'Agent Martin',
+                status: 'pending',
+                dateEnregistrement: '2025-11-13 14:20:00'
+            },
+            {
+                id: 3,
+                type: 'adp',
+                document: 'Contrat de vente 15',
+                boite: '009830',
+                code: '010104',
+                logement: '1248',
+                client: 'Test Client 32',
+                dateDoc: '14/11/2025',
+                agentN: 'Agent Dubois',
+                status: 'validated',
+                dateEnregistrement: '2025-11-14 09:15:00'
+            }
+        ];
+        
+        const mockVplData = [
+            {
+                id: 101,
+                type: 'vpl',
+                document: 'Contrat VPL 2025-001',
+                reference: 'VPL-2025-001',
+                dossier: 'DOSS-456',
+                client: 'Client Entreprise SA',
+                typeDoc: 'Contrat',
+                dateCreation: '15/11/2025',
+                agentN: 'Agent Lefebvre',
+                status: 'pending',
+                dateEnregistrement: '2025-11-15 09:15:00'
+            },
+            {
+                id: 102,
+                type: 'vpl',
+                document: 'Avenant VPL 2025-002',
+                reference: 'VPL-2025-002',
+                dossier: 'DOSS-457',
+                client: 'Client Entreprise SARL',
+                typeDoc: 'Avenant',
+                dateCreation: '16/11/2025',
+                agentN: 'Agent Dubois',
+                status: 'pending',
+                dateEnregistrement: '2025-11-16 11:45:00'
+            },
+            {
+                id: 103,
+                type: 'vpl',
+                document: 'Convention VPL 2025-003',
+                reference: 'VPL-2025-003',
+                dossier: 'DOSS-458',
+                client: 'Client Entreprise SAS',
+                typeDoc: 'Convention',
+                dateCreation: '17/11/2025',
+                agentN: 'Agent Martin',
+                status: 'rejected',
+                dateEnregistrement: '2025-11-17 14:30:00'
+            }
+        ];
+        
+        // Chargement initial
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            setupEventListeners();
+        });
+        
+        function loadData() {
+            // Simuler un appel API
+            setTimeout(() => {
+                populateTables();
+                updateStats();
+            }, 500);
+        }
+        
+        function populateTables() {
+            // Peupler le tableau ADP
+            populateAdpTable(mockAdpData);
+            
+            // Peupler le tableau VPL
+            populateVplTable(mockVplData);
+        }
+        
+        function populateAdpTable(data) {
+            const tbody = document.getElementById('tbodyAdp');
+            tbody.innerHTML = '';
+            
+            if (data.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="10" class="text-center py-4 text-muted">
+                            <i class="bi bi-inbox fs-1"></i>
+                            <p class="mt-2">Aucun fichier ADP à valider</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            data.forEach(item => {
+                const statusClass = item.status === 'pending' ? 'status-pending' : 
+                                  item.status === 'validated' ? 'status-validated' : 'status-rejected';
+                const statusText = item.status === 'pending' ? 'En attente' : 
+                                 item.status === 'validated' ? 'Validé' : 'Rejeté';
+                
+                const row = `
+                    <tr data-id="${item.id}" data-type="adp" data-status="${item.status}">
+                        <td>
+                            <input type="checkbox" class="form-check-input select-file-adp" 
+                                   onchange="toggleSelection('adp', ${item.id}, this.checked)"
+                                   ${item.status !== 'pending' ? 'disabled' : ''}>
+                        </td>
+                        <td>${item.document}</td>
+                        <td>${item.boite}</td>
+                        <td>${item.code}</td>
+                        <td>${item.logement}</td>
+                        <td>${item.client}</td>
+                        <td>${item.dateDoc}</td>
+                        <td>${item.agentN}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn-action btn-view" onclick="previewFile(${item.id}, 'adp')" title="Voir">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            ${item.status === 'pending' ? `
+                            <button class="btn-action btn-validate" onclick="validateFile(${item.id}, 'adp')" title="Valider">
+                                <i class="bi bi-check"></i>
+                            </button>
+                            <button class="btn-action btn-reject" onclick="openRejectModal(${item.id}, 'adp')" title="Rejeter">
+                                <i class="bi bi-x"></i>
+                            </button>
+                            ` : ''}
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+        
+        function populateVplTable(data) {
+            const tbody = document.getElementById('tbodyVpl');
+            tbody.innerHTML = '';
+            
+            if (data.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="10" class="text-center py-4 text-muted">
+                            <i class="bi bi-inbox fs-1"></i>
+                            <p class="mt-2">Aucun fichier VPL à valider</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            data.forEach(item => {
+                const statusClass = item.status === 'pending' ? 'status-pending' : 
+                                  item.status === 'validated' ? 'status-validated' : 'status-rejected';
+                const statusText = item.status === 'pending' ? 'En attente' : 
+                                 item.status === 'validated' ? 'Validé' : 'Rejeté';
+                
+                const row = `
+                    <tr data-id="${item.id}" data-type="vpl" data-status="${item.status}">
+                        <td>
+                            <input type="checkbox" class="form-check-input select-file-vpl" 
+                                   onchange="toggleSelection('vpl', ${item.id}, this.checked)"
+                                   ${item.status !== 'pending' ? 'disabled' : ''}>
+                        </td>
+                        <td>${item.document}</td>
+                        <td>${item.reference}</td>
+                        <td>${item.dossier}</td>
+                        <td>${item.client}</td>
+                        <td>${item.typeDoc}</td>
+                        <td>${item.dateCreation}</td>
+                        <td>${item.agentN}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn-action btn-view" onclick="previewFile(${item.id}, 'vpl')" title="Voir">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            ${item.status === 'pending' ? `
+                            <button class="btn-action btn-validate" onclick="validateFile(${item.id}, 'vpl')" title="Valider">
+                                <i class="bi bi-check"></i>
+                            </button>
+                            <button class="btn-action btn-reject" onclick="openRejectModal(${item.id}, 'vpl')" title="Rejeter">
+                                <i class="bi bi-x"></i>
+                            </button>
+                            ` : ''}
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+        
+        function updateStats() {
+            const adpPending = mockAdpData.filter(f => f.status === 'pending').length;
+            const vplPending = mockVplData.filter(f => f.status === 'pending').length;
+            
+            document.getElementById('adpPending').textContent = adpPending;
+            document.getElementById('vplPending').textContent = vplPending;
+            
+            // Mettre à jour les badges dans les onglets
+            document.getElementById('badgeAdp').textContent = adpPending;
+            document.getElementById('badgeVpl').textContent = vplPending;
+        }
+        
+        function setupEventListeners() {
+            // Recherche en temps réel
+            document.getElementById('searchAdp').addEventListener('input', filterAdpTable);
+            document.getElementById('searchVpl').addEventListener('input', filterVplTable);
+            
+            // Filtres
+            document.getElementById('statusFilterAdp').addEventListener('change', filterAdpTable);
+            document.getElementById('statusFilterVpl').addEventListener('change', filterVplTable);
+            
+            // Sélection tout
+            document.getElementById('selectAllAdp').addEventListener('change', function(e) {
+                toggleSelectAll('adp', e.target.checked);
+            });
+            
+            document.getElementById('selectAllVpl').addEventListener('change', function(e) {
+                toggleSelectAll('vpl', e.target.checked);
+            });
+            
+            // Initialiser les filtres
+            populateFilterOptions();
+        }
+        
+        function populateFilterOptions() {
+            // Récupérer les valeurs uniques pour les filtres
+            const boites = [...new Set(mockAdpData.map(item => item.boite))];
+            const boiteFilter = document.getElementById('boiteFilterAdp');
+            
+            boites.forEach(boite => {
+                const option = document.createElement('option');
+                option.value = boite;
+                option.textContent = boite;
+                boiteFilter.appendChild(option);
+            });
+            
+            const dossiers = [...new Set(mockVplData.map(item => item.dossier))];
+            const dossierFilter = document.getElementById('dossierFilterVpl');
+            
+            dossiers.forEach(dossier => {
+                const option = document.createElement('option');
+                option.value = dossier;
+                option.textContent = dossier;
+                dossierFilter.appendChild(option);
+            });
+        }
+        
+        function toggleSelectAll(type, isChecked) {
+            const selector = type === 'adp' ? '.select-file-adp:enabled' : '.select-file-vpl:enabled';
+            const checkboxes = document.querySelectorAll(`#tbody${type === 'adp' ? 'Adp' : 'Vpl'} ${selector}`);
+            
+            checkboxes.forEach(cb => {
+                cb.checked = isChecked;
+                const row = cb.closest('tr');
+                const fileId = parseInt(row.dataset.id);
+                toggleSelection(type, fileId, isChecked);
+            });
+            
+            updateSelectedCount(type);
+        }
+        
+        function toggleSelection(type, id, isSelected) {
+            const list = selectedFiles[type];
+            
+            // Vérifier si le fichier est en attente
+            const data = type === 'adp' ? mockAdpData.find(f => f.id === id) : 
+                                      mockVplData.find(f => f.id === id);
+            
+            if (data && data.status !== 'pending') {
+                return; // Ne pas autoriser la sélection si pas en attente
+            }
+            
+            if (isSelected) {
+                if (!list.includes(id)) list.push(id);
+            } else {
+                const index = list.indexOf(id);
+                if (index > -1) list.splice(index, 1);
+            }
+            
+            updateSelectedCount(type);
+        }
+        
+        function updateSelectedCount(type) {
+            const count = selectedFiles[type].length;
+            document.getElementById(`selectedCount${type === 'adp' ? 'Adp' : 'Vpl'}`).textContent = 
+                `${count} fichier(s) sélectionné(s)`;
+        }
+        
+        function filterAdpTable() {
+            const searchTerm = document.getElementById('searchAdp').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilterAdp').value;
+            const boiteFilter = document.getElementById('boiteFilterAdp').value;
+            
+            const rows = document.querySelectorAll('#tbodyAdp tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const status = row.dataset.status;
+                const boite = row.cells[2]?.textContent || '';
+                
+                const matchesSearch = searchTerm === '' || text.includes(searchTerm);
+                const matchesStatus = statusFilter === '' || status === statusFilter;
+                const matchesBoite = boiteFilter === '' || boite === boiteFilter;
+                
+                row.style.display = matchesSearch && matchesStatus && matchesBoite ? '' : 'none';
+            });
+        }
+        
+        function filterVplTable() {
+            const searchTerm = document.getElementById('searchVpl').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilterVpl').value;
+            const dossierFilter = document.getElementById('dossierFilterVpl').value;
+            
+            const rows = document.querySelectorAll('#tbodyVpl tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const status = row.dataset.status;
+                const dossier = row.cells[3]?.textContent || '';
+                
+                const matchesSearch = searchTerm === '' || text.includes(searchTerm);
+                const matchesStatus = statusFilter === '' || status === statusFilter;
+                const matchesDossier = dossierFilter === '' || dossier === dossierFilter;
+                
+                row.style.display = matchesSearch && matchesStatus && matchesDossier ? '' : 'none';
+            });
+        }
+        
+        function previewFile(id, type) {
+            currentPreviewId = id;
+            currentPreviewType = type;
+            
+            // Trouver les données
+            const data = type === 'adp' ? mockAdpData.find(f => f.id === id) : 
+                                      mockVplData.find(f => f.id === id);
+            
+            document.getElementById('previewTitle').textContent = `Prévisualisation : ${data.document}`;
+            
+            // Simuler le contenu de prévisualisation
+            const previewContent = `
+                <div class="text-center mb-4">
+                    <i class="bi bi-file-earmark-text fs-1 ${type === 'adp' ? 'text-primary' : 'text-success'}"></i>
+                    <h5 class="mt-2">${data.document}</h5>
+                    <p class="text-muted">${type.toUpperCase()}</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Informations du document</h6>
+                        <table class="table table-sm">
+                            <tr>
+                                <th>Type:</th>
+                                <td><span class="badge ${type === 'adp' ? 'badge-adp' : 'badge-vpl'}">${type.toUpperCase()}</span></td>
+                            </tr>
+                            ${type === 'adp' ? `
+                                <tr><th>Boîte:</th><td>${data.boite}</td></tr>
+                                <tr><th>Code:</th><td>${data.code}</td></tr>
+                                <tr><th>Logement:</th><td>${data.logement}</td></tr>
+                            ` : `
+                                <tr><th>Référence:</th><td>${data.reference}</td></tr>
+                                <tr><th>Dossier:</th><td>${data.dossier}</td></tr>
+                                <tr><th>Type doc:</th><td>${data.typeDoc}</td></tr>
+                            `}
+                            <tr><th>Client:</th><td>${data.client}</td></tr>
+                            <tr><th>Date:</th><td>${type === 'adp' ? data.dateDoc : data.dateCreation}</td></tr>
+                            <tr><th>Enregistré par:</th><td>${data.agentN}</td></tr>
+                            <tr><th>Statut:</th><td><span class="status-badge ${data.status === 'pending' ? 'status-pending' : data.status === 'validated' ? 'status-validated' : 'status-rejected'}">${data.status === 'pending' ? 'En attente' : data.status === 'validated' ? 'Validé' : 'Rejeté'}</span></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Aperçu</h6>
+                        <div class="border rounded p-3 bg-light" style="min-height: 200px;">
+                            <p>Ceci est une simulation de l'aperçu du document.</p>
+                            <p>En production, vous pourriez afficher :</p>
+                            <ul>
+                                <li>Image numérisée</li>
+                                <li>PDF intégré</li>
+                                <li>Données extraites</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('previewContent').innerHTML = previewContent;
+            
+            const modal = new bootstrap.Modal(document.getElementById('previewModal'));
+            modal.show();
+        }
+        
+        function validateFile(id, type) {
+            if (confirm(`Êtes-vous sûr de vouloir valider ce document ${type.toUpperCase()} ?`)) {
+                // Simuler l'appel API
+                setTimeout(() => {
+                    alert(`Document ${type.toUpperCase()} validé avec succès !`);
+                    
+                    // Mettre à jour le statut localement
+                    const dataArray = type === 'adp' ? mockAdpData : mockVplData;
+                    const fileIndex = dataArray.findIndex(f => f.id === id);
+                    if (fileIndex !== -1) {
+                        dataArray[fileIndex].status = 'validated';
+                    }
+                    
+                    refreshData();
+                }, 500);
+            }
+        }
+        
+        function openRejectModal(id, type) {
+            currentRejectId = id;
+            currentRejectType = type;
+            
+            // Trouver les données
+            const data = type === 'adp' ? mockAdpData.find(f => f.id === id) : 
+                                      mockVplData.find(f => f.id === id);
+            
+            document.getElementById('rejectFileInfo').innerHTML = `
+                <div class="alert alert-info">
+                    <strong>Document:</strong> ${data.document}<br>
+                    <strong>Type:</strong> ${type.toUpperCase()}<br>
+                    <strong>Client:</strong> ${data.client}
+                </div>
+            `;
+            
+            document.getElementById('rejectComment').value = '';
+            
+            const modal = new bootstrap.Modal(document.getElementById('rejectModal'));
+            modal.show();
+        }
+        
+        function confirmReject() {
+            const comment = document.getElementById('rejectComment').value.trim();
+            
+            if (!comment) {
+                alert('Veuillez saisir un commentaire pour expliquer le rejet.');
+                return;
+            }
+            
+            if (confirm(`Êtes-vous sûr de vouloir rejeter ce document ${currentRejectType.toUpperCase()} ?`)) {
+                // Simuler l'appel API
+                setTimeout(() => {
+                    alert(`Document rejeté avec le commentaire : ${comment}`);
+                    
+                    // Mettre à jour le statut localement
+                    const dataArray = currentRejectType === 'adp' ? mockAdpData : mockVplData;
+                    const fileIndex = dataArray.findIndex(f => f.id === currentRejectId);
+                    if (fileIndex !== -1) {
+                        dataArray[fileIndex].status = 'rejected';
+                    }
+                    
+                    // Fermer la modale
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('rejectModal'));
+                    modal.hide();
+                    
+                    refreshData();
+                }, 500);
+            }
+        }
+        
+        function validateSelected(type) {
+            const files = selectedFiles[type];
+            if (files.length === 0) {
+                alert('Veuillez sélectionner au moins un fichier.');
+                return;
+            }
+            
+            if (confirm(`Valider ${files.length} fichier(s) ${type.toUpperCase()} sélectionné(s) ?`)) {
+                // Simuler l'appel API
+                setTimeout(() => {
+                    // Mettre à jour les statuts localement
+                    const dataArray = type === 'adp' ? mockAdpData : mockVplData;
+                    files.forEach(id => {
+                        const fileIndex = dataArray.findIndex(f => f.id === id);
+                        if (fileIndex !== -1) {
+                            dataArray[fileIndex].status = 'validated';
+                        }
+                    });
+                    
+                    alert(`${files.length} fichier(s) ${type.toUpperCase()} validé(s) avec succès !`);
+                    selectedFiles[type] = [];
+                    document.getElementById(`selectAll${type === 'adp' ? 'Adp' : 'Vpl'}`).checked = false;
+                    refreshData();
+                }, 500);
+            }
+        }
+        
+        function rejectSelected(type) {
+            const files = selectedFiles[type];
+            if (files.length === 0) {
+                alert('Veuillez sélectionner au moins un fichier.');
+                return;
+            }
+            
+            // Demander un commentaire pour le rejet groupé
+            const comment = prompt(`Veuillez saisir un commentaire pour rejeter ${files.length} fichier(s) ${type.toUpperCase()} :`);
+            
+            if (comment && confirm(`Rejeter ${files.length} fichier(s) ${type.toUpperCase()} avec le commentaire : "${comment}" ?`)) {
+                // Simuler l'appel API
+                setTimeout(() => {
+                    // Mettre à jour les statuts localement
+                    const dataArray = type === 'adp' ? mockAdpData : mockVplData;
+                    files.forEach(id => {
+                        const fileIndex = dataArray.findIndex(f => f.id === id);
+                        if (fileIndex !== -1) {
+                            dataArray[fileIndex].status = 'rejected';
+                        }
+                    });
+                    
+                    alert(`${files.length} fichier(s) ${type.toUpperCase()} rejeté(s) avec succès !`);
+                    selectedFiles[type] = [];
+                    document.getElementById(`selectAll${type === 'adp' ? 'Adp' : 'Vpl'}`).checked = false;
+                    refreshData();
+                }, 500);
+            }
+        }
+        
+        function validateFromPreview() {
+            validateFile(currentPreviewId, currentPreviewType);
+            const modal = bootstrap.Modal.getInstance(document.getElementById('previewModal'));
+            modal.hide();
+        }
+        
+        function rejectFromPreview() {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('previewModal'));
+            modal.hide();
+            setTimeout(() => {
+                openRejectModal(currentPreviewId, currentPreviewType);
+            }, 300);
+        }
+        
+        function refreshData() {
+            // Réinitialiser les sélections
+            selectedFiles = { adp: [], vpl: [] };
+            document.getElementById('selectAllAdp').checked = false;
+            document.getElementById('selectAllVpl').checked = false;
+            
+            // Simuler un rechargement
+            const tbodyAdp = document.getElementById('tbodyAdp');
+            const tbodyVpl = document.getElementById('tbodyVpl');
+            
+            tbodyAdp.innerHTML = `
+                <tr>
+                    <td colspan="10" class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Chargement...</span>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            
+            tbodyVpl.innerHTML = `
+                <tr>
+                    <td colspan="10" class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Chargement...</span>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            
+            setTimeout(() => {
+                loadData();
+            }, 1000);
+        }
+    </script>
+}

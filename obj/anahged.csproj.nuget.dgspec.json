@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\projets_apps\\anahged\\anahged.csproj": {}
+    "C:\\projets_apps\\archiva\\anahged.csproj": {}
   },
   "projects": {
-    "C:\\projets_apps\\anahged\\anahged.csproj": {
+    "C:\\projets_apps\\archiva\\anahged.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\projets_apps\\anahged\\anahged.csproj",
+        "projectUniqueName": "C:\\projets_apps\\archiva\\anahged.csproj",
         "projectName": "anahged",
-        "projectPath": "C:\\projets_apps\\anahged\\anahged.csproj",
+        "projectPath": "C:\\projets_apps\\archiva\\anahged.csproj",
         "packagesPath": "C:\\Users\\moussa.dosso\\.nuget\\packages\\",
-        "outputPath": "C:\\projets_apps\\anahged\\obj\\",
+        "outputPath": "C:\\projets_apps\\archiva\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\moussa.dosso\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -47,6 +47,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "ClosedXML": {
+              "target": "Package",
+              "version": "[0.105.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.8, )"
@@ -80,19 +84,19 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.22, 8.0.22]"
+              "version": "[8.0.24, 8.0.24]"
             },
             {
               "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[8.0.22, 8.0.22]"
+              "version": "[8.0.24, 8.0.24]"
             },
             {
               "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.22, 8.0.22]"
+              "version": "[8.0.24, 8.0.24]"
             },
             {
               "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.22, 8.0.22]"
+              "version": "[8.0.24, 8.0.24]"
             }
           ],
           "frameworkReferences": {
@@ -103,7 +107,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.112/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.114/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

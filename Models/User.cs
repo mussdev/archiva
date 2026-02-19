@@ -21,7 +21,7 @@ public partial class User
 
     public int GroupeId { get; set; }
     public virtual Groupe Groupe { get; set; } = null!;
-
+    public virtual ICollection<Userstatut> Userstatuts { get; set; } = new List<Userstatut>();
     public virtual ICollection<HistoriqueAdp> HistoriqueAdps { get; set; } = new List<HistoriqueAdp>();
 
     public virtual ICollection<HistoriqueCarte> HistoriqueCartes { get; set; } = new List<HistoriqueCarte>();

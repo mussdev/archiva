@@ -294,9 +294,9 @@ namespace anahged.Services
         }
 
         // Methode d'enregistrement des fichiers ADP
-        public async Task<string> EnregistrerFichierAdpAsync(IFormFile fichier, string annee, string code, string boite, string logement, string document, string dateDocument, string client, string fonctions, string adresse, string contact, string ville, string communeQuartier, int userId)
+        public async Task<string> EnregistrerFichierAdpAsync(IFormFile fichier, string annee, string code, string boite, string logement, string document, string dateDocument, string client, string fonctions, string adresse, string contact, int operationId, int userId, int statutId)
         {
-            Console.WriteLine($"Début de l'enregistrement - Fichier: {fichier?.FileName}, UserId: {userId}");
+            // Console.WriteLine($"Début de l'enregistrement - Fichier: {fichier?.FileName}, UserId: {userId}");
 
             if (fichier == null || fichier.Length == 0)
             {
@@ -362,8 +362,7 @@ namespace anahged.Services
                     Fonctions = fonctions,
                     Adresse = adresse,
                     Contact = contact,
-                    Ville = ville,
-                    CommuneQuartier = communeQuartier,
+                    IdOpe = operationId,
                     Lien = Path.Combine("ADP/NewADP/", nomFichier).Replace("\\", "/") // Stocker le chemin relatif
                 };
 
@@ -380,6 +379,18 @@ namespace anahged.Services
                 };
 
                 _context.HistoriqueAdps.Add(historiqueAdp);
+                await _context.SaveChangesAsync();
+
+                // Code pour la gestion des validations de fichiers ADP
+                var validationfile = new Validationsfile
+                {
+                    IdAdp = adp.IdAdp,
+                    UserId = userId,
+                    DateValidation = DateTime.Now,
+                    IdStatut = statutId,
+                };
+
+                _context.Validationsfiles.Add(validationfile);
                 await _context.SaveChangesAsync();
 
                 return "Fichier ADP enregistré avec succès";
@@ -502,7 +513,6 @@ namespace anahged.Services
         }
 
         // Méthode d'enregistrement des fichiers Cartes
-
         public async Task<string> EnregistrerFichierCarteAsync(
         IFormFile fichier,
         string tube,
@@ -560,6 +570,23 @@ namespace anahged.Services
                 await fichier.CopyToAsync(stream);
             }
 
+            // === CONVERSION DE LA DATE ===
+            string formattedDate = date_carte; // Par défaut, on garde la valeur originale
+            
+            if (!string.IsNullOrEmpty(date_carte))
+            {
+                // Le formulaire envoie la date au format yyyy-MM-dd, on la convertit en dd/MM/yyyy
+                if (DateTime.TryParseExact(date_carte, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))
+                {
+                    formattedDate = parsedDate.ToString("dd/MM/yyyy");
+                    Console.WriteLine($"Date convertie: {date_carte} -> {formattedDate}");
+                }
+                else
+                {
+                    Console.WriteLine($"Impossible de parser la date: {date_carte}");
+                }
+            }
+
             // Enregistrer les informations du fichier dans la base de données
             var cartes = new Carte
             {
@@ -571,7 +598,7 @@ namespace anahged.Services
                 Originalite = originalite,
                 Echelle = echelle,
                 Cote = cote,
-                DateCarte = date_carte,
+                DateCarte = formattedDate,
                 Lien = Path.Combine("CARTES/NewCARTES/", nomFichier).Replace("\\", "/")
             };
 

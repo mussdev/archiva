@@ -9,7 +9,7 @@ public partial class Adp
 
     public string Annee { get; set; } = null!;
 
-    public string Code { get; set; } = null!;
+    public string? Code { get; set; }
 
     public string Boite { get; set; } = null!;
 
@@ -20,7 +20,6 @@ public partial class Adp
     public string DateDocument { get; set; } = null!;
 
     public string Client { get; set; } = null!;
-    public string? NumDossierAdp { get; set; }
 
     public string? Fonctions { get; set; }
 
@@ -37,6 +36,12 @@ public partial class Adp
     public string Lien { get; set; } = null!;
 
     public int? IdOpe { get; set; }
+
+    public string? NumDossierAdp { get; set; }
+
+    public int? DernierStatutAdpId { get; set; }
+
+    public virtual Statut? DernierStatutAdp { get; set; }
 
     public virtual ICollection<HistoriqueAdp> HistoriqueAdps { get; set; } = new List<HistoriqueAdp>();
 

@@ -16,4 +16,6 @@ public partial class Statut
     public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
+
+    public virtual ICollection<Adp> Adps { get; set; } = new List<Adp>();
 }

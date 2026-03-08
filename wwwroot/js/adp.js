@@ -1,452 +1,3 @@
-/* document.addEventListener('DOMContentLoaded', function() {
-   // Ajouter un événement pour filtrer les données lors de la saisie dans le champ de filtre
-    //  tableFilter.addEventListener('input', filterData);
-    // Récupérer les éléments du tableau
-    var table = document.querySelector('table');
-    var rows = table.querySelectorAll('tbody tr');
-    var filterStats = document.getElementById('filterStats');
-    var totalRows = rows.length;
-
-    // Récupérer le champ de filtre
-    var tableFilter = document.getElementById('table-filter');
-
-    // Fonction pour mettre à jour les statistiques
-    function updateFilterStats() {
-        var visibleRows = 0;
-        rows.forEach(function(row) {
-            if (row.style.display !== 'none') {
-                visibleRows++;
-            }
-        });
-
-        if (tableFilter.value === '') {
-            filterStats.textContent = totalRows + ' fichier(s) trouvé(s)';
-        } else {
-            filterStats.textContent = visibleRows + ' fichier(s) sur ' + totalRows + ' trouvé(s)';
-        }
-    }
-
-    // Fonction pour filtrer les données
-    function filterData() {
-        var filterValue = tableFilter.value.toLowerCase();
-
-        rows.forEach(function(row) {
-            var rowText = row.textContent.toLowerCase();
-
-            if (rowText.indexOf(filterValue) === -1) {
-                row.style.display = 'none';
-            } else {
-                row.style.display = '';
-            }
-        });
-
-        // Mettre à jour les statistiques après le filtrage
-        updateFilterStats();
-    }
-
-    // Initialiser les statistiques au chargement
-    updateFilterStats();
-
-    // Ajouter un événement pour filtrer les données lors de la saisie dans le champ de filtre
-    tableFilter.addEventListener('input', filterData);
-
-    // Réinitialiser le formulaire quand le modal est fermé
-    document.getElementById('ajoutFichierModal').addEventListener('hidden.bs.modal', function () {
-        document.getElementById('uploadForm').reset();
-    });
-
-    // === VALIDATION DU FORMULAIRE D'AJOUT ===
-    var uploadForm = document.querySelector('form[asp-page-handler="UploadFileAdp"]');
-    if (uploadForm) {
-        uploadForm.addEventListener('submit', function(e) {
-            var fileInput = document.querySelector('input[name="Fichier"]');
-            var file = fileInput.files[0];
-            
-            if (!file) {
-                e.preventDefault();
-                alert('Veuillez sélectionner un fichier PDF ❌.');
-                return false;
-            }
-            
-            // Vérifier l'extension
-            var fileName = file.name;
-            var extension = fileName.split('.').pop().toLowerCase();
-            if (extension !== 'pdf') {
-                e.preventDefault();
-                alert('Seuls les fichiers PDF sont autorisés ❌.');
-                return false;
-            }
-            
-            return true;
-        });
-    }
-
-    // === RÉINITIALISATION DU MODAL D'AJOUT ===
-    var ajoutFichierModal = document.getElementById('ajoutFichierModal');
-    if (ajoutFichierModal) {
-        ajoutFichierModal.addEventListener('hidden.bs.modal', function () {
-            var form = document.querySelector('form[asp-page-handler="UploadFileAdp"]');
-            if (form) {
-                form.reset();
-            }
-        });
-    }
-
-    // === GESTION DES CASES À COCHER ===
-   // document.addEventListener('DOMContentLoaded', function() {
-        const selectAllCheckbox = document.getElementById('selectAllCheckbox');
-        const rowCheckboxes = document.querySelectorAll('.rowCheckbox');
-        
-        // Case "Tout sélectionner"
-        if (selectAllCheckbox) {
-            selectAllCheckbox.addEventListener('change', function() {
-                rowCheckboxes.forEach(checkbox => {
-                    checkbox.checked = selectAllCheckbox.checked;
-                });
-            });
-        }
-        
-        // Cases individuelles
-        rowCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                // Décocher "Tout sélectionner" si une case est décochée
-                if (!this.checked && selectAllCheckbox.checked) {
-                    selectAllCheckbox.checked = false;
-                }
-                // Cocher "Tout sélectionner" si toutes les cases sont cochées
-                else if (this.checked) {
-                    const allChecked = Array.from(rowCheckboxes).every(cb => cb.checked);
-                    selectAllCheckbox.checked = allChecked;
-                }
-            });
-        });
-        
-        // Mettre à jour "Tout sélectionner" lors du filtrage
-        const tableFilter = document.getElementById('table-filter');
-        if (tableFilter) {
-            tableFilter.addEventListener('input', function() {
-                // Réinitialiser "Tout sélectionner" lors du filtrage
-                selectAllCheckbox.checked = false;
-            });
-        }
-    //});
-
-    // Fonction pour obtenir les IDs des éléments sélectionnés
-    function getSelectedAdpIds() {
-        const selectedCheckboxes = document.querySelectorAll('.rowCheckbox:checked');
-        const selectedIds = Array.from(selectedCheckboxes).map(checkbox => {
-            return checkbox.getAttribute('data-adp-id');
-        });
-        return selectedIds;
-    }
-
-    // Exemple d'utilisation pour une action groupée
-    function performGroupAction() {
-        const selectedIds = getSelectedAdpIds();
-        if (selectedIds.length === 0) {
-            alert('Veuillez sélectionner au moins un élément');
-            return;
-        }
-        
-        console.log('IDs sélectionnés :', selectedIds);
-        // Ici vous pouvez ajouter votre logique (suppression groupée, export, etc.)
-    }
-
-    // === GESTION DU MODAL DE MODIFICATION ADP ===
-    const adpModal = document.getElementById('adpModal');
-    if (adpModal) {
-        adpModal.addEventListener('show.bs.modal', function (event) {
-            const button = event.relatedTarget;
-
-            // Réinitialiser le flag de suppression
-            document.getElementById('deleteFileFlag').value = 'false';
-            
-            // Extraire les données des attributs data-*
-            const adpId = button.getAttribute('data-adp-id');
-            const documentValue  = button.getAttribute('data-document');
-            const contact = button.getAttribute('data-contact');
-            const datedocument = button.getAttribute('data-datedocument');
-            const annee = button.getAttribute('data-annee');
-            const fonctions = button.getAttribute('data-fonctions');
-            const client = button.getAttribute('data-client');
-            const code = button.getAttribute('data-code');
-            const boite = button.getAttribute('data-boite');
-            const logement = button.getAttribute('data-logement');
-            const adresse = button.getAttribute('data-adresse');
-            const communequartier = button.getAttribute('data-communequartier');
-            const ville = button.getAttribute('data-ville');
-            const fichier = button.getAttribute('data-fichier');
-
-            // Convertir la date du format dd/MM/yyyy vers yyyy-MM-dd pour l'input date
-            let htmlDate = '';
-            if (datedocument) {
-                const parts = datedocument.split('/');
-                if (parts.length === 3) {
-                    htmlDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // yyyy-MM-dd
-                }
-            }
-            
-            // Mettre à jour le contenu de la modale ADP
-            document.getElementById('adpId').value = adpId;
-            document.getElementById('boite').value = boite;
-            document.getElementById('code').value = code;
-            document.getElementById('logement').value = logement;
-            document.getElementById('client').value = client;
-            document.getElementById('annee').value = annee;
-            document.getElementById('ville').value = ville;
-            document.getElementById('document').value = documentValue;
-            document.getElementById('communequartier').value = communequartier;
-            document.getElementById('adresse').value = adresse;
-            document.getElementById('contact').value = contact;
-            document.getElementById('fonctions').value = fonctions;
-            document.getElementById('datedocument').value = htmlDate;
-        
-            // Mettre à jour le nom du fichier actuel et gérer le bouton de suppression
-            const deleteFileBtn = document.getElementById('deleteCurrentFile');
-            const currentFileElement = document.getElementById('currentFile');
-            
-            if(fichier && fichier.trim() !== ''){
-                let filename = fichier.split('\\').pop().split('/').pop();
-                currentFileElement.textContent = `Fichier actuel : ${filename}`;
-                // Stocker le nom du fichier actuel dans un data attribute
-                deleteFileBtn.setAttribute('data-current-filename', filename);
-                // Afficher le bouton de suppression
-                deleteFileBtn.style.display = 'block';
-            } else {
-                currentFileElement.textContent = 'Aucun fichier associé';
-                // Cacher le bouton de suppression
-                deleteFileBtn.style.display = 'none';
-            }
-            // Mettre à jour le titre de la modale
-            document.getElementById('adpModalLabel').textContent = `Modifier ${documentValue}`;
-        });
-    }
-        
-    // Gestion de la suppression du fichier actuel
-    document.getElementById('deleteCurrentFile').addEventListener('click', function() {
-        const adpId = document.getElementById('adpId').value;
-        
-        if (confirm('Êtes-vous sûr de vouloir supprimer le fichier actuel ? Cette action est irréversible.')) {
-            // Créer FormData pour envoyer la requête
-            const formData = new FormData();
-            formData.append('id', adpId);
-            
-            // Récupérer le token anti-falsification
-            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
-            
-            // Appeler le handler de suppression via AJAX
-            fetch(`?handler=DeleteFileAdp`, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'RequestVerificationToken': token
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error('Erreur lors de la suppression');
-                }
-            })
-            .then(message => {
-                // Mettre à jour l'interface
-                document.getElementById('deleteFileFlag').value = 'true';
-                document.getElementById('currentFile').textContent = 'Fichier supprimé avec succès';
-                document.getElementById('deleteCurrentFile').style.display = 'none';
-                document.getElementById('fichier').value = '';
-                
-                // Afficher un message de succès
-                alert('Fichier supprimé avec succès !');
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Erreur lors de la suppression du fichier');
-            });
-        }
-    });
-
-    // Réinitialiser le flag de suppression si l'utilisateur sélectionne un nouveau fichier
-    document.getElementById('fichier').addEventListener('change', function() {
-        if (this.files.length > 0) {
-            document.getElementById('deleteFileFlag').value = 'false';
-            // Ne pas cacher le bouton de suppression si on veut permettre de supprimer l'ancien même avec un nouveau fichier
-            // document.getElementById('deleteCurrentFile').style.display = 'none';
-        }
-    });
-
-    // Gestion de l'enregistrement des modifications
-    document.getElementById('saveadp').addEventListener('click', function() {
-        const form = document.getElementById('adpForm');
-        const formData = new FormData(form);
-        const adpId = document.getElementById('adpId').value;
-        
-        // Ajouter l'ID ADP au FormData
-        formData.append('IdAdp', adpId);
-        
-        // Récupérer le token anti-falsification
-        const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
-        
-        // Envoyer la requête de mise à jour
-        fetch(`?handler=UpdateAdp`, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'RequestVerificationToken': token
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                // Fermer le modal et recharger la page
-                const modal = bootstrap.Modal.getInstance(document.getElementById('adpModal'));
-                modal.hide();
-                location.reload();
-            } else {
-                alert('Erreur lors de la mise à jour');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Erreur lors de la mise à jour');
-        });
-    });
-
-    // Gestion de la suppression complète de VPL
-    document.getElementById('deleteadp').addEventListener('click', function() {
-        const adpId = document.getElementById('adpId').value;
-        
-        if (confirm('Êtes-vous sûr de vouloir supprimer complètement cet enregistrement VPL ? Cette action est irréversible.')) {
-            const formData = new FormData();
-            formData.append('id', adpId);
-            
-            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
-            
-            fetch(`?handler=Deleteadp`, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'RequestVerificationToken': token
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Fermer le modal et recharger la page
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('adpModal'));
-                    modal.hide();
-                    location.reload();
-                } else {
-                    alert('Erreur lors de la suppression');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Erreur lors de la suppression');
-            });
-        }
-    });
-
-    // === TÉLÉCHARGEMENT DES FICHIERS SÉLECTIONNÉS EN ZIP ===
-    document.getElementById('exportSelected').addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const selectedIds = getSelectedAdpIds();
-        console.log('IDs sélectionnés:', selectedIds); // Debug
-        
-        if (selectedIds.length === 0) {
-            alert('Veuillez sélectionner au moins un fichier à télécharger');
-            return;
-        }
-        
-        // Afficher un message de traitement
-        alert(`Préparation du téléchargement de ${selectedIds.length} fichier(s)...`);
-        
-        // Créer un formulaire pour envoyer les IDs au serveur
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '?handler=DownloadSelectedFiles';
-        
-        // Ajouter le token anti-falsification
-        const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
-        const tokenInput = document.createElement('input');
-        tokenInput.type = 'hidden';
-        tokenInput.name = '__RequestVerificationToken';
-        tokenInput.value = token;
-        form.appendChild(tokenInput);
-        
-        // Ajouter chaque ID sélectionné
-        selectedIds.forEach(id => {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'selectedIds';
-            input.value = id;
-            form.appendChild(input);
-            console.log('ID ajouté au formulaire:', id); // Debug
-        });
-        
-        // Soumettre le formulaire
-        document.body.appendChild(form);
-        console.log('Soumission du formulaire...'); // Debug
-        form.submit();
-        document.body.removeChild(form);
-    });
-        
-    // === SUPPRESSION DES FICHIERS SÉLECTIONNÉS ===
-    document.getElementById('deleteSelected').addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const selectedIds = getSelectedAdpIds();
-        if (selectedIds.length === 0) {
-            alert('Veuillez sélectionner au moins un fichier à supprimer');
-            return;
-        }
-        
-        if (confirm(`Êtes-vous sûr de vouloir supprimer ${selectedIds.length} fichier(s) sélectionné(s) ? Cette action est irréversible.`)) {
-            // Créer un formulaire pour envoyer les IDs au serveur
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '?handler=DeleteSelectedFiles';
-            
-            // Ajouter le token anti-falsification
-            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
-            const tokenInput = document.createElement('input');
-            tokenInput.type = 'hidden';
-            tokenInput.name = '__RequestVerificationToken';
-            tokenInput.value = token;
-            form.appendChild(tokenInput);
-            
-            // Ajouter chaque ID sélectionné
-            selectedIds.forEach(id => {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'selectedIds';
-                input.value = id;
-                form.appendChild(input);
-            });
-            
-            // Soumettre le formulaire
-            document.body.appendChild(form);
-            form.submit();
-        }
-    });
-
-    // Code JS pour l'affichage automatique du nom de l'opération et la ville 
-    document.getElementById('Code').addEventListener('change', function() {
-        // Récupérer l'option sélectionnée
-        var selectedOption = this.options[this.selectedIndex];
-        alert('Option sélectionnée : ' + selectedOption.text); // Debug
-        // Récupérer les données
-        var operationDescription = selectedOption.getAttribute('data-operation');
-        var villeDescription = selectedOption.getAttribute('data-ville');
-        
-        // Mettre à jour le champ Opération
-        document.getElementById('Operation').value = operationDescription || '';
-        
-        // Mettre à jour le champ Ville
-        document.getElementById('Ville').value = villeDescription || '';
-    });
-
-}); */
-
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 DOMContentLoaded - Initialisation du script');
 
@@ -513,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // === VALIDATION DU FORMULAIRE D'AJOUT ===
+    // === VALIDATION DU FORMULAIRE D'AJOUT DE FICHIER ADP ===
     var uploadForm = document.querySelector('form[asp-page-handler="UploadFileAdp"]');
     if (uploadForm) {
         uploadForm.addEventListener('submit', function(e) {
@@ -550,7 +101,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // === GESTION DES CASES À COCHER ===
+    // === AFFICHER LA DATE DU JOUR DANS L'INPUT DATE DE L'AJOUT DE FICHIER ===
+   /*  ajoutFichierModal.addEventListener('shown.bs.modal', function () {
+        console.log('✅ Modal affiché, tentative de préremplissage de la date');
+        var dateField = document.querySelector('input[name="DateDocument"]').value =  '2026-02-28';
+        if (dateField) {
+            var today = new Date().toISOString().split('T')[0];
+            dateField.value = today;
+            console.log('Date définie à :', today);
+        } else {
+            console.error('Champ DateDocument introuvable');
+        }
+    }); */
+
+    // === GESTION DES CASES À COCHER DANS LE TABLEAU DE FICHIER ADP ===
     var selectAllCheckbox = document.getElementById('selectAllCheckbox');
     var rowCheckboxes = document.querySelectorAll('.rowCheckbox');
     
@@ -589,8 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // === CODE JS POUR L'AFFICHAGE AUTOMATIQUE DU NOM DE L'OPÉRATION ET LA VILLE ===
-    var codeSelect = document.getElementById('Code');
-    
+    var codeSelect = document.getElementById('Code');    
     if (codeSelect) {
         //console.log('✅ Élément Code trouvé');
         
@@ -655,7 +218,7 @@ if (adpModal) {
         document.getElementById('deleteFileFlag').value = 'false';
         
         // Extraire les données des attributs data-*
-        const adpId = button.getAttribute('data-adp-id');
+       /*  const adpId = button.getAttribute('data-adp-id');
         const documentValue  = button.getAttribute('data-document');
         const contact = button.getAttribute('data-contact');
         const datedocument = button.getAttribute('data-datedocument');
@@ -663,12 +226,33 @@ if (adpModal) {
         const fonctions = button.getAttribute('data-fonctions');
         const client = button.getAttribute('data-client');
         const code = button.getAttribute('data-code');
+        const numDossier = button.getAttribute('data-numDossier');
         const boite = button.getAttribute('data-boite');
         const logement = button.getAttribute('data-logement');
         const adresse = button.getAttribute('data-adresse');
         const communequartier = button.getAttribute('data-communequartier');
         const ville = button.getAttribute('data-ville');
         const fichier = button.getAttribute('data-fichier');
+        const statutId = button.getAttribute('data-statut-id');
+ */
+        // Récupérer les attributs (certains nouveaux)
+        const adpId = button.getAttribute('data-adp-id');
+        const documentValue = button.getAttribute('data-document');
+        const contact = button.getAttribute('data-contact');
+        const datedocument = button.getAttribute('data-datedocument'); // déjà en yyyy-MM-dd
+        const annee = button.getAttribute('data-annee');
+        const fonctions = button.getAttribute('data-fonctions');
+        const client = button.getAttribute('data-client');
+        const code = button.getAttribute('data-code');           // si besoin
+        const idOpe = button.getAttribute('data-id-ope');        // NOUVEAU : ID de l'opération
+        const numDossier = button.getAttribute('data-numDossier');
+        const boite = button.getAttribute('data-boite');
+        const logement = button.getAttribute('data-logement');
+        const adresse = button.getAttribute('data-adresse');
+        const communequartier = button.getAttribute('data-communequartier');
+        const ville = button.getAttribute('data-ville');
+        const fichier = button.getAttribute('data-fichier');
+        const statutId = button.getAttribute('data-statut-id');  // NOUVEAU
 
         // Convertir la date du format dd/MM/yyyy vers yyyy-MM-dd pour l'input date
         let htmlDate = '';
@@ -680,19 +264,47 @@ if (adpModal) {
         }
         
         // Mettre à jour le contenu de la modale ADP
-        document.getElementById('adpId').value = adpId;
+        /* document.getElementById('adpId').value = adpId;
         document.getElementById('boite').value = boite;
         document.getElementById('code').value = code;
         document.getElementById('logement').value = logement;
         document.getElementById('client').value = client;
-        document.getElementById('annee').value = annee;
+        document.getElementById('anneet').value = annee;
         document.getElementById('ville').value = ville;
+        document.getElementById('numeroDossierAdpE').value = numDossier;
         document.getElementById('document').value = documentValue;
         document.getElementById('communequartier').value = communequartier;
         document.getElementById('adresse').value = adresse;
         document.getElementById('contact').value = contact;
         document.getElementById('fonctions').value = fonctions;
-        document.getElementById('datedocument').value = htmlDate;
+        document.getElementById('datedocument').value = htmlDate; */
+
+        // Mettre à jour les champs
+        document.getElementById('adpId').value = adpId;
+        document.getElementById('boite').value = boite;
+        document.getElementById('Code').value = idOpe;           // ← ID corrigé (majuscule) et utilisation de idOpe
+        document.getElementById('logement').value = logement;
+        document.getElementById('client').value = client;
+        document.getElementById('annee').value = annee;          // ← correction (annee au lieu de anneet)
+        document.getElementById('ville').value = ville;
+        document.getElementById('numeroDossierAdp').value = numDossier; // ← correction (suppression du 'E')
+        document.getElementById('document').value = documentValue;
+        // document.getElementById('communequartier').value = communequartier; // À décommenter si le champ existe
+        document.getElementById('adresse').value = adresse;
+        document.getElementById('contact').value = contact;
+        document.getElementById('fonctions').value = fonctions;
+        document.getElementById('datedocument').value = htmlDate; // déjà au bon format
+
+        // Mise à jour du statut
+        if (statutId) {
+            document.getElementById('statutId').value = statutId;
+        }
+
+        // Déclencher l'événement change sur le select Code pour mettre à jour les champs Operation et Ville
+        const codeSelect = document.getElementById('Code');
+        if (codeSelect) {
+            codeSelect.dispatchEvent(new Event('change'));
+        }
     
         // Mettre à jour le nom du fichier actuel et gérer le bouton de suppression
         const deleteFileBtn = document.getElementById('deleteCurrentFile');
@@ -811,7 +423,7 @@ if (saveAdpBtn) {
     });
 }
 
-// Gestion de la suppression complète de VPL
+// Gestion de la suppression complète de ADP
 const deleteAdpBtn = document.getElementById('deleteadp');
 if (deleteAdpBtn) {
     deleteAdpBtn.addEventListener('click', function() {
@@ -896,7 +508,7 @@ if (exportSelectedBtn) {
     });
 }
 
-// === SUPPRESSION DES FICHIERS SÉLECTIONNÉS ===
+// === SUPPRESSION DES FICHIERS ADP SÉLECTIONNÉS ===
 const deleteSelectedBtn = document.getElementById('deleteSelected');
 if (deleteSelectedBtn) {
     deleteSelectedBtn.addEventListener('click', function(e) {

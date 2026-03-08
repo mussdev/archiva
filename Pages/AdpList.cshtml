@@ -100,7 +100,7 @@
                     <input type="text" id="table-filter" class="form-control form-control-sm" placeholder="Filtrer par boite, code,n° logement, client, document ou ...">
                 </div>
                 <div class="filter-stats">
-                    <span id="filterStats" class="text-muted small">@Model.AdpList.Count() fichier(s) trouvé(s)</span>
+                    <span id="filterStats" class="text-muted small">@(Model.AdpList?.Count() ?? 0) fichier(s) trouvé(s)</span>
                 </div>
                 <table class="table mt-1">
                     <thead>
@@ -109,15 +109,16 @@
                             <th style="font-size: 12px;">Document</th>
                             <th style="font-size: 12px;">Boite</th>
                             <th style="font-size: 12px;">Code</th>
+                            <th style="font-size: 12px;">N° Dossier</th>
                             <th style="font-size: 12px;">Lgt.</th>
                             <th style="font-size: 12px;">Statut</th>
                             <th style="font-size: 12px;">Client</th>
-                            <th style="font-size: 12px;">Fonction</th>
+                            <th style="font-size: 12px;">Profession clt.</th>
                             <th style="font-size: 12px;">Tél.</th>
                             <th style="font-size: 12px;">Adresse</th>
                             <th style="font-size: 12px;">Annee</th>
                             <th style="font-size: 12px;">Ville</th>
-                            <th style="font-size: 12px;">Commune/Ville</th>
+                            <th style="font-size: 12px;">Opération ou Commune</th>
                             <th style="font-size: 12px;">Date doc.</th>
                         </tr>
                     </thead>
@@ -138,26 +139,30 @@
                                         data-fonctions="@adp.Fonctions"
                                         data-client="@adp.Client"
                                         data-code="@adp.Code"
+                                        data-id-ope="@adp.IdOpe"
+                                        data-statut-id="@adp.DernierStatutAdpId"
+                                        data-numDossier="@adp.NumDossierAdp"
                                         data-boite="@adp.Boite"
                                         data-logement="@adp.Logement"
                                         data-adresse="@adp.Adresse"
                                         data-communequartier="@adp.CommuneQuartier"
-                                        data-ville="@adp.Ville"
+                                        data-ville="@adp.IdOpeNavigation?.IdVilleNavigation?.DescriptionVille"
                                         data-fichier="@(adp.Lien ??"")">
                                         @(string.IsNullOrEmpty(adp.Document) ? "" : char.ToUpper(adp.Document[0]) + adp.Document.Substring(1).ToLower())
                                     </span>
                                 </td>
                                 <td style="font-size: 12px;">@adp.Boite</td>
-                                <td style="font-size: 12px;">@adp.Code</td>
+                                <td style="font-size: 12px;">@(string.IsNullOrWhiteSpace(adp.Code) ? adp.IdOpeNavigation?.CodeOpe : adp.Code)</td>
+                                <td style="font-size: 12px;">@adp.NumDossierAdp</td>
                                 <td style="font-size: 12px;">@adp.Logement</td>
-                                <td style="font-size: 12px;">✅</td>
+                                <td style="font-size: 12px; font-weight: bold;">@(adp.DernierStatutAdp?.DescriptionStatut)</td>
                                 <td style="font-size: 12px;">@adp.Client</td>                                 
                                 <td style="font-size: 12px;">@adp.Fonctions</td>
                                 <td style="font-size: 12px;">@adp.Contact</td>
                                 <td style="font-size: 12px;">@adp.Adresse</td>
                                 <td style="font-size: 12px;">@adp.Annee</td>
-                                <td style="font-size: 12px;">@adp.Ville</td>
-                                <td style="font-size: 12px;">@adp.CommuneQuartier</td>
+                                <td style="font-size: 12px;">@(string.IsNullOrWhiteSpace(adp.Ville) ? adp.IdOpeNavigation?.IdVilleNavigation?.DescriptionVille : adp.Ville)</td>
+                                <td style="font-size: 12px;">@(string.IsNullOrWhiteSpace(adp.CommuneQuartier) ? adp.IdOpeNavigation?.DescriptionOpe : adp.CommuneQuartier)</td>
                                 <td style="font-size: 12px;">@adp.DateDocument</td> 
                                 <td style="font-size: 12px;">
                                     <form method="post" asp-page-handler="View" asp-route-id="@adp.IdAdp" target="_blank">
@@ -172,7 +177,6 @@
         </div>
     }
 
-
     @* Methode pour modifier un fichier ADP *@
     <div class="modal fade" id="adpModal" tabindex="-1" aria-labelledby="adpModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -186,67 +190,99 @@
                         @Html.AntiForgeryToken()
                         <input type="hidden" id="adpId">
                         <input type="hidden" id="deleteFileFlag" name="DeleteFile" value="false">
-                        <div class="row mb-3">
-                            <div class="col-md-6">
+                        <div class="row mb-2">
+                            <div class="col-md-3">
+                                <label for="StatutVal" class="form-label">Statut</label>
+                                <select name="statutId" class="form-select" id="statutId">
+                                    @foreach (var statut in Model.UserAllowedStatuts)
+                                    {
+                                        <option value="@statut.Value">@statut.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3">
                                 <label for="boite" class="form-label required-field">N° Boite</label>
                                 <input type="text" name="Boite" id="boite" class="form-control"/>
                             </div>
-                            <div class="col-md-6">
-                                <label for="code" class="form-label required-field">Code</label>
-                                <input type="text" name="Code" id="code" class="form-control"/>
+                            <div class="col-md-3">
+                               <label for="Code" class="form-label">Code</label>
+                                <select name="IdOpe" id="Code" class="form-select" required>
+                                    <option value="" selected disabled>-- Sélectionner un code --</option>
+                                    @if (Model.OperationList != null && Model.OperationList.Any())
+                                    {
+                                        @foreach (var Ope in Model.OperationList)
+                                        {
+                                            <option value="@Ope.IdOpe" data-operation="@Ope.DescriptionOpe" data-ville="@Ope.IdVilleNavigation?.DescriptionVille">
+                                                @Ope.CodeOpe - @Ope.DescriptionOpe -@(Ope.IdVilleNavigation != null ? Ope.IdVilleNavigation.DescriptionVille : "Ville inconnue")
+                                            </option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="Operation" class="form-label">Opération</label>
+                                <input type="text" id="Operation" name="Operation" class="form-control bg-warning" readonly />
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-2">
+                             <div class="col-md-3">
+                                <label for="client" class="form-label required-field">Client</label>
+                                <input type="text" name="Client" id="client" class="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="adresse" class="form-label">Adresse</label>
+                                <input type="text" name="Adresse" id="adresse" class="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="contact" class="form-label">Contact</label>
+                                <input type="text" name="Contact" id="contact" class="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="fonctions" class="form-label">Profession client</label>
+                                <input type="text" name="Fonctions" id="fonctions" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row mb-2">
                             <div class="col-md-6">
                                 <label for="logement" class="form-label required-field">N° Logement</label>
                                 <input type="text" name="Logement" id="logement" class="form-control" />
                             </div>
                             <div class="col-md-6">
-                                <label for="client" class="form-label required-field">Client</label>
-                                <input type="text" name="Client" id="client" class="form-control" />
+                                <label for="ville" class="form-label">Ville/Commune</label>
+                                <input type="text" name="Ville" id="ville" class="form-control bg-warning" readonly />
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="annee" class="form-label">Année</label>
-                                <input type="text" name="Annee" id="annee" class="form-control" />
-                            </div>
-                            <div class="col-md-6">
-                                <label for="ville" class="form-label">Ville</label>
-                                <input type="text" name="Ville" id="ville" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row mb-3">
+                        <div class="row mb-2">
                             <div class="col-md-6">
                                 <label for="document" class="form-label">Description Doc.</label>
                                 <input type="text" name="Document" id="document" class="form-control" />
                             </div>
                             <div class="col-md-6">
+                                <label for="annee" class="form-label">Année</label>
+                                <input type="text" name="Annee" id="annee" class="form-control" />
+                            </div>
+                        </div>
+                        @* <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="document" class="form-label">Description Doc.</label>
+                                <input type="text" name="DocumentEdit" id="documentEdit" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
                                 <label for="communequartier" class="form-label">Commune/Quartier</label>
-                                <input type="text" name="CommuneQuartier" id="communequartier" class="form-control" />
+                                <input type="text" name="CommuneQuartierEdit" id="communequartierEdit" class="form-control" />
                             </div>
-                        </div>
-                        <div class="row mb-3">
+                        </div> *@
+                        <div class="row mb-2">
                             <div class="col-md-6">
-                                <label for="adresse" class="form-label">Adresse</label>
-                                <input type="text" name="Adresse" id="adresse" class="form-control" />
-                            </div>
-                            <div class="col-md-6">
-                                <label for="contact" class="form-label">Contact</label>
-                                <input type="text" name="Contact" id="contact" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="fonctions" class="form-label">Fonctions</label>
-                                <input type="text" name="Fonctions" id="fonctions" class="form-control" />
+                                <label for="NumeroDossierAdp" class="form-label">N° Dossier</label>
+                                <input type="text" name="NumeroDossierAdp" id="numeroDossierAdp" class="form-control" />
                             </div>
                             <div class="col-md-6">
-                                <label for="datedocument" class="form-label">Date Document</label>
+                                <label for="datedocument" class="form-label">Date</label>
                                 <input type="date" name="DateDocument" id="datedocument" class="form-control" required />
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row">
                             <div class="col-md-12">
                                 <label for="fichier" class="form-label required-field">Fichier numérisé (PDF)</label>
                                 <input type="file" name="Fichier" id="fichier" class="form-control" accept=".pdf"/>
@@ -274,6 +310,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form method="post" enctype="multipart/form-data" asp-page-handler="UploadFileAdp">
+                     @Html.AntiForgeryToken()
                     <div class="modal-header" style="background: ; color:white;">
                         <h5 class="modal-title" id="ajoutFichierModalLabel">Ajouter un fichier ADP</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
@@ -282,11 +319,11 @@
                         <div class="row g-3">
                             <div class="col-md-3">
                                 <label for="StatutVal" class="form-label">Statut</label>
-                                <select name="StatutVal" class="form-select" id="statutId">
-                                    <option value="Nouveau" selected disabled>Nouveau</option>
+                                <select name="statutId" class="form-select" id="statutId">
+                                    <option value="1" selected disabled>Nouveau</option>
                                     @foreach (var statut in Model.UserAllowedStatuts)
                                     {
-                                        <option value="@statut">@statut</option>
+                                        <option value="@statut.Value">@statut.Text</option>
                                     }
                                 </select>
                             </div>
@@ -296,13 +333,16 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="Code" class="form-label">Code</label>
-                                <select name="IdOpe" id="IdOpe" class="form-select" required>
+                                <select name="IdOpe" id="Code" class="form-select" required>
                                     <option value="" selected disabled>-- Sélectionner un code --</option>
-                                    @foreach (var Ope in Model.OperationList)
+                                    @if (Model.OperationList != null && Model.OperationList.Any())
                                     {
-                                        <option value="@Ope.IdOpe" data-operation="@Ope.DescriptionOpe" data-ville="@Ope.IdVilleNavigation?.DescriptionVille">
-                                            @Ope.CodeOpe - @Ope.DescriptionOpe -@(Ope.IdVilleNavigation != null ? Ope.IdVilleNavigation.DescriptionVille : "Ville inconnue")
-                                        </option>
+                                        @foreach (var Ope in Model.OperationList)
+                                        {
+                                            <option value="@Ope.IdOpe" data-operation="@Ope.DescriptionOpe" data-ville="@Ope.IdVilleNavigation?.DescriptionVille">
+                                                @Ope.CodeOpe - @Ope.DescriptionOpe -@(Ope.IdVilleNavigation != null ? Ope.IdVilleNavigation.DescriptionVille : "Ville inconnue")
+                                            </option>
+                                        }
                                     }
                                 </select>
                             </div>

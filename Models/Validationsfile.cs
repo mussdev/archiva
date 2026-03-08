@@ -22,4 +22,8 @@ public partial class Validationsfile
     public string? MotifRejet { get; set; }
 
     public DateTime? CreatedAt { get; set; }
+
+    public string? Commentaire { get; set; } = string.Empty;
+
+    public string? TypeAction { get; set; } = string.Empty;
 }

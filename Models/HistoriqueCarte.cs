@@ -15,6 +15,10 @@ public partial class HistoriqueCarte
 
     public DateOnly DateVu { get; set; }
 
+    public string? Commentaire { get; set; } = string.Empty;
+
+    public string? TypeAction { get; set; } = string.Empty;
+
     public virtual Carte IdCarteNavigation { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;

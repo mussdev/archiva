@@ -9,8 +9,32 @@
       "PackagePath": "staticwebassets\\ADP\\1997\\971700\\00001\\00001\\dr05.pdf"
     },
     {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\FNE-Guide utilisateur.pdf",
+      "PackagePath": "staticwebassets\\ADP\\NewADP\\FNE-Guide utilisateur.pdf"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\ReportDCM.pdf",
+      "PackagePath": "staticwebassets\\ADP\\NewADP\\ReportDCM.pdf"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\bulletin-vote-1112025.pdf",
+      "PackagePath": "staticwebassets\\ADP\\NewADP\\bulletin-vote-1112025.pdf"
+    },
+    {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\bulletin-vote-1212025-sante.pdf",
       "PackagePath": "staticwebassets\\ADP\\NewADP\\bulletin-vote-1212025-sante.pdf"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\bulletin-vote-1212025.pdf",
+      "PackagePath": "staticwebassets\\ADP\\NewADP\\bulletin-vote-1212025.pdf"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\bulletin-vote-anah-17112025.pdf",
+      "PackagePath": "staticwebassets\\ADP\\NewADP\\bulletin-vote-anah-17112025.pdf"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\bulletin-vote-diaby.pdf",
+      "PackagePath": "staticwebassets\\ADP\\NewADP\\bulletin-vote-diaby.pdf"
     },
     {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\catographie_interaction_application_21052025.pdf",
@@ -23,6 +47,10 @@
     {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\draft-etat-periodique-commission-loyer-GI.pdf",
       "PackagePath": "staticwebassets\\ADP\\NewADP\\draft-etat-periodique-commission-loyer-GI.pdf"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\guide_installation_omran_version_power_point_131224.pdf",
+      "PackagePath": "staticwebassets\\ADP\\NewADP\\guide_installation_omran_version_power_point_131224.pdf"
     },
     {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\A103\\A103C08.pdf",

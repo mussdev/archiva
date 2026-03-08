@@ -5,6 +5,7 @@ using anahged.Models;
 using anahged.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace anahged.Pages
@@ -12,9 +13,9 @@ namespace anahged.Pages
     public class AdpListModel : PageModel
     {
         private readonly GedServices _gedservices;
-        public IList<Models.Adp> AdpList { get; set; } = default!;
-        public IList<Models.Operation> OperationList { get; set; } = default!;
-        public IList<string> UserAllowedStatuts { get; set; } = new List<string>();
+        public IList<Models.Adp> AdpList { get; set; } = new List<Models.Adp>();
+        public IList<Models.Operation> OperationList { get; set; } = new List<Models.Operation>();
+        public IList<SelectListItem> UserAllowedStatuts { get; set; } = new List<SelectListItem>();
 
         private readonly IWebHostEnvironment _environment;
         public readonly GedContext _gedcontext;
@@ -50,8 +51,8 @@ namespace anahged.Pages
         [BindProperty(SupportsGet = true)]
         public string Ville { get; set; }
 
-        [BindProperty(SupportsGet = true)]
-        public string CommuneQuartier { get; set; }
+/*         [BindProperty(SupportsGet = true)]
+        public string CommuneQuartier { get; set; } */
 
        // [BindProperty(SupportsGet = true)]
        // public string Cote { get; set; }
@@ -67,6 +68,12 @@ namespace anahged.Pages
         
         [BindProperty(SupportsGet = true)]
         public int statutId { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string? NumeroDossierAdp { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int DernierStatutAdpId { get; set; }
         
         public AdpListModel(GedServices gedservices, GedContext gedcontext, IWebHostEnvironment environment)
         {
@@ -77,9 +84,11 @@ namespace anahged.Pages
         public async Task OnGetAsync()
         {
             //ViewData["MessageRecherche"] = "Recherchez ici vos documents ADP 🔍 !";
-            AdpList = await _gedservices.RechercherAdpAsync(Logement, Document, Client, Boite, Code, Annee);
+            var resulAdp = await _gedservices.RechercherAdpAsync(Logement, Document, Client, Boite, Code, Annee);
+            
+            AdpList = resulAdp?? new List<Models.Adp>();
 
-            if (AdpList == null || AdpList.Count == 0)
+            if (AdpList.Count == 0)
             {
                 ViewData["MessageRecherche"] = "Aucun résultat trouvé 😓!";
             }
@@ -96,11 +105,13 @@ namespace anahged.Pages
                 .Join(_gedcontext.Statuts,
                     userstatut => userstatut.IdStatut,
                     statut => statut.IdStatut,
-                    (userstatut, statut) => 
-                        statut.DescriptionStatut)
+                    (userstatut, statut) => new SelectListItem
+                    {
+                        Value = statut.IdStatut.ToString(),
+                        Text = statut.DescriptionStatut
+                    })
                 .Distinct()
                 .ToListAsync();
-            
         }
 
         public async Task<IActionResult> OnPostView(int id)
@@ -119,7 +130,7 @@ namespace anahged.Pages
             }
         }
 
-        // Rappelle de la methode d'enregistrement de nouveau fichier ADP dans GedServices
+        // handler pour l'enregistrement de nouveaux fichiers ADP
         public async Task<IActionResult> OnPostUploadFileAdp()
         {
             if (Fichier == null || Fichier.Length == 0)
@@ -136,6 +147,18 @@ namespace anahged.Pages
                 return Page();
             }
 
+            // Vérification de la validité de l'id de l'opération sélectionnée et statut
+            if(IdOpe <= 0)
+            {
+                ModelState.AddModelError("IdOpe", "Veuillez sélectionner une opération valide ❌.");
+                return Page();
+            }            
+            if (statutId <= 0)
+            {
+                ModelState.AddModelError("statutId", "Veuillez sélectionner un statut valide ❌.");
+                return Page();
+            }
+            
             try
             {
                 // Récupérer l'ID de l'utilisateur connecté
@@ -143,13 +166,14 @@ namespace anahged.Pages
                 // Console.WriteLine($"ID Utilisateur connecté : {userId}");
 
                 var message = await _gedservices.EnregistrerFichierAdpAsync(
-                    Fichier, Annee, Code, Boite, Logement, Document,
+                    Fichier, Annee, Boite, Logement, Document,
                     DateDocument, Client, Fonctions, Adresse, Contact,
-                    IdOpe, userId, statutId);
+                    IdOpe, userId, statutId, NumeroDossierAdp
+                );
 
                 TempData["SuccessMessage"] = message;
                 ViewData["MessageUpload"] = "Fichier ADP enregistré avec succès ✅ !";
-
+                Console.WriteLine($"Message du service : {message}");
                 // Réinitialiser les propriétés après succès
                 ResetProperties();
                 ModelState.Clear();
@@ -158,9 +182,27 @@ namespace anahged.Pages
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erreur: {ex.Message}");
+               /*  Console.WriteLine($"Erreur: {ex.Message}");
                 Console.WriteLine($"Stack Trace: {ex.StackTrace}");
                 ModelState.AddModelError(string.Empty, $"Erreur lors de l'enregistrement du fichier : {ex.Message} ❌.");
+                return Page(); */
+                /* Console.WriteLine("=== EXCEPTION DÉTAILLÉE ===");
+                Console.WriteLine(ex.ToString()); // Affiche toute la pile
+                ModelState.AddModelError(string.Empty, $"Erreur : {ex.Message}");
+                return Page(); */
+                Console.WriteLine("=== EXCEPTION ===");
+                Console.WriteLine($"Message: {ex.Message}");
+                if (ex.InnerException != null)
+                    Console.WriteLine($"Inner: {ex.InnerException.Message}");
+                // Pour DbUpdateException, afficher les entités en conflit
+                if (ex is DbUpdateException dbEx)
+                {
+                    foreach (var entry in dbEx.Entries)
+                    {
+                        Console.WriteLine($"Entité: {entry.Entity.GetType().Name}, État: {entry.State}");
+                    }
+                }
+                ModelState.AddModelError(string.Empty, $"Erreur : {ex.Message}");
                 return Page();
             }
         }
@@ -178,7 +220,7 @@ namespace anahged.Pages
             Adresse = string.Empty;
             Contact = string.Empty;
             Ville = string.Empty;
-            CommuneQuartier = string.Empty;
+         //   CommuneQuartier = string.Empty;
             Fichier = null!;
         }
 
@@ -200,8 +242,8 @@ namespace anahged.Pages
             return userId;
         }
 
-        // Methode pour modifier les informations d'un enregistrement ADP
-        public async Task<IActionResult> OnPostUpdateAdp()
+        // handler methode pour modifier les informations d'un enregistrement ADP
+        /* public async Task<IActionResult> OnPostUpdateAdp()
         {
             try
             {
@@ -224,6 +266,9 @@ namespace anahged.Pages
                 adp.Adresse = Request.Form["Adresse"];
                 adp.Contact = Request.Form["Contact"];
                 adp.Fonctions = Request.Form["Fonctions"];
+                adp.NumDossierAdp = Request.Form["NumeroDossierAdp"];
+                adp.IdOpe = int.TryParse(Request.Form["IdOpe"], out int idOpe) ? idOpe : (int?)null;
+                adp.DernierStatutAdpId = int.TryParse(Request.Form["statutId"], out int statutId) ? statutId : (int?)null;
                 
                 // Gérer la date
                 if (DateTime.TryParse(Request.Form["DateDocument"], out DateTime dateDoc))
@@ -278,6 +323,31 @@ namespace anahged.Pages
                 }
 
                 await _gedcontext.SaveChangesAsync();
+
+                // enregistrer l'historique de la modification
+                var historiqueAdp = new HistoriqueAdp
+                {
+                    IdAdp = adp.IdAdp,
+                    UserId = GetCurrentUserId(),
+                    DateHisto = DateTime.Now,
+                    DateVu = DateOnly.FromDateTime(DateTime.Now),
+                    TypeAction = "Modification",
+                    Commentaire = $"ADP modifié - Boite: {adp.Boite}, Logement: {adp.Logement}, Client: {adp.Client}, Statut ID: {adp.DernierStatutAdpId}, Numéro Dossier: {adp.NumDossierAdp}, Opération ID: {adp.IdOpe}"
+                };
+                _gedcontext.HistoriqueAdps.Add(historiqueAdp);
+                await _gedcontext.SaveChangesAsync();
+
+                // Code pour historiser la gestion des validations de fichiers ADP
+                var validationfile = new Validationsfile
+                {
+                    IdAdp = adp.IdAdp,
+                    UserId = GetCurrentUserId(),
+                    DateValidation = DateTime.Now,
+                    TypeAction = "Modification",
+                    Commentaire = $"Statut modifié - Nouveau statut ID: {adp.DernierStatutAdpId}"
+                };
+                _gedcontext.Validationsfiles.Add(validationfile);
+                await _gedcontext.SaveChangesAsync();
                 
                 return Content("Mise à jour réussie");
             }
@@ -285,9 +355,205 @@ namespace anahged.Pages
             {
                 return StatusCode(500, "Erreur lors de la modification: " + ex.Message);
             }
+        } */
+
+        public async Task<IActionResult> OnPostUpdateAdp()
+        {
+            try
+            {
+                var id = int.Parse(Request.Form["IdAdp"]);
+                var adp = await _gedcontext.Adps.FindAsync(id);
+                if (adp == null)
+                    return NotFound();
+
+                // Conserver une copie des anciennes valeurs pour comparaison
+                var ancienAdp = new
+                {
+                    adp.Boite,
+                    adp.Code,
+                    adp.Logement,
+                    adp.Client,
+                    adp.Annee,
+                    adp.Ville,
+                    adp.Document,
+                    adp.CommuneQuartier,
+                    adp.Adresse,
+                    adp.Contact,
+                    adp.Fonctions,
+                    adp.NumDossierAdp,
+                    adp.IdOpe,
+                    adp.DernierStatutAdpId,
+                    adp.DateDocument,
+                    adp.Lien
+                };
+
+                // Variables pour savoir si des changements ont eu lieu
+                bool modificationChamps = false;
+                bool changementStatut = false;
+                bool changementFichier = false;
+
+                // Mise à jour des champs
+                adp.Boite = Request.Form["Boite"];
+                if (adp.Boite != ancienAdp.Boite) modificationChamps = true;
+
+                adp.Code = Request.Form["Code"];
+                if (adp.Code != ancienAdp.Code) modificationChamps = true;
+
+                adp.Logement = Request.Form["Logement"];
+                if (adp.Logement != ancienAdp.Logement) modificationChamps = true;
+
+                adp.Client = Request.Form["Client"];
+                if (adp.Client != ancienAdp.Client) modificationChamps = true;
+
+                adp.Annee = Request.Form["Annee"];
+                if (adp.Annee != ancienAdp.Annee) modificationChamps = true;
+
+                adp.Ville = Request.Form["Ville"];
+                if (adp.Ville != ancienAdp.Ville) modificationChamps = true;
+
+                adp.Document = Request.Form["Document"];
+                if (adp.Document != ancienAdp.Document) modificationChamps = true;
+
+                adp.CommuneQuartier = Request.Form["CommuneQuartier"];
+                if (adp.CommuneQuartier != ancienAdp.CommuneQuartier) modificationChamps = true;
+
+                adp.Adresse = Request.Form["Adresse"];
+                if (adp.Adresse != ancienAdp.Adresse) modificationChamps = true;
+
+                adp.Contact = Request.Form["Contact"];
+                if (adp.Contact != ancienAdp.Contact) modificationChamps = true;
+
+                adp.Fonctions = Request.Form["Fonctions"];
+                if (adp.Fonctions != ancienAdp.Fonctions) modificationChamps = true;
+
+                adp.NumDossierAdp = Request.Form["NumeroDossierAdp"];
+                if (adp.NumDossierAdp != ancienAdp.NumDossierAdp) modificationChamps = true;
+
+                // IdOpe
+                int? newIdOpe = int.TryParse(Request.Form["IdOpe"], out int idOpe) ? idOpe : (int?)null;
+                if (newIdOpe != ancienAdp.IdOpe)
+                {
+                    adp.IdOpe = newIdOpe;
+                    modificationChamps = true;
+                }
+
+                // Statut
+                int? newStatutId = int.TryParse(Request.Form["statutId"], out int statutId) ? statutId : (int?)null;
+                if (newStatutId != ancienAdp.DernierStatutAdpId)
+                {
+                    adp.DernierStatutAdpId = newStatutId;
+                    modificationChamps = true;
+                    changementStatut = true;
+                }
+
+                // Date
+                if (DateTime.TryParse(Request.Form["DateDocument"], out DateTime dateDoc))
+                {
+                    string newDate = dateDoc.ToString("dd/MM/yyyy");
+                    if (newDate != ancienAdp.DateDocument)
+                    {
+                        adp.DateDocument = newDate;
+                        modificationChamps = true;
+                    }
+                }
+
+                // Gestion du fichier
+                var fichier = Request.Form.Files["Fichier"];
+                bool deleteFile = Request.Form["DeleteFile"] == "true";
+
+                if (fichier != null && fichier.Length > 0)
+                {
+                    // Nouveau fichier uploadé → suppression de l'ancien
+                    if (!string.IsNullOrEmpty(adp.Lien))
+                    {
+                        var oldFilePath = Path.Combine(_environment.WebRootPath, adp.Lien);
+                        if (System.IO.File.Exists(oldFilePath))
+                            System.IO.File.Delete(oldFilePath);
+                    }
+
+                    var originalFileName = fichier.FileName;
+                    var filePath = Path.Combine(_environment.WebRootPath, "ADP/NewADP/", originalFileName);
+                    var directory = Path.GetDirectoryName(filePath);
+                    if (!Directory.Exists(directory))
+                        Directory.CreateDirectory(directory);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await fichier.CopyToAsync(stream);
+                    }
+
+                    adp.Lien = Path.Combine("ADP/NewADP/", originalFileName).Replace("\\", "/");
+                    modificationChamps = true;
+                    changementFichier = true;
+                }
+                else if (deleteFile && !string.IsNullOrEmpty(adp.Lien))
+                {
+                    // Suppression demandée sans nouveau fichier
+                    var oldFilePath = Path.Combine(_environment.WebRootPath, adp.Lien);
+                    if (System.IO.File.Exists(oldFilePath))
+                        System.IO.File.Delete(oldFilePath);
+
+                    adp.Lien = null;
+                    modificationChamps = true;
+                    changementFichier = true;
+                }
+
+                // Sauvegarder les modifications si quelque chose a changé
+                if (modificationChamps)
+                {
+                    await _gedcontext.SaveChangesAsync();
+
+                    // Historique général (pour toute modification)
+                    var historiqueAdp = new HistoriqueAdp
+                    {
+                        IdAdp = adp.IdAdp,
+                        UserId = GetCurrentUserId(),
+                        DateHisto = DateTime.Now,
+                        DateVu = DateOnly.FromDateTime(DateTime.Now),
+                        TypeAction = "Modification",
+                        Commentaire = $"ADP modifié - Boite: {adp.Boite}, Logement: {adp.Logement}, Client: {adp.Client}, Statut ID: {adp.DernierStatutAdpId}, Numéro Dossier: {adp.NumDossierAdp}, Opération ID: {adp.IdOpe}"
+                    };
+                    _gedcontext.HistoriqueAdps.Add(historiqueAdp);
+
+                    // Validation seulement si le statut a changé
+                    if (changementStatut)
+                    {
+                        var validationfile = new Validationsfile
+                        {
+                            IdAdp = adp.IdAdp,
+                            UserId = GetCurrentUserId(),
+                            DateValidation = DateTime.Now,
+                            TypeAction = "Modification",
+                            Commentaire = $"Statut modifié - Nouveau statut ID: {adp.DernierStatutAdpId}"
+                        };
+                        _gedcontext.Validationsfiles.Add(validationfile);
+                    }
+
+                    // Si vous voulez aussi tracer les modifications de fichier, vous pouvez ajouter un autre type d'historique
+                    if (changementFichier)
+                    {
+                        // Par exemple, ajouter un commentaire supplémentaire dans l'historique général
+                        // ou créer une autre table dédiée. Ici, on peut juste enrichir le commentaire.
+                        // Pour simplifier, on peut ajouter une entrée spécifique si nécessaire.
+                    }
+
+                    await _gedcontext.SaveChangesAsync();
+
+                    return Content("Mise à jour réussie");
+                }
+                else
+                {
+                    // Rien n'a changé : on ne fait rien, mais on peut retourner un message
+                    return Content("Aucune modification détectée");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erreur lors de la modification: " + ex.Message);
+            }
         }
 
-        // Methode pour supprimer le fichier ADP associé à un enregistrement ADP
+        // handler methode pour supprimer le fichier ADP associé à un enregistrement ADP
         public async Task<IActionResult> OnPostDeleteFileAdp(int id)
         {
             try
@@ -326,7 +592,7 @@ namespace anahged.Pages
             }
         }
 
-        // Methode pour supprimer le fichier VPL associé à un enregistrement VPL
+        // handler methode pour supprimer le fichier VPL associé à un enregistrement VPL
         public async Task<IActionResult> OnPostDeleteAdp(int id)
         {
             try

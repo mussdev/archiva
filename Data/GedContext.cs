@@ -62,7 +62,7 @@ public partial class GedContext : DbContext
                 .HasCharSet("latin1")
                 .UseCollation("latin1_swedish_ci");
 
-            entity.HasIndex(e => e.Lien, "cle_lien").IsUnique();
+            entity.HasIndex(e => e.DernierStatutAdpId, "idx_adp_dernierstatutadpId");
 
             entity.HasIndex(e => e.IdOpe, "idx_adp_idope");
 
@@ -134,16 +134,19 @@ public partial class GedContext : DbContext
             entity.Property(e => e.Logement)
                 .HasMaxLength(25)
                 .HasColumnName("logement");
+            entity.Property(e => e.NumDossierAdp)
+                .HasMaxLength(55)
+                .HasColumnName("numDossierAdp");
             entity.Property(e => e.Ville)
                 .HasMaxLength(50)
                 .HasColumnName("ville")
                 .UseCollation("utf8mb3_general_ci")
                 .HasCharSet("utf8mb3");
-            entity.Property(e => e.NumDossierAdp)
-                .HasMaxLength(55)
-                .HasColumnName("numDossierAdp")
-                .UseCollation("utf8mb3_general_ci")
-                .HasCharSet("utf8mb3");
+
+            entity.HasOne(d => d.DernierStatutAdp).WithMany(p => p.Adps)
+                .HasForeignKey(d => d.DernierStatutAdpId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("fk_adp_statuts");
 
             entity.HasOne(d => d.IdOpeNavigation).WithMany(p => p.Adps)
                 .HasForeignKey(d => d.IdOpe)
@@ -186,6 +189,9 @@ public partial class GedContext : DbContext
                 .HasColumnName("lien")
                 .UseCollation("utf8mb3_general_ci")
                 .HasCharSet("utf8mb3");
+            entity.Property(e => e.NumDossierCarte)
+                .HasMaxLength(55)
+                .HasColumnName("numDossierCarte");
             entity.Property(e => e.Operation)
                 .HasMaxLength(255)
                 .HasColumnName("operation")
@@ -209,11 +215,6 @@ public partial class GedContext : DbContext
             entity.Property(e => e.Ville)
                 .HasMaxLength(50)
                 .HasColumnName("ville")
-                .UseCollation("utf8mb3_general_ci")
-                .HasCharSet("utf8mb3");
-            entity.Property(e => e.NumDossierCarte)
-                .HasMaxLength(55)
-                .HasColumnName("numDossierCarte")
                 .UseCollation("utf8mb3_general_ci")
                 .HasCharSet("utf8mb3");
 
@@ -274,6 +275,15 @@ public partial class GedContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.HistoriqueAdps)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("historique_adp_ibfk_2");
+            entity.Property(e => e.TypeAction)
+                .HasMaxLength(55)
+                .UseCollation("utf8mb3_general_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.Commentaire)
+                .HasMaxLength(255)
+                .HasColumnName("commentaire")
+                .UseCollation("utf8mb3_general_ci")
+                .HasCharSet("utf8mb3");
         });
 
         modelBuilder.Entity<HistoriqueCarte>(entity =>
@@ -305,6 +315,18 @@ public partial class GedContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.HistoriqueCartes)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("historique_carte_ibfk_2");
+            
+            entity.Property(e => e.TypeAction)
+                .HasMaxLength(55)
+                .UseCollation("utf8mb3_general_ci")
+                .HasCharSet("utf8mb3");
+            
+            entity.Property(e => e.Commentaire)
+                .HasMaxLength(255)
+                .HasColumnName("commentaire")
+                .UseCollation("utf8mb3_general_ci")
+                .HasCharSet("utf8mb3");
+
         });
 
         modelBuilder.Entity<HistoriqueVpl>(entity =>
@@ -336,6 +358,16 @@ public partial class GedContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.HistoriqueVpls)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("historique_vpl_ibfk_2");
+
+            entity.Property(e => e.TypeAction)
+                .HasMaxLength(55)
+                .UseCollation("utf8mb3_general_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.Commentaire)
+                .HasMaxLength(255)
+                .HasColumnName("commentaire")
+                .UseCollation("utf8mb3_general_ci")
+                .HasCharSet("utf8mb3");
         });
 
         modelBuilder.Entity<Operation>(entity =>
@@ -431,22 +463,22 @@ public partial class GedContext : DbContext
 
             entity.ToTable("validationsfiles");
 
-            entity.HasIndex(e => e.IdAdp, "UQ_Adp_Validation").IsUnique();
-
-            entity.HasIndex(e => e.IdCarte, "UQ_Cartes_Validation").IsUnique();
-
-            entity.HasIndex(e => e.IdStatut, "UQ_Statut_Validation").IsUnique();
-
-            entity.HasIndex(e => e.UserId, "UQ_User_Validation").IsUnique();
-
-            entity.HasIndex(e => e.IdVpl, "UQ_Vpl_Validation").IsUnique();
-
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp");
             entity.Property(e => e.DateValidation).HasColumnType("datetime");
             entity.Property(e => e.IdStatut).HasDefaultValueSql("'1'");
             entity.Property(e => e.MotifRejet).HasColumnType("text");
+
+            entity.Property(e => e.TypeAction)
+                .HasMaxLength(55)
+                .UseCollation("utf8mb3_general_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.Commentaire)
+                .HasMaxLength(255)
+                .HasColumnName("commentaire")
+                .UseCollation("utf8mb3_general_ci")
+                .HasCharSet("utf8mb3");
         });
 
         modelBuilder.Entity<Ville>(entity =>
@@ -546,14 +578,12 @@ public partial class GedContext : DbContext
             entity.Property(e => e.Logement)
                 .HasMaxLength(25)
                 .HasColumnName("logement");
+            entity.Property(e => e.NumDossierVpl)
+                .HasMaxLength(55)
+                .HasColumnName("numDossierVpl");
             entity.Property(e => e.Ville)
                 .HasMaxLength(50)
                 .HasColumnName("ville")
-                .UseCollation("utf8mb3_general_ci")
-                .HasCharSet("utf8mb3");
-            entity.Property(e => e.NumDossierVpl)
-                .HasMaxLength(55)
-                .HasColumnName("numDossierVpl")
                 .UseCollation("utf8mb3_general_ci")
                 .HasCharSet("utf8mb3");
 

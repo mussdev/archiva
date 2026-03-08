@@ -12,6 +12,4 @@ public partial class Userstatut
     public int? UserId { get; set; }
 
     public DateTime? CreatedAt { get; set; }
-    
-    public virtual Statut IdStatutNavigation { get; set; } = null!;
 }

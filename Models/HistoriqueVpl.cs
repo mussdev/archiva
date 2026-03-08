@@ -15,6 +15,10 @@ public partial class HistoriqueVpl
 
     public DateOnly DateVu { get; set; }
 
+    public string? Commentaire { get; set; } = string.Empty;
+
+    public string? TypeAction { get; set; } = string.Empty;
+
     public virtual Vpl IdVplNavigation { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;

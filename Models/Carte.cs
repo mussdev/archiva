@@ -28,6 +28,7 @@ public partial class Carte
     public string Lien { get; set; } = null!;
 
     public int? IdOpe { get; set; }
+
     public string? NumDossierCarte { get; set; }
 
     public virtual ICollection<HistoriqueCarte> HistoriqueCartes { get; set; } = new List<HistoriqueCarte>();

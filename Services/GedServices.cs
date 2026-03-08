@@ -30,7 +30,7 @@ namespace anahged.Services
         }
 
         // Methode de recherche des fichiers ADP par divers critères
-        public async Task<IList<Adp>> RechercherAdpAsync(string logement, string document, string client, string boite, string code, string annee)
+        /* public async Task<IList<Adp>> RechercherAdpAsync(string logement, string document, string client, string boite, string code, string annee)
         {
             if (string.IsNullOrEmpty(logement) &&
                 string.IsNullOrEmpty(document) &&
@@ -85,6 +85,46 @@ namespace anahged.Services
             }
 
             return await adpQuery.ToListAsync();
+        } */
+
+        public async Task<IList<Adp>> RechercherAdpAsync(string logement, string document, string client, string boite, string code, string annee)
+        {
+            if (string.IsNullOrEmpty(logement) &&
+                string.IsNullOrEmpty(document) &&
+                string.IsNullOrEmpty(client) &&
+                string.IsNullOrEmpty(boite) &&
+                string.IsNullOrEmpty(code) &&
+                string.IsNullOrEmpty(annee))
+            {
+                return new List<Adp>();
+            }
+
+            var adpQuery = _context.Adps.AsQueryable();
+
+            // Appliquer les filtres (inchangé)
+            if (!string.IsNullOrEmpty(logement))
+                adpQuery = adpQuery.Where(a => a.Logement.Contains(logement));
+
+            if (!string.IsNullOrEmpty(document))
+                adpQuery = adpQuery.Where(a => a.Document.Contains(document));
+
+            if (!string.IsNullOrEmpty(client))
+                adpQuery = adpQuery.Where(a => a.Client.Contains(client));
+
+            if (!string.IsNullOrEmpty(boite))
+                adpQuery = adpQuery.Where(a => a.Boite.Contains(boite));
+
+            if (!string.IsNullOrEmpty(code))
+                adpQuery = adpQuery.Where(a => a.Code.Contains(code));
+
+            if (!string.IsNullOrEmpty(annee))
+                adpQuery = adpQuery.Where(a => a.Annee.Contains(annee));
+
+            // Ici, ajoutez le Include avant le ToListAsync
+            return await adpQuery
+                .Include(a => a.DernierStatutAdp)   // ← Charge le statut associé
+                .Include(o => o.IdOpeNavigation)
+                .ToListAsync();
         }
 
         // Methode de recherche des fichiers VPL par divers critères
@@ -293,8 +333,8 @@ namespace anahged.Services
             throw new Exception($"Fichier VPL non trouvé. Chemins testés:\n- {cheminWebRoot}\n- {cheminContentRoot}\n- {cheminNewSicogi}\n- {cheminSicogi}");
         }
 
-        // Methode d'enregistrement des fichiers ADP
-        public async Task<string> EnregistrerFichierAdpAsync(IFormFile fichier, string annee, string code, string boite, string logement, string document, string dateDocument, string client, string fonctions, string adresse, string contact, int operationId, int userId, int statutId)
+        // Service pour enregistrer des fichiers ADP
+        public async Task<string> EnregistrerFichierAdpAsync(IFormFile fichier, string annee, string boite, string logement, string document, string dateDocument, string client, string fonctions, string adresse, string contact, int operationId, int userId, int statutId, string? numeroDossierAdp)
         {
             // Console.WriteLine($"Début de l'enregistrement - Fichier: {fichier?.FileName}, UserId: {userId}");
 
@@ -353,7 +393,7 @@ namespace anahged.Services
                 var adp = new Adp
                 {
                     Annee = annee,
-                    Code = code,
+                    //Code = code,
                     Boite = boite,
                     Logement = logement,
                     Document = document,
@@ -363,6 +403,8 @@ namespace anahged.Services
                     Adresse = adresse,
                     Contact = contact,
                     IdOpe = operationId,
+                    NumDossierAdp = numeroDossierAdp,
+                    DernierStatutAdpId = statutId,
                     Lien = Path.Combine("ADP/NewADP/", nomFichier).Replace("\\", "/") // Stocker le chemin relatif
                 };
 
@@ -375,19 +417,23 @@ namespace anahged.Services
                     IdAdp = adp.IdAdp,
                     UserId = userId,
                     DateHisto = DateTime.Now,
-                    DateVu = DateOnly.FromDateTime(DateTime.Now)
+                    DateVu = DateOnly.FromDateTime(DateTime.Now),
+                    TypeAction = "Enregistrement",
+                    Commentaire = $"Fichier ADP enregistré - Statut ID: {statutId}, Numéro Dossier: {numeroDossierAdp}, Opération ID: {operationId}, Client: {client}, Fonctions: {fonctions}, Adresse: {adresse}, Contact: {contact}, Boite: {boite}, Logement: {logement}, Document: {document}, Date Document: {dateDocument}"
                 };
 
                 _context.HistoriqueAdps.Add(historiqueAdp);
                 await _context.SaveChangesAsync();
 
-                // Code pour la gestion des validations de fichiers ADP
+                // Code pour historiser la gestion des validations de fichiers ADP
                 var validationfile = new Validationsfile
                 {
                     IdAdp = adp.IdAdp,
                     UserId = userId,
                     DateValidation = DateTime.Now,
                     IdStatut = statutId,
+                    TypeAction = "Enregistrement",
+                    Commentaire = $"Fichier ADP enregistré avec le statut ID {statutId}"
                 };
 
                 _context.Validationsfiles.Add(validationfile);

@@ -15,7 +15,12 @@ public partial class HistoriqueAdp
 
     public DateOnly? DateVu { get; set; }
 
+    public string? Commentaire { get; set; } = string.Empty;
+
+    public string? TypeAction { get; set; } = string.Empty;
+
     public virtual Adp IdAdpNavigation { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
+
 }

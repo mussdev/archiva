@@ -17,7 +17,6 @@ public partial class Vpl
 
     public string Document { get; set; } = null!;
 
-    public string? NumDossierVpl { get; set; } = null!;
     public string DateDocument { get; set; } = null!;
 
     public string Client { get; set; } = null!;
@@ -37,6 +36,8 @@ public partial class Vpl
     public string Lien { get; set; } = null!;
 
     public int? IdOpe { get; set; }
+
+    public string? NumDossierVpl { get; set; }
 
     public virtual ICollection<HistoriqueVpl> HistoriqueVpls { get; set; } = new List<HistoriqueVpl>();
 

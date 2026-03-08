@@ -18,6 +18,42 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\1997\971700\00001\00001\dr05.pdf'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\bulletin-vote-1112025.pdf'))">
+      <SourceType>Package</SourceType>
+      <SourceId>anahged</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/anahged</BasePath>
+      <RelativePath>ADP/NewADP/bulletin-vote-1112025.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>9e467edow9</Fingerprint>
+      <Integrity>P3UFtknBrS+uSI0etwF43EwLmqU18bdM+rWDyxSWwpY=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\bulletin-vote-1112025.pdf'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\bulletin-vote-1212025.pdf'))">
+      <SourceType>Package</SourceType>
+      <SourceId>anahged</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/anahged</BasePath>
+      <RelativePath>ADP/NewADP/bulletin-vote-1212025.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>m2ijubf26b</Fingerprint>
+      <Integrity>wsNbYVZ+kVa3PVOJlGV83Ql++PFaHwmVUdGlPmo14BY=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\bulletin-vote-1212025.pdf'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\bulletin-vote-1212025-sante.pdf'))">
       <SourceType>Package</SourceType>
       <SourceId>anahged</SourceId>
@@ -35,6 +71,42 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\bulletin-vote-1212025-sante.pdf'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\bulletin-vote-anah-17112025.pdf'))">
+      <SourceType>Package</SourceType>
+      <SourceId>anahged</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/anahged</BasePath>
+      <RelativePath>ADP/NewADP/bulletin-vote-anah-17112025.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>g7b4do45fa</Fingerprint>
+      <Integrity>vB6ql13lIuIgrBEAFnJMJLUuqK0i9rVJ8olnhR/JQkY=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\bulletin-vote-anah-17112025.pdf'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\bulletin-vote-diaby.pdf'))">
+      <SourceType>Package</SourceType>
+      <SourceId>anahged</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/anahged</BasePath>
+      <RelativePath>ADP/NewADP/bulletin-vote-diaby.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>vcsfhf0yg9</Fingerprint>
+      <Integrity>TwpXsa4yU/cP/4IHrQ+mGP5fPTG23oLv9n+vflgN69Y=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\bulletin-vote-diaby.pdf'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\catographie_interaction_application_21052025.pdf'))">
       <SourceType>Package</SourceType>
@@ -89,6 +161,60 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\draft-etat-periodique-commission-loyer-GI.pdf'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\FNE-Guide utilisateur.pdf'))">
+      <SourceType>Package</SourceType>
+      <SourceId>anahged</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/anahged</BasePath>
+      <RelativePath>ADP/NewADP/FNE-Guide utilisateur.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>azwxzzte6e</Fingerprint>
+      <Integrity>NuTXmbpOQqE5tc6hOpCuUTZXvmM7TTif/nJUOJ1+EQo=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\FNE-Guide utilisateur.pdf'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\guide_installation_omran_version_power_point_131224.pdf'))">
+      <SourceType>Package</SourceType>
+      <SourceId>anahged</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/anahged</BasePath>
+      <RelativePath>ADP/NewADP/guide_installation_omran_version_power_point_131224.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>ngrt6vpwx8</Fingerprint>
+      <Integrity>R2J6044JMcVFLWJg9BnTuW5UfEkMltvzVxt/jfe8/zs=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\guide_installation_omran_version_power_point_131224.pdf'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\ReportDCM.pdf'))">
+      <SourceType>Package</SourceType>
+      <SourceId>anahged</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/anahged</BasePath>
+      <RelativePath>ADP/NewADP/ReportDCM.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>5mlf9zs7sh</Fingerprint>
+      <Integrity>LbCvx5aegJkVNLVKN1vgRzB7D5vuX9xaqlzFwQQ2Kz0=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ADP\NewADP\ReportDCM.pdf'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\anahged.q0586pojj2.bundle.scp.css'))">
       <SourceType>Package</SourceType>
@@ -390,8 +516,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>aoizgsne1k</Fingerprint>
-      <Integrity>tsb/SUvz9ROuV5Kcof2H4e81vFNp3MERpLyh5kSkaDQ=</Integrity>
+      <Fingerprint>m3i56c3243</Fingerprint>
+      <Integrity>4hCXmYlaOnxUF8xpYjWJw/v4QLgWNddhfXJFevFxzqE=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\adp.js'))</OriginalItemSpec>

@@ -1,8 +1,9 @@
 ﻿@page
-@model anahged.Pages.CartesListModel
+@model MyApp.Namespace.TraitementFichierCarteModel
 @{
-    ViewData["Title"] = "Liste Cartes 🗺️";
+    ViewData["Title"] = "Traitement Fichier Carte";
 }
+
 
 @section Styles {
    <link rel="stylesheet" href="~/css/carte.css"/>  
@@ -32,7 +33,7 @@
 }
 
 <div class="d-flex align-items-center">
-    <h3>Cartes 🗺️</h3>
+    <h3>Centre de traitement cartes 🗺️</h3>
      <!-- Bouton Actions avec dropdown -->
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" 
@@ -50,23 +51,31 @@
             </ul>
         </div>
         <div class="ms-auto d-flex gap-2">
+            <a class="text-white ms-auto underline btn" 
+                asp-area=""
+                asp-page="/"
+                style="background: linear-gradient(135deg, #44f409 0%, #374151 100%);">
+                Valider les fichiers
+            </a>
+            <a class="text-white ms-auto underline btn" 
+                asp-area=""
+                asp-page="/"
+                style="background: linear-gradient(135deg, #eb2b12 0%, #374151 100%);">
+                Rejeter les fichiers
+            </a>
             @if(User.IsInRole("Administrateur")){
-                <a class="text-white underline btn" 
-                    asp-area=""
-                    asp-page="/TraitementFichierCarte"
-                    style="background: linear-gradient(135deg, #e715a8 0%, #374151 100%);">
-                    Acceder au traitement des fichiers Cartes
-                </a>
-                @* <button type="button" class="btn text-white" data-bs-toggle="modal" data-bs-target="#ajoutFichierModal"
-                        style="background: linear-gradient(135deg, #22b2ef 0%, #374151 100%);">
-                    Ajouter une carte
-                </button> *@
+                <button type="button" class="btn text-white ms-auto" data-bs-toggle="modal" data-bs-target="#ajoutFichierModal"
+                        style="background: linear-gradient(135deg, #1db9e9 0%, #374151 100%);">
+                    Indexer une carte
+                </button> 
             }
         </div>
 </div>
+
+@*Formulaire de recherche*@
 <form method="get" class="mt-3 mb-3">
     <div class="row g-2" style="border-bottom: 5px solid #ccc; padding-bottom:10px;">
-        <div class="col">
+        @* <div class="col">
             <input type="text" name="ville" class="form-control" placeholder="Ville">
         </div>
         <div class="col">
@@ -80,119 +89,104 @@
         </div>
         <div class="col-auto">
             <button type="submit" class="btn text-white" style="background: linear-gradient(135deg, #10b981 0%, #374151 100%);">Rechercher</button>
-        </div>
+        </div> *@
     </div>
 </form>
 
-@if (ViewData["MessageRechercheCarte"] != null)
+@* @if (ViewData["MessageRechercheCarte"] != null)
 {
     <p style="text-align: center; color:red">@ViewData["MessageRechercheCarte"]</p>
 }
 else
-{
+{ *@
    <!-- Afficher la liste de résultats -->
 
-    <div class="filter-container">
-        <div class="d-flex justify-content-between align-items-center mb-2" style="position: relative; z-index: 10;">
-            <div class="filter-stats">
-                <span id="filterStats" class="text-muted small">@Model.CartesList.Count carte(s) trouvé(s)</span>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-                <label for="pageSizeSelect" class="mb-0 text-muted small">Afficher</label>
-                <select id="pageSizeSelect" class="form-select form-select-sm" style="width: auto; min-width: 80px; position: relative; z-index: 11;">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
+<div class="filter-container">
+    <div style="max-height:60vh; overflow-y:auto;margin-top:20px;">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <input type="text" id="table-filter" class="form-control form-control-sm" placeholder="Filtrer par boite, code,n° logement, client, document ou ..." />
         </div>
-        <div style="max-height:60vh; overflow-y:auto;margin-top:20px;">
-            <div class="filter-input mb-2">
-                <input type="text" id="table-filter" class="form-control form-control-sm" placeholder="Filtrer par boite, code,n° logement, client, document ou ..." />
-            </div>
-            
-            <table class="table mt-1">
-                <thead>
+        <div id="filter-stats" class="text-muted small">
+            <span id="filterStats" class="text-muted small">@Model.CarteListEnAttenteValidation.Count carte(s) trouvé(s)</span>
+        </div>
+        
+        <table class="table mt-1">
+            <thead>
+                <tr>
+                    <th style="font-size: 12px;"><input type="checkbox" id="selectAllCheckbox" style="cursor: pointer;" /></th>
+                    <th style="font-size: 12px;">N° Tube</th>
+                    <th style="font-size: 12px;">Legende</th>
+                    <th style="font-size: 12px; font-weight: bold;">Statut</th>
+                    <th style="font-size: 12px;">Code opération</th>
+                    <th style="font-size: 12px;">Opération</th>
+                    <th style="font-size: 12px;">Ville</th>
+                    <th style="font-size: 12px;">Originalite</th>
+                    <th style="font-size: 12px;">Echelle</th>
+                    <th style="font-size: 12px;">Côte</th>
+                    <th style="font-size: 12px;">Date carte.</th>
+                    <th style="font-size: 12px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var carte in Model.CarteListEnAttenteValidation)
+                {
                     <tr>
-                        <th style="font-size: 12px;"><input type="checkbox" id="selectAllCheckbox" style="cursor: pointer;" /></th>
-                        <th style="font-size: 12px;">N° Tube</th>
-                        <th style="font-size: 12px;">Legende</th>
-                        <th style="font-size: 12px; font-weight: bold;">Statut</th>
-                        <th style="font-size: 12px;">Code opération</th>
-                        <th style="font-size: 12px;">Opération</th>
-                        <th style="font-size: 12px;">Ville</th>
-                        <th style="font-size: 12px;">Originalite</th>
-                        <th style="font-size: 12px;">Echelle</th>
-                        <th style="font-size: 12px;">Côte</th>
-                        <th style="font-size: 12px;">Date carte.</th>
-                        <th style="font-size: 12px;">Actions</th>
+                        <td style="font-size: 12px;"><input type="checkbox" class="rowCheckbox" data-carte-id="@carte.IdCarte" style="cursor: pointer;"></td>
+                        <td style="font-size: 12px;">@carte.Tube</td>
+                        <td style="font-size: 12px;">
+                            <span class="clickable-name" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#carteModal"
+                                    data-carte-id="@carte.IdCarte"
+                                    data-legende="@(string.IsNullOrEmpty(carte.Legende) ? "" : char.ToUpper(carte.Legende[0]) + carte.Legende.Substring(1).ToLower())"
+                                    data-tube="@carte.Tube"
+                                    data-datecarte="@carte.DateCarte"
+                                    data-ville="@carte.IdOpeNavigation?.IdVilleNavigation?.DescriptionVille ?? carte.Ville"
+                                    data-quartier="@carte.Quartier"
+                                    data-operation="@carte.IdOpeNavigation?.DescriptionOpe ?? carte.Operation"
+                                    data-originalite="@carte.Originalite"
+                                    data-echelle="@carte.Echelle"
+                                    data-cote="@carte.Cote"
+                                    data-idoperation="@carte.IdOpe"
+                                    data-statut-id="@carte.DernierStatutCarteId"
+                                    data-fichier="@(carte.Lien ??"")">
+                                    @(string.IsNullOrEmpty(carte.Legende) ? "" : char.ToUpper(carte.Legende[0]) + carte.Legende.Substring(1).ToLower())
+                                </span>                      
+                        </td>
+                        @* <td style="font-size: 12px; font-weight: bold;">@(!string.IsNullOrWhiteSpace(carte.DernierStatutCarte?.DescriptionStatut) ? carte.DernierStatutCarte?.DescriptionStatut : "N/A")</td> *@
+                        <td>
+                            @if (carte.DernierStatutCarte?.DescriptionStatut == "En attente")
+                            {
+                                <span class="badge bg-warning text-dark">En attente</span>
+                            }
+                            else if (carte.DernierStatutCarte?.DescriptionStatut == "Nouveau")
+                            {
+                                <span class="badge bg-info">Nouveau</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">@carte.DernierStatutCarte?.DescriptionStatut</span>
+                            }
+                        </td>
+                        <td style="font-size: 12px;">@(!string.IsNullOrWhiteSpace(carte.IdOpeNavigation?.CodeOpe) ? carte.IdOpeNavigation?.CodeOpe : "N/A")</td>
+                        <td style="font-size: 12px;">@(!string.IsNullOrWhiteSpace(carte.Operation) ? carte.Operation : carte.IdOpeNavigation?.DescriptionOpe ?? "N/A")</td>
+                        <td style="font-size: 12px;">@(!string.IsNullOrWhiteSpace(carte.Ville) ? carte.Ville : carte.IdOpeNavigation?.IdVilleNavigation?.DescriptionVille ?? "N/A")</td>
+                        <td style="font-size: 12px;">@carte.Originalite</td>
+                        <td style="font-size: 12px;">@carte.Echelle</td>
+                        <td style="font-size: 12px;">@carte.Cote</td>
+                        <td style="font-size: 12px;">@carte.DateCarte</td>
+                        <td style="font-size: 12px;">
+                            <form method="post" asp-page-handler="View" asp-route-id="@carte.IdCarte" target="_blank">
+                                <button class="btn btn-warning btn-sm">👁️ Voir</button>
+                            </form>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var carte in Model.CartesList)
-                    {
-                        <tr>
-                            <td style="font-size: 12px;"><input type="checkbox" class="rowCheckbox" data-carte-id="@carte.IdCarte" style="cursor: pointer;"></td>
-                            <td style="font-size: 12px;">@carte.Tube</td>
-                            <td style="font-size: 12px;">
-                                <span class="clickable-name" 
-                                        data-bs-toggle="modal" 
-                                        data-bs-target="#carteModal"
-                                        data-carte-id="@carte.IdCarte"
-                                        data-legende="@(string.IsNullOrEmpty(carte.Legende) ? "" : char.ToUpper(carte.Legende[0]) + carte.Legende.Substring(1).ToLower())"
-                                        data-tube="@carte.Tube"
-                                        data-datecarte="@carte.DateCarte"
-                                        data-ville="@carte.IdOpeNavigation?.IdVilleNavigation?.DescriptionVille ?? carte.Ville"
-                                        data-quartier="@carte.Quartier"
-                                        data-operation="@carte.IdOpeNavigation?.DescriptionOpe ?? carte.Operation"
-                                        data-originalite="@carte.Originalite"
-                                        data-echelle="@carte.Echelle"
-                                        data-cote="@carte.Cote"
-                                        data-idoperation="@carte.IdOpe"
-                                        data-statut-id="@carte.DernierStatutCarteId"
-                                        data-fichier="@(carte.Lien ??"")">
-                                        @(string.IsNullOrEmpty(carte.Legende) ? "" : char.ToUpper(carte.Legende[0]) + carte.Legende.Substring(1).ToLower())
-                                    </span>                      
-                            </td>
-                            @* <td style="font-size: 12px; font-weight: bold;">@(!string.IsNullOrWhiteSpace(carte.DernierStatutCarte?.DescriptionStatut) ? carte.DernierStatutCarte?.DescriptionStatut : "N/A")</td> *@
-                            <td>
-                                @if (carte.DernierStatutCarte?.DescriptionStatut == "Validé")
-                                {
-                                    <span class="badge bg-success">Validé</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">@(!string.IsNullOrWhiteSpace(carte.DernierStatutCarte?.DescriptionStatut) ? carte.DernierStatutCarte?.DescriptionStatut : "N/A")</span>
-                                }
-                            </td>
-                            <td style="font-size: 12px;">@(!string.IsNullOrWhiteSpace(carte.IdOpeNavigation?.CodeOpe) ? carte.IdOpeNavigation?.CodeOpe : "N/A")</td>
-                            <td style="font-size: 12px;">@(!string.IsNullOrWhiteSpace(carte.Operation) ? carte.Operation : carte.IdOpeNavigation?.DescriptionOpe ?? "N/A")</td>
-                            <td style="font-size: 12px;">@(!string.IsNullOrWhiteSpace(carte.Ville) ? carte.Ville : carte.IdOpeNavigation?.IdVilleNavigation?.DescriptionVille ?? "N/A")</td>
-                            <td style="font-size: 12px;">@carte.Originalite</td>
-                            <td style="font-size: 12px;">@carte.Echelle</td>
-                            <td style="font-size: 12px;">@carte.Cote</td>
-                            <td style="font-size: 12px;">@carte.DateCarte</td>
-                            <td style="font-size: 12px;">
-                                <form method="post" asp-page-handler="View" asp-route-id="@carte.IdCarte" target="_blank">
-                                    <button class="btn btn-warning btn-sm">👁️ Voir</button>
-                                </form>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            <div class="d-flex justify-content-between align-items-center mt-3">
-                <div class="text-muted small">
-                    <span id="paginationInfo">Page 1 sur 1</span>
-                </div>
-                <nav aria-label="Pagination tableau">
-                    <ul class="pagination pagination-sm mb-0" id="paginationContainer"></ul>
-                </nav>
-            </div>
-        </div>
+                }
+            </tbody>
+        </table>
     </div>
-}
+</div>
+@* } *@
 
 @* Formulaire pour ajouter les nouveaux fichiers *@
 <div class="modal fade" id="ajoutFichierModal" tabindex="-1" aria-labelledby="ajoutFichierModalLabel" aria-hidden="true">

@@ -2,32 +2,21 @@ using System.IO.Compression;
 using anahged.Data;
 using anahged.Models;
 using anahged.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-namespace anahged.Pages
+namespace MyApp.Namespace
 {
-    [Authorize]
-    public class CartesListModel : PageModel
+    public class TraitementFichierCarteModel : PageModel
     {
-
         private readonly GedServices _gedServices;
         private readonly IWebHostEnvironment _environment;
         public readonly GedContext _gedcontext;
         public IList<SelectListItem> UserAllowedStatuts { get; set; } = new List<SelectListItem>();
-        public IList<Models.Operation> OperationList { get; set; } = new List<Models.Operation>();
-
-        public CartesListModel(GedServices gedServices, IWebHostEnvironment environment, GedContext context)
-        {
-            _gedServices = gedServices;
-            _environment = environment;
-            _gedcontext = context;
-        }
-
-        public IList<Carte> CartesList { get; set; } = new List<Carte>();
+        public IList<anahged.Models.Operation> OperationList { get; set; } = new List<anahged.Models.Operation>();
+        public IList<Carte> CarteListEnAttenteValidation { get; set; } = new List<Carte>();
 
         // Propriétés de recherche et d'ajout
         [BindProperty(SupportsGet = true)] public string? Tube { get; set; }
@@ -43,6 +32,12 @@ namespace anahged.Pages
         [BindProperty(SupportsGet = true)] public int IdOperation { get; set; }
         [BindProperty(SupportsGet = true)] public int StatutId { get; set; }
 
+        public TraitementFichierCarteModel(GedServices gedServices, IWebHostEnvironment environment, GedContext gedcontext)
+        {
+            _gedServices = gedServices;
+            _environment = environment;
+            _gedcontext = gedcontext;
+        }
 
         public async Task OnGetAsync()
         {
@@ -53,10 +48,10 @@ namespace anahged.Pages
                 return;
             }
 
-            CartesList = await _gedServices.RechercherCarteAsync(Ville, Quartier, Operation, Legende)
+            CarteListEnAttenteValidation = await _gedServices.RechercherCarteAsync(Ville, Quartier, Operation, Legende)
                           ?? new List<Carte>();
 
-            if (!CartesList.Any())
+            if (!CarteListEnAttenteValidation.Any())
             {
                 ViewData["MessageRechercheCarte"] = "Aucun résultat trouvé 😓!";
             }
@@ -78,10 +73,18 @@ namespace anahged.Pages
                 .Distinct()
                 .ToListAsync();
 
+            // Charger la liste des fichiers Adp en statut en attente et nouveau
+            CarteListEnAttenteValidation = await _gedcontext.Cartes
+                .Include(o => o.IdOpeNavigation)
+                .Include(v => v.IdOpeNavigation.IdVilleNavigation)
+                .Include(s => s.DernierStatutCarte)
+                .Where(s => s.DernierStatutCarte.DescriptionStatut == "En attente" || s.DernierStatutCarte.DescriptionStatut == "Nouveau")
+                .ToListAsync();
+
             ModelState.Clear();
         }
 
-        public async Task<IActionResult> OnPostViewAsync(int id)
+          public async Task<IActionResult> OnPostViewAsync(int id)
         {
             try
             {
@@ -662,7 +665,5 @@ namespace anahged.Pages
 
             return RedirectToPage();
         }
-
-        
     }
 }

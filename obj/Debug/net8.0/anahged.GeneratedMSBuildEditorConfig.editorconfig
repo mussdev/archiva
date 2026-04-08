@@ -80,8 +80,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGFibGVhdURlQm9yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/projets_apps/archiva/Pages/ValidationsAdpVpl.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmFsaWRhdGlvbnNBZHBWcGwuY3NodG1s
+[C:/projets_apps/archiva/Pages/TraitementFicherAdp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHJhaXRlbWVudEZpY2hlckFkcC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/projets_apps/archiva/Pages/TraitementFichierCarte.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHJhaXRlbWVudEZpY2hpZXJDYXJ0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/projets_apps/archiva/Pages/TraitementFichierVpl.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHJhaXRlbWVudEZpY2hpZXJWcGwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/projets_apps/archiva/Pages/VplList.cshtml]

@@ -85,6 +85,170 @@
       ]
     },
     {
+      "Route": "ADP/NewADP/BULLETIN DE VOTE ANAH - Copie.12gjz5hhka.docx",
+      "AssetFile": "ADP/NewADP/BULLETIN DE VOTE ANAH - Copie.docx",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "221419"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"96CdasH3U/fDcZYB2S2MHddcsIOkCh380b9YVRNN7SM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Mar 2026 13:02:52 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "12gjz5hhka"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-96CdasH3U/fDcZYB2S2MHddcsIOkCh380b9YVRNN7SM="
+        },
+        {
+          "Name": "label",
+          "Value": "ADP/NewADP/BULLETIN DE VOTE ANAH - Copie.docx"
+        }
+      ]
+    },
+    {
+      "Route": "ADP/NewADP/BULLETIN DE VOTE ANAH - Copie.docx",
+      "AssetFile": "ADP/NewADP/BULLETIN DE VOTE ANAH - Copie.docx",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "221419"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"96CdasH3U/fDcZYB2S2MHddcsIOkCh380b9YVRNN7SM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Mar 2026 13:02:52 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-96CdasH3U/fDcZYB2S2MHddcsIOkCh380b9YVRNN7SM="
+        }
+      ]
+    },
+    {
+      "Route": "ADP/NewADP/Bulletin d'adhésion QUIETIS Plus.n7gie1n0t8.pdf",
+      "AssetFile": "ADP/NewADP/Bulletin d'adhésion QUIETIS Plus.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "449423"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"kwQmY34KARoZUFxOmp3ZRsIbFRi9c1MSDuTrc+0ghoo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Mar 2026 05:08:14 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "n7gie1n0t8"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-kwQmY34KARoZUFxOmp3ZRsIbFRi9c1MSDuTrc+0ghoo="
+        },
+        {
+          "Name": "label",
+          "Value": "ADP/NewADP/Bulletin d'adhésion QUIETIS Plus.pdf"
+        }
+      ]
+    },
+    {
+      "Route": "ADP/NewADP/Bulletin d'adhésion QUIETIS Plus.pdf",
+      "AssetFile": "ADP/NewADP/Bulletin d'adhésion QUIETIS Plus.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "449423"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"kwQmY34KARoZUFxOmp3ZRsIbFRi9c1MSDuTrc+0ghoo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Mar 2026 05:08:14 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-kwQmY34KARoZUFxOmp3ZRsIbFRi9c1MSDuTrc+0ghoo="
+        }
+      ]
+    },
+    {
       "Route": "ADP/NewADP/FNE-Guide utilisateur.azwxzzte6e.pdf",
       "AssetFile": "ADP/NewADP/FNE-Guide utilisateur.pdf",
       "Selectors": [],
@@ -111,7 +275,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 28 Feb 2026 11:54:00 GMT"
+          "Value": "Sun, 05 Apr 2026 17:25:56 GMT"
         }
       ],
       "EndpointProperties": [
@@ -156,13 +320,95 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 28 Feb 2026 11:54:00 GMT"
+          "Value": "Sun, 05 Apr 2026 17:25:56 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
           "Value": "sha256-NuTXmbpOQqE5tc6hOpCuUTZXvmM7TTif/nJUOJ1+EQo="
+        }
+      ]
+    },
+    {
+      "Route": "ADP/NewADP/Quittance de paiement.pdf",
+      "AssetFile": "ADP/NewADP/Quittance de paiement.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "69294"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 14 Mar 2026 17:41:46 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88="
+        }
+      ]
+    },
+    {
+      "Route": "ADP/NewADP/Quittance de paiement.y7i745pvj6.pdf",
+      "AssetFile": "ADP/NewADP/Quittance de paiement.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "69294"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 14 Mar 2026 17:41:46 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "y7i745pvj6"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88="
+        },
+        {
+          "Name": "label",
+          "Value": "ADP/NewADP/Quittance de paiement.pdf"
         }
       ]
     },
@@ -249,88 +495,6 @@
       ]
     },
     {
-      "Route": "ADP/NewADP/bulletin-vote-1112025.9e467edow9.pdf",
-      "AssetFile": "ADP/NewADP/bulletin-vote-1112025.pdf",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "242878"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/pdf"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"P3UFtknBrS+uSI0etwF43EwLmqU18bdM+rWDyxSWwpY=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sat, 28 Feb 2026 11:59:17 GMT"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "9e467edow9"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-P3UFtknBrS+uSI0etwF43EwLmqU18bdM+rWDyxSWwpY="
-        },
-        {
-          "Name": "label",
-          "Value": "ADP/NewADP/bulletin-vote-1112025.pdf"
-        }
-      ]
-    },
-    {
-      "Route": "ADP/NewADP/bulletin-vote-1112025.pdf",
-      "AssetFile": "ADP/NewADP/bulletin-vote-1112025.pdf",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "242878"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/pdf"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"P3UFtknBrS+uSI0etwF43EwLmqU18bdM+rWDyxSWwpY=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sat, 28 Feb 2026 11:59:17 GMT"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-P3UFtknBrS+uSI0etwF43EwLmqU18bdM+rWDyxSWwpY="
-        }
-      ]
-    },
-    {
       "Route": "ADP/NewADP/bulletin-vote-1212025-sante.ew09lr8an8.pdf",
       "AssetFile": "ADP/NewADP/bulletin-vote-1212025-sante.pdf",
       "Selectors": [],
@@ -413,170 +577,6 @@
       ]
     },
     {
-      "Route": "ADP/NewADP/bulletin-vote-1212025.m2ijubf26b.pdf",
-      "AssetFile": "ADP/NewADP/bulletin-vote-1212025.pdf",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "244183"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/pdf"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"wsNbYVZ+kVa3PVOJlGV83Ql++PFaHwmVUdGlPmo14BY=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sat, 28 Feb 2026 11:48:45 GMT"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "m2ijubf26b"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-wsNbYVZ+kVa3PVOJlGV83Ql++PFaHwmVUdGlPmo14BY="
-        },
-        {
-          "Name": "label",
-          "Value": "ADP/NewADP/bulletin-vote-1212025.pdf"
-        }
-      ]
-    },
-    {
-      "Route": "ADP/NewADP/bulletin-vote-1212025.pdf",
-      "AssetFile": "ADP/NewADP/bulletin-vote-1212025.pdf",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "244183"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/pdf"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"wsNbYVZ+kVa3PVOJlGV83Ql++PFaHwmVUdGlPmo14BY=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sat, 28 Feb 2026 11:48:45 GMT"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-wsNbYVZ+kVa3PVOJlGV83Ql++PFaHwmVUdGlPmo14BY="
-        }
-      ]
-    },
-    {
-      "Route": "ADP/NewADP/bulletin-vote-anah-17112025.g7b4do45fa.pdf",
-      "AssetFile": "ADP/NewADP/bulletin-vote-anah-17112025.pdf",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "245119"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/pdf"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"vB6ql13lIuIgrBEAFnJMJLUuqK0i9rVJ8olnhR/JQkY=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sat, 28 Feb 2026 02:16:52 GMT"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "g7b4do45fa"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-vB6ql13lIuIgrBEAFnJMJLUuqK0i9rVJ8olnhR/JQkY="
-        },
-        {
-          "Name": "label",
-          "Value": "ADP/NewADP/bulletin-vote-anah-17112025.pdf"
-        }
-      ]
-    },
-    {
-      "Route": "ADP/NewADP/bulletin-vote-anah-17112025.pdf",
-      "AssetFile": "ADP/NewADP/bulletin-vote-anah-17112025.pdf",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "245119"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/pdf"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"vB6ql13lIuIgrBEAFnJMJLUuqK0i9rVJ8olnhR/JQkY=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sat, 28 Feb 2026 02:16:52 GMT"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-vB6ql13lIuIgrBEAFnJMJLUuqK0i9rVJ8olnhR/JQkY="
-        }
-      ]
-    },
-    {
       "Route": "ADP/NewADP/bulletin-vote-diaby.pdf",
       "AssetFile": "ADP/NewADP/bulletin-vote-diaby.pdf",
       "Selectors": [],
@@ -603,7 +603,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 24 Feb 2026 10:07:49 GMT"
+          "Value": "Sun, 08 Mar 2026 05:11:45 GMT"
         }
       ],
       "EndpointProperties": [
@@ -640,7 +640,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 24 Feb 2026 10:07:49 GMT"
+          "Value": "Sun, 08 Mar 2026 05:11:45 GMT"
         }
       ],
       "EndpointProperties": [
@@ -1315,6 +1315,252 @@
       ]
     },
     {
+      "Route": "CARTES/NewCARTES/CS_14076-05_FR_05.czu7r45xhi.pdf",
+      "AssetFile": "CARTES/NewCARTES/CS_14076-05_FR_05.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "262426"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mLM+XRf2+Kk6B6XGgzae54zVBuhcfANzRuHlykvX4BY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Mar 2026 14:33:45 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "czu7r45xhi"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-mLM+XRf2+Kk6B6XGgzae54zVBuhcfANzRuHlykvX4BY="
+        },
+        {
+          "Name": "label",
+          "Value": "CARTES/NewCARTES/CS_14076-05_FR_05.pdf"
+        }
+      ]
+    },
+    {
+      "Route": "CARTES/NewCARTES/CS_14076-05_FR_05.pdf",
+      "AssetFile": "CARTES/NewCARTES/CS_14076-05_FR_05.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "262426"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mLM+XRf2+Kk6B6XGgzae54zVBuhcfANzRuHlykvX4BY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Mar 2026 14:33:45 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-mLM+XRf2+Kk6B6XGgzae54zVBuhcfANzRuHlykvX4BY="
+        }
+      ]
+    },
+    {
+      "Route": "CARTES/NewCARTES/Quittancedepaiement.pdf",
+      "AssetFile": "CARTES/NewCARTES/Quittancedepaiement.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "69294"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 16 Mar 2026 18:20:55 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88="
+        }
+      ]
+    },
+    {
+      "Route": "CARTES/NewCARTES/Quittancedepaiement.y7i745pvj6.pdf",
+      "AssetFile": "CARTES/NewCARTES/Quittancedepaiement.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "69294"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 16 Mar 2026 18:20:55 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "y7i745pvj6"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88="
+        },
+        {
+          "Name": "label",
+          "Value": "CARTES/NewCARTES/Quittancedepaiement.pdf"
+        }
+      ]
+    },
+    {
+      "Route": "CARTES/NewCARTES/ReportDCM.5mlf9zs7sh.pdf",
+      "AssetFile": "CARTES/NewCARTES/ReportDCM.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "211887"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"LbCvx5aegJkVNLVKN1vgRzB7D5vuX9xaqlzFwQQ2Kz0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 16 Mar 2026 23:19:54 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "5mlf9zs7sh"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-LbCvx5aegJkVNLVKN1vgRzB7D5vuX9xaqlzFwQQ2Kz0="
+        },
+        {
+          "Name": "label",
+          "Value": "CARTES/NewCARTES/ReportDCM.pdf"
+        }
+      ]
+    },
+    {
+      "Route": "CARTES/NewCARTES/ReportDCM.pdf",
+      "AssetFile": "CARTES/NewCARTES/ReportDCM.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "211887"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"LbCvx5aegJkVNLVKN1vgRzB7D5vuX9xaqlzFwQQ2Kz0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 16 Mar 2026 23:19:54 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-LbCvx5aegJkVNLVKN1vgRzB7D5vuX9xaqlzFwQQ2Kz0="
+        }
+      ]
+    },
+    {
       "Route": "CARTES/NewCARTES/bulletin-vote-1212025-sante.ew09lr8an8.pdf",
       "AssetFile": "CARTES/NewCARTES/bulletin-vote-1212025-sante.pdf",
       "Selectors": [],
@@ -1475,88 +1721,6 @@
         {
           "Name": "integrity",
           "Value": "sha256-vB6ql13lIuIgrBEAFnJMJLUuqK0i9rVJ8olnhR/JQkY="
-        }
-      ]
-    },
-    {
-      "Route": "CARTES/NewCARTES/bulletin-vote-diaby.pdf",
-      "AssetFile": "CARTES/NewCARTES/bulletin-vote-diaby.pdf",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "216883"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/pdf"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"TwpXsa4yU/cP/4IHrQ+mGP5fPTG23oLv9n+vflgN69Y=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Wed, 03 Dec 2025 23:04:50 GMT"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-TwpXsa4yU/cP/4IHrQ+mGP5fPTG23oLv9n+vflgN69Y="
-        }
-      ]
-    },
-    {
-      "Route": "CARTES/NewCARTES/bulletin-vote-diaby.vcsfhf0yg9.pdf",
-      "AssetFile": "CARTES/NewCARTES/bulletin-vote-diaby.pdf",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "216883"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/pdf"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"TwpXsa4yU/cP/4IHrQ+mGP5fPTG23oLv9n+vflgN69Y=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Wed, 03 Dec 2025 23:04:50 GMT"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "vcsfhf0yg9"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-TwpXsa4yU/cP/4IHrQ+mGP5fPTG23oLv9n+vflgN69Y="
-        },
-        {
-          "Name": "label",
-          "Value": "CARTES/NewCARTES/bulletin-vote-diaby.pdf"
         }
       ]
     },
@@ -3365,6 +3529,170 @@
       ]
     },
     {
+      "Route": "SICOGI/NewSICOGI/Quittance de paiement.pdf",
+      "AssetFile": "SICOGI/NewSICOGI/Quittance de paiement.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "69294"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 15 Mar 2026 11:19:30 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88="
+        }
+      ]
+    },
+    {
+      "Route": "SICOGI/NewSICOGI/Quittance de paiement.y7i745pvj6.pdf",
+      "AssetFile": "SICOGI/NewSICOGI/Quittance de paiement.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "69294"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 15 Mar 2026 11:19:30 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "y7i745pvj6"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88="
+        },
+        {
+          "Name": "label",
+          "Value": "SICOGI/NewSICOGI/Quittance de paiement.pdf"
+        }
+      ]
+    },
+    {
+      "Route": "SICOGI/NewSICOGI/Quittancedepaiement.pdf",
+      "AssetFile": "SICOGI/NewSICOGI/Quittancedepaiement.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "69294"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 14 Mar 2026 22:54:24 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88="
+        }
+      ]
+    },
+    {
+      "Route": "SICOGI/NewSICOGI/Quittancedepaiement.y7i745pvj6.pdf",
+      "AssetFile": "SICOGI/NewSICOGI/Quittancedepaiement.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "69294"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 14 Mar 2026 22:54:24 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "y7i745pvj6"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88="
+        },
+        {
+          "Name": "label",
+          "Value": "SICOGI/NewSICOGI/Quittancedepaiement.pdf"
+        }
+      ]
+    },
+    {
       "Route": "SICOGI/NewSICOGI/a284903f-84a0-4460-925d-55d7a788901f_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf",
       "AssetFile": "SICOGI/NewSICOGI/a284903f-84a0-4460-925d-55d7a788901f_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf",
       "Selectors": [],
@@ -4103,6 +4431,88 @@
       ]
     },
     {
+      "Route": "SICOGI/NewSICOGI/commission-gimmo.mo10qkdpdc.pdf",
+      "AssetFile": "SICOGI/NewSICOGI/commission-gimmo.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "100254"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"er2bR5rEV9yKcglDTMgqaDSHd0S+ipCKXUius/1x2Lw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 14 Mar 2026 17:59:22 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mo10qkdpdc"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-er2bR5rEV9yKcglDTMgqaDSHd0S+ipCKXUius/1x2Lw="
+        },
+        {
+          "Name": "label",
+          "Value": "SICOGI/NewSICOGI/commission-gimmo.pdf"
+        }
+      ]
+    },
+    {
+      "Route": "SICOGI/NewSICOGI/commission-gimmo.pdf",
+      "AssetFile": "SICOGI/NewSICOGI/commission-gimmo.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "100254"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"er2bR5rEV9yKcglDTMgqaDSHd0S+ipCKXUius/1x2Lw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 14 Mar 2026 17:59:22 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-er2bR5rEV9yKcglDTMgqaDSHd0S+ipCKXUius/1x2Lw="
+        }
+      ]
+    },
+    {
       "Route": "SICOGI/NewSICOGI/d2fa645f-8bd7-42c8-8941-3b275827ef1a_catographie_interaction_application_22052025.esq52ufty1.pdf",
       "AssetFile": "SICOGI/NewSICOGI/d2fa645f-8bd7-42c8-8941-3b275827ef1a_catographie_interaction_application_22052025.pdf",
       "Selectors": [],
@@ -4263,6 +4673,88 @@
         {
           "Name": "label",
           "Value": "SICOGI/NewSICOGI/doc-22025-04-201519.pdf"
+        }
+      ]
+    },
+    {
+      "Route": "SICOGI/NewSICOGI/draft-etat-periodique-commission-loyer-GI.4rui7t8v46.pdf",
+      "AssetFile": "SICOGI/NewSICOGI/draft-etat-periodique-commission-loyer-GI.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "98679"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"0FgsFekTJzPRwaEVdHzdRKJW/oEXssf1VV3/ZG4LJmg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 14 Mar 2026 19:23:46 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4rui7t8v46"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-0FgsFekTJzPRwaEVdHzdRKJW/oEXssf1VV3/ZG4LJmg="
+        },
+        {
+          "Name": "label",
+          "Value": "SICOGI/NewSICOGI/draft-etat-periodique-commission-loyer-GI.pdf"
+        }
+      ]
+    },
+    {
+      "Route": "SICOGI/NewSICOGI/draft-etat-periodique-commission-loyer-GI.pdf",
+      "AssetFile": "SICOGI/NewSICOGI/draft-etat-periodique-commission-loyer-GI.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "98679"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"0FgsFekTJzPRwaEVdHzdRKJW/oEXssf1VV3/ZG4LJmg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 14 Mar 2026 19:23:46 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-0FgsFekTJzPRwaEVdHzdRKJW/oEXssf1VV3/ZG4LJmg="
         }
       ]
     },
@@ -4621,7 +5113,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 06 Mar 2026 15:28:59 GMT"
+          "Value": "Mon, 06 Apr 2026 11:07:03 GMT"
         }
       ],
       "EndpointProperties": [
@@ -4666,7 +5158,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 06 Mar 2026 15:28:59 GMT"
+          "Value": "Mon, 06 Apr 2026 11:07:03 GMT"
         }
       ],
       "EndpointProperties": [
@@ -4837,6 +5329,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-RIoGfRGwzyqvnDNg5XJ0ssoG3aBZKLcEnYOIvy8uWoY="
+        }
+      ]
+    },
+    {
+      "Route": "css/carte.346y583yow.css",
+      "AssetFile": "css/carte.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "572"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"c0iHseLlzxliV8a2gtldp2BwCJ5gKJYp/79i/Y8WcSs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Mar 2026 15:09:39 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "346y583yow"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-c0iHseLlzxliV8a2gtldp2BwCJ5gKJYp/79i/Y8WcSs="
+        },
+        {
+          "Name": "label",
+          "Value": "css/carte.css"
+        }
+      ]
+    },
+    {
+      "Route": "css/carte.css",
+      "AssetFile": "css/carte.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "572"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"c0iHseLlzxliV8a2gtldp2BwCJ5gKJYp/79i/Y8WcSs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Mar 2026 15:09:39 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-c0iHseLlzxliV8a2gtldp2BwCJ5gKJYp/79i/Y8WcSs="
         }
       ]
     },
@@ -5087,6 +5661,88 @@
       ]
     },
     {
+      "Route": "css/vpl.css",
+      "AssetFile": "css/vpl.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1012"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"xtYUVFUrF8f3sVc9r2cDGfTdPeOLr/Jjp1KUZKhvgOE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Mar 2026 15:03:58 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-xtYUVFUrF8f3sVc9r2cDGfTdPeOLr/Jjp1KUZKhvgOE="
+        }
+      ]
+    },
+    {
+      "Route": "css/vpl.y6k8t1jsyp.css",
+      "AssetFile": "css/vpl.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1012"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"xtYUVFUrF8f3sVc9r2cDGfTdPeOLr/Jjp1KUZKhvgOE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Mar 2026 15:03:58 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "y6k8t1jsyp"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-xtYUVFUrF8f3sVc9r2cDGfTdPeOLr/Jjp1KUZKhvgOE="
+        },
+        {
+          "Name": "label",
+          "Value": "css/vpl.css"
+        }
+      ]
+    },
+    {
       "Route": "favicon.61n19gt1b8.ico",
       "AssetFile": "favicon.ico",
       "Selectors": [],
@@ -5183,7 +5839,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "23960"
+          "Value": "21308"
         },
         {
           "Name": "Content-Type",
@@ -5191,22 +5847,22 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"4hCXmYlaOnxUF8xpYjWJw/v4QLgWNddhfXJFevFxzqE=\""
+          "Value": "\"toegNxJ6qsodx5PsRnMZCSZxgbTEQd6t8A8HOIjnJ90=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 08 Mar 2026 02:40:08 GMT"
+          "Value": "Sat, 14 Mar 2026 21:34:05 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-4hCXmYlaOnxUF8xpYjWJw/v4QLgWNddhfXJFevFxzqE="
+          "Value": "sha256-toegNxJ6qsodx5PsRnMZCSZxgbTEQd6t8A8HOIjnJ90="
         }
       ]
     },
     {
-      "Route": "js/adp.m3i56c3243.js",
+      "Route": "js/adp.qrxfb59qwj.js",
       "AssetFile": "js/adp.js",
       "Selectors": [],
       "ResponseHeaders": [
@@ -5220,7 +5876,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "23960"
+          "Value": "21308"
         },
         {
           "Name": "Content-Type",
@@ -5228,25 +5884,107 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"4hCXmYlaOnxUF8xpYjWJw/v4QLgWNddhfXJFevFxzqE=\""
+          "Value": "\"toegNxJ6qsodx5PsRnMZCSZxgbTEQd6t8A8HOIjnJ90=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 08 Mar 2026 02:40:08 GMT"
+          "Value": "Sat, 14 Mar 2026 21:34:05 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "m3i56c3243"
+          "Value": "qrxfb59qwj"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-4hCXmYlaOnxUF8xpYjWJw/v4QLgWNddhfXJFevFxzqE="
+          "Value": "sha256-toegNxJ6qsodx5PsRnMZCSZxgbTEQd6t8A8HOIjnJ90="
         },
         {
           "Name": "label",
           "Value": "js/adp.js"
+        }
+      ]
+    },
+    {
+      "Route": "js/carte.4o02k3mahx.js",
+      "AssetFile": "js/carte.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "30885"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HDC/rWn5hfGzRidoMIdneGu1vFzXWqr3l5BpIwwmx1E=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 06 Apr 2026 18:21:25 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4o02k3mahx"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-HDC/rWn5hfGzRidoMIdneGu1vFzXWqr3l5BpIwwmx1E="
+        },
+        {
+          "Name": "label",
+          "Value": "js/carte.js"
+        }
+      ]
+    },
+    {
+      "Route": "js/carte.js",
+      "AssetFile": "js/carte.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "30885"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HDC/rWn5hfGzRidoMIdneGu1vFzXWqr3l5BpIwwmx1E=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 06 Apr 2026 18:21:25 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-HDC/rWn5hfGzRidoMIdneGu1vFzXWqr3l5BpIwwmx1E="
         }
       ]
     },
@@ -5575,6 +6313,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-EvMTwk5vLHy/hsYh/wmiIn+MSRnQwjzWxwl4mcvFUbo="
+        }
+      ]
+    },
+    {
+      "Route": "js/vpl.ffn38yx6f2.js",
+      "AssetFile": "js/vpl.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "26182"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"pQYZUIlzFRnJ+TUy0eZM6n4vyiZvVPmkWctJHYFgY0M=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 06 Apr 2026 18:21:24 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ffn38yx6f2"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-pQYZUIlzFRnJ+TUy0eZM6n4vyiZvVPmkWctJHYFgY0M="
+        },
+        {
+          "Name": "label",
+          "Value": "js/vpl.js"
+        }
+      ]
+    },
+    {
+      "Route": "js/vpl.js",
+      "AssetFile": "js/vpl.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "26182"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"pQYZUIlzFRnJ+TUy0eZM6n4vyiZvVPmkWctJHYFgY0M=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 06 Apr 2026 18:21:24 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-pQYZUIlzFRnJ+TUy0eZM6n4vyiZvVPmkWctJHYFgY0M="
         }
       ]
     },

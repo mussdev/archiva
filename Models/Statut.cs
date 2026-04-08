@@ -18,4 +18,8 @@ public partial class Statut
     public DateTime? UpdatedAt { get; set; }
 
     public virtual ICollection<Adp> Adps { get; set; } = new List<Adp>();
+
+    public virtual ICollection<Carte> Cartes { get; set; } = new List<Carte>();
+
+    public virtual ICollection<Vpl> Vpls { get; set; } = new List<Vpl>();
 }

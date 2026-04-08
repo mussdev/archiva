@@ -2,47 +2,80 @@ using System.IO.Compression;
 using anahged.Data;
 using anahged.Models;
 using anahged.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-namespace anahged.Pages
+namespace MyApp.Namespace
 {
-    [Authorize]
-    public class CartesListModel : PageModel
+    public class TraitementFichierVplModel : PageModel
     {
-
         private readonly GedServices _gedServices;
-        private readonly IWebHostEnvironment _environment;
-        public readonly GedContext _gedcontext;
+        public IList<anahged.Models.Operation> OperationList { get; set; } = new List<anahged.Models.Operation>();
         public IList<SelectListItem> UserAllowedStatuts { get; set; } = new List<SelectListItem>();
-        public IList<Models.Operation> OperationList { get; set; } = new List<Models.Operation>();
+        public IList<Vpl> VplListEnAttenteDeTratement { get; set; } = new List<Vpl>();
+        public readonly GedContext _gedContext;
+        private readonly IWebHostEnvironment _environment;
 
-        public CartesListModel(GedServices gedServices, IWebHostEnvironment environment, GedContext context)
+        // Handler for search functionality
+        [BindProperty(SupportsGet = true)]
+        public string Logement { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string Document { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string Client { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string Boite { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string Code { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string Annee { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string Fonctions { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string Adresse { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string Contact { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string Ville { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string CommuneQuartier { get; set; } = string.Empty;
+
+       // [BindProperty(SupportsGet = true)]
+       // public string Cote { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string DateDocument { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public IFormFile? Fichier { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int IdOpe { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string NumeroDossierVpl { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public int StatutId { get; set; }
+
+        public TraitementFichierVplModel(GedContext gedContext, IWebHostEnvironment environment, GedServices gedServices)
         {
-            _gedServices = gedServices;
+            _gedContext = gedContext;
             _environment = environment;
-            _gedcontext = context;
+            _gedServices = gedServices;
         }
-
-        public IList<Carte> CartesList { get; set; } = new List<Carte>();
-
-        // Propriétés de recherche et d'ajout
-        [BindProperty(SupportsGet = true)] public string? Tube { get; set; }
-        [BindProperty(SupportsGet = true)] public string? Ville { get; set; }
-        [BindProperty(SupportsGet = true)] public string? Quartier { get; set; }
-        [BindProperty(SupportsGet = true)] public string? Operation { get; set; }
-        [BindProperty(SupportsGet = true)] public string? Legende { get; set; }
-        [BindProperty(SupportsGet = true)] public string? Originalite { get; set; }
-        [BindProperty(SupportsGet = true)] public string? Echelle { get; set; }
-        [BindProperty(SupportsGet = true)] public string? DateCarte { get; set; }
-        [BindProperty(SupportsGet = true)] public string? Cote { get; set; }
-        [BindProperty(SupportsGet = true)] public IFormFile? Fichier { get; set; }
-        [BindProperty(SupportsGet = true)] public int IdOperation { get; set; }
-        [BindProperty(SupportsGet = true)] public int StatutId { get; set; }
-
 
         public async Task OnGetAsync()
         {
@@ -53,21 +86,22 @@ namespace anahged.Pages
                 return;
             }
 
-            CartesList = await _gedServices.RechercherCarteAsync(Ville, Quartier, Operation, Legende)
-                          ?? new List<Carte>();
+            VplListEnAttenteDeTratement = await _gedServices.RechercherVlpAsync(Document, Annee, Client, Logement, Boite, Code);
 
-            if (!CartesList.Any())
+            if (VplListEnAttenteDeTratement == null || VplListEnAttenteDeTratement.Count == 0)
             {
-                ViewData["MessageRechercheCarte"] = "Aucun résultat trouvé 😓!";
+                ViewData["MessageRechercheVpl"] = "Aucun résultat trouvé 😓!";
             }
 
+            ModelState.Clear();
+
             // Charger la liste des opérations pour le dropdown
-            OperationList = await _gedcontext.Operations.Include(o => o.IdVilleNavigation).ToListAsync();
+            OperationList = await _gedContext.Operations.Include(o => o.IdVilleNavigation).ToListAsync();
 
             // Récuperer les statuts liés à l'utilisateur connecté
-            UserAllowedStatuts = await _gedcontext.Userstatuts
+            UserAllowedStatuts = await _gedContext.Userstatuts
                 .Where(us => us.UserId == GetCurrentUserId())
-                .Join(_gedcontext.Statuts,
+                .Join(_gedContext.Statuts,
                     userstatut => userstatut.IdStatut,
                     statut => statut.IdStatut,
                     (userstatut, statut) => new SelectListItem
@@ -78,41 +112,43 @@ namespace anahged.Pages
                 .Distinct()
                 .ToListAsync();
 
-            ModelState.Clear();
+            // Charger la liste des fichiers Adp en statut en attente et nouveau
+            VplListEnAttenteDeTratement = await _gedContext.Vpls
+                .Include(o => o.IdOpeNavigation)
+                .Include(v => v.IdOpeNavigation.IdVilleNavigation)
+                .Include(s => s.DernierStatutVpl)
+                .Where(s => s.DernierStatutVpl.DescriptionStatut == "En attente" || s.DernierStatutVpl.DescriptionStatut == "Nouveau")
+                .ToListAsync();
         }
 
-        public async Task<IActionResult> OnPostViewAsync(int id)
+                public async Task<IActionResult> OnPostView(int id)
         {
             try
             {
-                var fichierPdf = await _gedServices.GetFichierPdfAsync(id);
+                // Diagnostic temporaire
+                //await _gedServices.TestFichierVpl(id);
+
+                var fichierPdf = await _gedServices.GetFichierPdfVplAsync(id);
                 return File(fichierPdf, "application/pdf", string.Empty);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erreur lors de la récupération du fichier PDF : {ex.Message}");
                 Console.WriteLine($"Erreur dans OnPostView: {ex.Message}");
                 Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-                ModelState.AddModelError(string.Empty, "Erreur lors de la récupération du fichier PDF ❌.");
                 return NotFound($"Impossible d'ouvrir le fichier: {ex.Message}");
             }
         }
 
-        // Méthode pour enregistrer un fichier PDF de carte
-        public async Task<IActionResult> OnPostUploadFileCarteAsync()
+        // handler methode pour enregistrer un nouveau fichier VPL
+        public async Task<IActionResult> OnPostUploadFileVplAsync()
         {
-            if (User?.Identity?.IsAuthenticated != true)
-            {
-                TempData["ErrorMessage"] = "Vous devez être connecté pour effectuer cette action.";
-                return RedirectToPage("/Login");
-            }
-
             if (Fichier == null || Fichier.Length == 0)
             {
                 ModelState.AddModelError("Fichier", "Veuillez sélectionner un fichier ❌.");
                 return Page();
             }
 
+            // Validation du type de fichier
             var extension = Path.GetExtension(Fichier.FileName).ToLower();
             if (extension != ".pdf")
             {
@@ -122,33 +158,19 @@ namespace anahged.Pages
 
             try
             {
+                // Récupérer l'ID de l'utilisateur connecté
                 var userId = GetCurrentUserId();
+               // Console.WriteLine($"ID Utilisateur connecté : {userId}");
 
-                if (IdOperation <= 0)
-                {
-                    ModelState.AddModelError("IdOperation", "Veuillez sélectionner une opération valide.");
-                    return Page();
-                }
-
-                var message = await _gedServices.EnregistrerFichierCarteAsync(
-                    Fichier!,
-                    Tube,
-                    Ville,
-                    Quartier,
-                    IdOperation,
-                    Operation,
-                    Legende,
-                    Originalite,
-                    Echelle,
-                    DateCarte,
-                    Cote,
-                    userId,
-                    StatutId
-                );
+                var message = await _gedServices.EnregistrerFichierVplAsync(
+                    Fichier, Annee, Boite, Logement, Document,
+                    DateDocument, Client, Fonctions, Adresse, Contact,
+                     userId, IdOpe, NumeroDossierVpl, StatutId);
 
                 TempData["SuccessMessage"] = message;
-                ViewData["MessageUpload"] = "Carte enregistrée avec succès ✅ !";
+                ViewData["MessageUpload"] = "Fichier VPL enregistré avec succès ✅ !";
 
+                // Réinitialiser les propriétés après succès
                 ResetProperties();
                 ModelState.Clear();
 
@@ -157,271 +179,63 @@ namespace anahged.Pages
             catch (Exception ex)
             {
                 Console.WriteLine($"Erreur: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
                 ModelState.AddModelError(string.Empty, $"Erreur lors de l'enregistrement du fichier : {ex.Message} ❌.");
                 return Page();
             }
         }
-
-        // Réinitialiser les propriétés après un enregistrement réussi
+        
+        
         private void ResetProperties()
         {
-            Tube = Ville = Quartier = Operation = Legende = Originalite = Echelle = Cote = DateCarte = string.Empty;
+            Annee = string.Empty;
+            Code = string.Empty;
+            Boite = string.Empty;
+            Logement = string.Empty;
+            Document = string.Empty;
+            DateDocument = string.Empty;
+            Client = string.Empty;
+            Fonctions = string.Empty;
+            Adresse = string.Empty;
+            Contact = string.Empty;
+            Ville = string.Empty;
+            CommuneQuartier = string.Empty;
             Fichier = null!;
         }
 
-        // Méthode pour obtenir l'ID de l'utilisateur connecté
+        // Methode pour obtenir l'ID de l'utilisateur connecté
         private int GetCurrentUserId()
         {
             if (User?.Identity?.IsAuthenticated != true)
-                return 0;
+            {
+                throw new InvalidOperationException("Utilisateur non authentifié.");
+            }
 
             var userIdClaim = User.FindFirst("UserId")?.Value;
+
             if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
-                return 0;
+            {
+                throw new InvalidOperationException("Impossible de récupérer l'ID utilisateur. Veuillez vous reconnecter.");
+            }
 
             return userId;
         }
 
-        // Méthode pour modifier les informations d'un enregistrement d'une carte
-        public async Task<IActionResult> OnPostUpdateCarte()
-        {
-            if (User?.Identity?.IsAuthenticated != true)
-            {
-                TempData["ErrorMessage"] = "Vous devez être connecté pour effectuer cette action.";
-                return RedirectToPage("/Login");
-            }
-
-            try
-            {
-                // Récupération de l'ID
-                if (!int.TryParse(Request.Form["IdCarte"], out int id))
-                    return BadRequest("ID invalide");
-
-                var carte = await _gedcontext.Cartes.FindAsync(id);
-                if (carte == null)
-                    return NotFound();
-
-                // --- Conservation des anciennes valeurs ---
-                var ancienCarte = new
-                {
-                    carte.Tube,
-                    carte.Legende,
-                    carte.DateCarte,
-                    carte.Operation,
-                    carte.Echelle,
-                    carte.Originalite,
-                    carte.Cote,
-                    carte.Ville,
-                    carte.Quartier,
-                    carte.Lien,
-                    carte.IdOpe,
-                    carte.DernierStatutCarteId
-                };
-
-                bool modificationChamps = false;
-                bool changementStatut = false;
-                bool changementFichier = false;
-
-                // --- Mise à jour des champs simples ---
-                string newTube = Request.Form["Tube"].ToString() ?? "";
-                if (newTube != ancienCarte.Tube)
-                {
-                    carte.Tube = newTube;
-                    modificationChamps = true;
-                }
-
-                string newLegende = Request.Form["Legende"].ToString() ?? "";
-                if (newLegende != ancienCarte.Legende)
-                {
-                    carte.Legende = newLegende;
-                    modificationChamps = true;
-                }
-
-                string newOperation = Request.Form["Operation"].ToString() ?? "";
-                if (newOperation != ancienCarte.Operation)
-                {
-                    carte.Operation = newOperation;
-                    modificationChamps = true;
-                }
-
-                string newEchelle = Request.Form["Echelle"].ToString() ?? "";
-                if (newEchelle != ancienCarte.Echelle)
-                {
-                    carte.Echelle = newEchelle;
-                    modificationChamps = true;
-                }
-
-                string newOriginalite = Request.Form["Originalite"].ToString() ?? "";
-                if (newOriginalite != ancienCarte.Originalite)
-                {
-                    carte.Originalite = newOriginalite;
-                    modificationChamps = true;
-                }
-
-                string newCote = Request.Form["Cote"].ToString() ?? "";
-                if (newCote != ancienCarte.Cote)
-                {
-                    carte.Cote = newCote;
-                    modificationChamps = true;
-                }
-
-                string newVille = Request.Form["Ville"].ToString() ?? "";
-                if (newVille != ancienCarte.Ville)
-                {
-                    carte.Ville = newVille;
-                    modificationChamps = true;
-                }
-
-                string newQuartier = Request.Form["Quartier"].ToString() ?? "";
-                if (newQuartier != ancienCarte.Quartier)
-                {
-                    carte.Quartier = newQuartier;
-                    modificationChamps = true;
-                }
-
-                int? newIdOpe = int.TryParse(Request.Form["IdOperation"], out int idOpe) ? idOpe : (int?)null;
-                if (newIdOpe != ancienCarte.IdOpe)
-                {
-                    carte.IdOpe = newIdOpe;
-                    modificationChamps = true;
-                }
-
-                // --- Gestion de la date ---
-                if (DateTime.TryParse(Request.Form["DateCarte"], out DateTime dateDoc))
-                {
-                    string newDate = dateDoc.ToString("dd/MM/yyyy");
-                    if (newDate != ancienCarte.DateCarte)
-                    {
-                        carte.DateCarte = newDate;
-                        modificationChamps = true;
-                    }
-                }
-
-                // --- Gestion du statut ---
-                int? newStatutId = int.TryParse(Request.Form["statutId"], out int statutId) ? statutId : (int?)null;
-                if (newStatutId != ancienCarte.DernierStatutCarteId)
-                {
-                    carte.DernierStatutCarteId = newStatutId;
-                    modificationChamps = true;
-                    changementStatut = true;
-                }
-
-                // --- Gestion du fichier ---
-                var fichier = Request.Form.Files["Fichier"];
-                bool deleteFile = Request.Form["DeleteFile"] == "true";
-
-                if (fichier != null && fichier.Length > 0)
-                {
-                    // Supprimer l'ancien fichier s'il existe
-                    if (!string.IsNullOrEmpty(carte.Lien))
-                    {
-                        var oldFilePath = Path.Combine(_environment.WebRootPath, carte.Lien);
-                        if (System.IO.File.Exists(oldFilePath))
-                            System.IO.File.Delete(oldFilePath);
-                    }
-
-                    // Sauvegarder le nouveau fichier
-                    var originalFileName = fichier.FileName;
-                    var filePath = Path.Combine(_environment.WebRootPath, "CARTES/NewCARTES/", originalFileName);
-                    var directory = Path.GetDirectoryName(filePath);
-                    if (!Directory.Exists(directory))
-                        Directory.CreateDirectory(directory);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await fichier.CopyToAsync(stream);
-                    }
-
-                    carte.Lien = Path.Combine("CARTES/NewCARTES/", originalFileName).Replace("\\", "/");
-                    modificationChamps = true;
-                    changementFichier = true;
-                }
-                else if (deleteFile && !string.IsNullOrEmpty(carte.Lien))
-                {
-                    // Suppression du fichier sans remplacement
-                    var oldFilePath = Path.Combine(_environment.WebRootPath, carte.Lien);
-                    if (System.IO.File.Exists(oldFilePath))
-                        System.IO.File.Delete(oldFilePath);
-
-                    carte.Lien = null;
-                    modificationChamps = true;
-                    changementFichier = true;
-                }
-
-                // Si aucune modification, retourner directement
-                if (!modificationChamps)
-                {
-                    return Content("Aucune modification détectée");
-                }
-
-                // Sauvegarde des modifications
-                await _gedcontext.SaveChangesAsync();
-
-                // --- Enregistrement de l'historique général (HistoriqueCarte) ---
-                var historiqueCarte = new HistoriqueCarte
-                {
-                    IdCarte = carte.IdCarte,
-                    UserId = GetCurrentUserId(),
-                    DateHisto = DateTime.Now,
-                    DateVu = DateOnly.FromDateTime(DateTime.Now),
-                    TypeAction = "Modification",
-                    Commentaire = $"Carte modifiée - Tube: {carte.Tube}, Légende: {carte.Legende}, Date: {carte.DateCarte}, Opération: {carte.Operation}, Ville: {carte.Ville}, Statut ID: {carte.DernierStatutCarteId}"
-                };
-                _gedcontext.HistoriqueCartes.Add(historiqueCarte);
-
-                // --- Si changement de statut, ajouter une entrée dans Validationsfile (ou table dédiée) ---
-                if (changementStatut)
-                {
-                    var validationfile = new Validationsfile
-                    {
-                        IdCarte = carte.IdCarte,  // Assurez-vous que Validationsfile a une propriété IdCarte
-                        UserId = GetCurrentUserId(),
-                        DateValidation = DateTime.Now,
-                        TypeAction = "ModificationStatut",
-                        Commentaire = $"Statut modifié - Nouveau statut ID: {carte.DernierStatutCarteId}"
-                    };
-                    _gedcontext.Validationsfiles.Add(validationfile);
-                }
-
-                // Optionnel : tracer le changement de fichier si nécessaire
-                if (changementFichier)
-                {
-                    // Vous pouvez ajouter une autre entrée d'historique spécifique au fichier
-                    // Par exemple, ajouter une ligne dans une table "FichierHistorique" ou enrichir le commentaire
-                }
-
-                await _gedcontext.SaveChangesAsync();
-
-                return Content("Mise à jour réussie");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Erreur lors de la modification: " + ex.Message);
-            }
-        }
-
- 
-
-         // Methode pour supprimer le fichier ADP associé à un enregistrement ADP
-        public async Task<IActionResult> OnPostDeleteFileCarte(int id)
+        // Methode pour supprimer le fichier VPL associé à un enregistrement
+        public async Task<IActionResult> OnPostDeleteFileVpl(int id)
         {
             try
             {
-                if(id <= 0)
-                {
-                    return BadRequest("ID invalide pour la suppression du fichier.");
-                }   
-
-                var carte = await _gedcontext.Cartes.FindAsync(id);
-                if (carte == null)
+                var vpl = await _gedContext.Vpls.FindAsync(id);
+                if (vpl == null)
                 {
                     return NotFound();
                 }
 
                 // Supprimer le fichier physique
-                if (!string.IsNullOrEmpty(carte.Lien))
+                if (!string.IsNullOrEmpty(vpl.Lien))
                 {
-                    var filePath = Path.Combine(_environment.WebRootPath, carte.Lien);
+                    var filePath = Path.Combine(_environment.WebRootPath, vpl.Lien);
                     if (System.IO.File.Exists(filePath))
                     {
                         System.IO.File.Delete(filePath);
@@ -429,8 +243,8 @@ namespace anahged.Pages
                 }
 
                 // Mettre à jour la base de données
-                carte.Lien = null;
-                await _gedcontext.SaveChangesAsync();
+                vpl.Lien = string.Empty;
+                await _gedContext.SaveChangesAsync();
 
                 return Content("Fichier supprimé avec succès");
             }
@@ -440,22 +254,234 @@ namespace anahged.Pages
                 return StatusCode(500, "Erreur lors de la suppression du fichier: " + ex.Message);
             }
         }
+        
+        // Methode pour modifier les informations d'un enregistrement VPL
+
+        public async Task<IActionResult> OnPostUpdateVpl()
+        {
+            // Vérification de l'authentification (optionnelle, adaptez selon votre besoin)
+            if (User?.Identity?.IsAuthenticated != true)
+            {
+                TempData["ErrorMessage"] = "Vous devez être connecté pour effectuer cette action.";
+                return RedirectToPage("/Login");
+            }
+
+            try
+            {
+                // Récupération de l'ID
+                if (!int.TryParse(Request.Form["IdVpl"], out int id))
+                    return BadRequest("ID invalide");
+
+                var vpl = await _gedContext.Vpls.FindAsync(id);
+                if (vpl == null)
+                    return NotFound();
+
+                // Conservation des anciennes valeurs
+                var ancienVpl = new
+                {
+                    vpl.Boite,
+                    vpl.Code,
+                    vpl.IdOpe,
+                    vpl.Logement,
+                    vpl.Client,
+                    vpl.Annee,
+                    vpl.Ville,
+                    vpl.Document,
+                    vpl.CommuneQuartier,
+                    vpl.Adresse,
+                    vpl.Contact,
+                    vpl.Fonctions,
+                    vpl.NumDossierVpl,
+                    vpl.DernierStatutVplId,
+                    vpl.DateDocument,
+                    vpl.Lien
+                };
+
+                bool modificationChamps = false;
+                bool changementStatut = false;
+                bool changementFichier = false;
+
+                // Mise à jour des champs simples
+                vpl.Boite = Request.Form["Boite"].ToString() ?? "";
+                if (vpl.Boite != ancienVpl.Boite) modificationChamps = true;
+
+                // Gestion de l'opération (IdOpe)
+                int? newIdOpe = int.TryParse(Request.Form["IdOpe"], out int idOpe) ? idOpe : (int?)null;
+                if (newIdOpe != ancienVpl.IdOpe)
+                {
+                    vpl.IdOpe = newIdOpe;
+                    modificationChamps = true;
+                    // Optionnel : mettre à jour le champ Code avec le code de l'opération
+                    if (newIdOpe.HasValue)
+                    {
+                        var operation = await _gedContext.Operations.FindAsync(newIdOpe.Value);
+                        vpl.Code = operation?.CodeOpe ?? "";
+                    }
+                    else
+                    {
+                        vpl.Code = "";
+                    }
+                }
+
+                vpl.Logement = Request.Form["Logement"].ToString() ?? "";
+                if (vpl.Logement != ancienVpl.Logement) modificationChamps = true;
+
+                vpl.Client = Request.Form["Client"].ToString() ?? "";
+                if (vpl.Client != ancienVpl.Client) modificationChamps = true;
+
+                vpl.Annee = Request.Form["Annee"].ToString() ?? "";
+                if (vpl.Annee != ancienVpl.Annee) modificationChamps = true;
+
+                vpl.Ville = Request.Form["Ville"].ToString() ?? "";
+                if (vpl.Ville != ancienVpl.Ville) modificationChamps = true;
+
+                vpl.Document = Request.Form["Document"].ToString() ?? "";
+                if (vpl.Document != ancienVpl.Document) modificationChamps = true;
+
+                vpl.CommuneQuartier = Request.Form["CommuneQuartier"].ToString() ?? "";
+                if (vpl.CommuneQuartier != ancienVpl.CommuneQuartier) modificationChamps = true;
+
+                vpl.Adresse = Request.Form["Adresse"].ToString() ?? "";
+                if (vpl.Adresse != ancienVpl.Adresse) modificationChamps = true;
+
+                vpl.Contact = Request.Form["Contact"].ToString() ?? "";
+                if (vpl.Contact != ancienVpl.Contact) modificationChamps = true;
+
+                vpl.Fonctions = Request.Form["Fonctions"].ToString() ?? "";
+                if (vpl.Fonctions != ancienVpl.Fonctions) modificationChamps = true;
+
+                vpl.NumDossierVpl = Request.Form["NumeroDossierVpl"].ToString() ?? "";
+                if (vpl.NumDossierVpl != ancienVpl.NumDossierVpl) modificationChamps = true;
+
+                // Statut
+                int? newStatutId = int.TryParse(Request.Form["statutId"], out int statutId) ? statutId : (int?)null;
+                if (newStatutId != ancienVpl.DernierStatutVplId)
+                {
+                    vpl.DernierStatutVplId = newStatutId;
+                    modificationChamps = true;
+                    changementStatut = true;
+                }
+
+                // Date
+                if (DateTime.TryParse(Request.Form["DateDocument"], out DateTime dateDoc))
+                {
+                    string newDate = dateDoc.ToString("dd/MM/yyyy");
+                    if (newDate != ancienVpl.DateDocument)
+                    {
+                        vpl.DateDocument = newDate;
+                        modificationChamps = true;
+                    }
+                }
+
+                // Gestion du fichier
+                var fichier = Request.Form.Files["Fichier"];
+                bool deleteFile = Request.Form["DeleteFile"] == "true";
+
+                if (fichier != null && fichier.Length > 0)
+                {
+                    // Supprimer l'ancien fichier s'il existe
+                    if (!string.IsNullOrEmpty(vpl.Lien))
+                    {
+                        var oldFilePath = Path.Combine(_environment.WebRootPath, vpl.Lien);
+                        if (System.IO.File.Exists(oldFilePath))
+                            System.IO.File.Delete(oldFilePath);
+                    }
+
+                    // Sauvegarder le nouveau fichier
+                    var originalFileName = fichier.FileName;
+                    var filePath = Path.Combine(_environment.WebRootPath, "SICOGI/NewSICOGI/", originalFileName);
+                    var directory = Path.GetDirectoryName(filePath);
+                    if (!Directory.Exists(directory))
+                        Directory.CreateDirectory(directory);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await fichier.CopyToAsync(stream);
+                    }
+
+                    vpl.Lien = Path.Combine("SICOGI/NewSICOGI/", originalFileName).Replace("\\", "/");
+                    modificationChamps = true;
+                    changementFichier = true;
+                }
+                else if (deleteFile && !string.IsNullOrEmpty(vpl.Lien))
+                {
+                    // Suppression du fichier sans remplacement
+                    var oldFilePath = Path.Combine(_environment.WebRootPath, vpl.Lien);
+                    if (System.IO.File.Exists(oldFilePath))
+                        System.IO.File.Delete(oldFilePath);
+
+                    vpl.Lien = null;
+                    modificationChamps = true;
+                    changementFichier = true;
+                }
+
+                // Si aucune modification, on peut retourner directement
+                if (!modificationChamps)
+                {
+                    return Content("Aucune modification détectée");
+                }
+
+                // Sauvegarde des modifications
+                await _gedContext.SaveChangesAsync();
+
+                // Enregistrement de l'historique général
+                var historiqueVpl = new HistoriqueVpl
+                {
+                    IdVpl = vpl.IdVpl,
+                    UserId = GetCurrentUserId(), // À implémenter selon votre méthode d'authentification
+                    DateHisto = DateTime.Now,
+                    DateVu = DateOnly.FromDateTime(DateTime.Now),
+                    TypeAction = "Modification",
+                    Commentaire = $"VPL modifié - Boite: {vpl.Boite}, Logement: {vpl.Logement}, Client: {vpl.Client}, Statut ID: {vpl.DernierStatutVplId}, Numéro Dossier: {vpl.NumDossierVpl}, Opération ID: {vpl.IdOpe}"
+                };
+                _gedContext.HistoriqueVpls.Add(historiqueVpl);
+
+                // Si changement de statut, ajouter une entrée dans Validationsfiles (ou une table dédiée)
+                if (changementStatut)
+                {
+                    var validationfile = new Validationsfile
+                    {
+                        IdVpl = vpl.IdVpl,   // Supposons que Validationsfile ait une propriété IdVpl
+                        UserId = GetCurrentUserId(),
+                        DateValidation = DateTime.Now,
+                        TypeAction = "Modification",
+                        Commentaire = $"Statut modifié - Nouveau statut ID: {vpl.DernierStatutVplId}"
+                    };
+                    _gedContext.Validationsfiles.Add(validationfile);
+                }
+
+                // Optionnel : tracer les modifications de fichier si nécessaire
+                if (changementFichier)
+                {
+                    // Vous pouvez ajouter une autre entrée d'historique ou enrichir le commentaire
+                    // Par exemple, on pourrait ajouter une ligne dans une table dédiée "FichierHistorique"
+                }
+
+                await _gedContext.SaveChangesAsync();
+
+                return Content("Mise à jour réussie");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erreur lors de la modification: " + ex.Message);
+            }
+        }
 
         // Methode pour supprimer le fichier VPL associé à un enregistrement VPL
-        public async Task<IActionResult> OnPostDeleteAdp(int id)
+        public async Task<IActionResult> OnPostDeleteVpl(int id)
         {
             try
             {
-                var carte = await _gedcontext.Cartes.FindAsync(id);
-                if (carte == null)
+                var vpl = await _gedContext.Vpls.FindAsync(id);
+                if (vpl == null)
                 {
                     return NotFound();
                 }
 
                 // Supprimer le fichier physique
-                if (!string.IsNullOrEmpty(carte.Lien))
+                if (!string.IsNullOrEmpty(vpl.Lien))
                 {
-                    var filePath = Path.Combine(_environment.WebRootPath, carte.Lien);
+                    var filePath = Path.Combine(_environment.WebRootPath, vpl.Lien);
                     if (System.IO.File.Exists(filePath))
                     {
                         System.IO.File.Delete(filePath);
@@ -463,8 +489,8 @@ namespace anahged.Pages
                 }
 
                 // Supprimer de la base de données
-                _gedcontext.Cartes.Remove(carte);
-                await _gedcontext.SaveChangesAsync();
+                _gedContext.Vpls.Remove(vpl);
+                await _gedContext.SaveChangesAsync();
 
                 return Content("Suppression réussie");
             }
@@ -480,8 +506,8 @@ namespace anahged.Pages
             try
             {
                 // Récupérer les fichiers sélectionnés
-                var selectedFiles = await _gedcontext.Cartes
-                    .Where(a => selectedIds.Contains(a.IdCarte))
+                var selectedFiles = await _gedContext.Vpls
+                    .Where(a => selectedIds.Contains(a.IdVpl))
                     .ToListAsync();
 
                 Console.WriteLine($"Fichiers trouvés en BD: {selectedFiles.Count}");
@@ -501,7 +527,7 @@ namespace anahged.Pages
 
                 foreach (var file in selectedFiles)
                 {
-                    Console.WriteLine($"Vérification fichier ID {file.IdCarte}: {file.Lien}");
+                    Console.WriteLine($"Vérification fichier ID {file.IdVpl}: {file.Lien}");
 
                     if (!string.IsNullOrEmpty(file.Lien))
                     {
@@ -524,7 +550,7 @@ namespace anahged.Pages
 
                         if (System.IO.File.Exists(fullPath))
                         {
-                            var fileName = $"{file.Tube}_{file.IdCarte}_{Path.GetFileName(file.Lien)}";
+                            var fileName = $"{file.Boite}_{file.Code}_{Path.GetFileName(file.Lien)}";
                             validFiles.Add((fullPath, fileName));
                             Console.WriteLine($"Fichier valide: {fullPath}");
                         }
@@ -545,7 +571,7 @@ namespace anahged.Pages
                                 if (System.IO.File.Exists(altPath))
                                 {
                                     Console.WriteLine($"Fichier trouvé à l'emplacement alternatif: {altPath}");
-                                    var fileName = $"{file.Tube}_{file.IdCarte}_{Path.GetFileName(file.Lien)}";
+                                    var fileName = $"{file.Boite}_{file.Code}_{Path.GetFileName(file.Lien)}";
                                     validFiles.Add((altPath, fileName));
                                     break;
                                 }
@@ -554,7 +580,7 @@ namespace anahged.Pages
                     }
                     else
                     {
-                        Console.WriteLine($"Chemin vide pour l'ID {file.IdCarte}");
+                        Console.WriteLine($"Chemin vide pour l'ID {file.IdVpl}");
                     }
                 }
 
@@ -637,8 +663,8 @@ namespace anahged.Pages
                     return RedirectToPage();
                 }
 
-                var filesToDelete = await _gedcontext.Cartes
-                    .Where(a => selectedIds.Contains(a.IdCarte))
+                var filesToDelete = await _gedContext.Vpls
+                    .Where(a => selectedIds.Contains(a.IdVpl))
                     .ToListAsync();
 
                 foreach (var file in filesToDelete)
@@ -649,10 +675,10 @@ namespace anahged.Pages
                         System.IO.File.Delete(file.Lien);
                     }
                     // Supprimer l'enregistrement de la base
-                    _gedcontext.Cartes.Remove(file);
+                    _gedContext.Vpls.Remove(file);
                 }
 
-                await _gedcontext.SaveChangesAsync();
+                await _gedContext.SaveChangesAsync();
                 TempData["SuccessMessage"] = $"{filesToDelete.Count} fichier(s) supprimé(s) avec succès";
             }
             catch (Exception ex)
@@ -662,7 +688,5 @@ namespace anahged.Pages
 
             return RedirectToPage();
         }
-
-        
     }
 }

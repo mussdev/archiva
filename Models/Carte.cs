@@ -13,7 +13,7 @@ public partial class Carte
 
     public string? Quartier { get; set; }
 
-    public string Operation { get; set; } = null!;
+    public string? Operation { get; set; }
 
     public string Legende { get; set; } = null!;
 
@@ -30,6 +30,10 @@ public partial class Carte
     public int? IdOpe { get; set; }
 
     public string? NumDossierCarte { get; set; }
+
+    public int? DernierStatutCarteId { get; set; }
+
+    public virtual Statut? DernierStatutCarte { get; set; }
 
     public virtual ICollection<HistoriqueCarte> HistoriqueCartes { get; set; } = new List<HistoriqueCarte>();
 

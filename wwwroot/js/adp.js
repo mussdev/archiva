@@ -101,19 +101,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // === AFFICHER LA DATE DU JOUR DANS L'INPUT DATE DE L'AJOUT DE FICHIER ===
-   /*  ajoutFichierModal.addEventListener('shown.bs.modal', function () {
-        console.log('✅ Modal affiché, tentative de préremplissage de la date');
-        var dateField = document.querySelector('input[name="DateDocument"]').value =  '2026-02-28';
-        if (dateField) {
-            var today = new Date().toISOString().split('T')[0];
-            dateField.value = today;
-            console.log('Date définie à :', today);
-        } else {
-            console.error('Champ DateDocument introuvable');
-        }
-    }); */
-
     // === GESTION DES CASES À COCHER DANS LE TABLEAU DE FICHIER ADP ===
     var selectAllCheckbox = document.getElementById('selectAllCheckbox');
     var rowCheckboxes = document.querySelectorAll('.rowCheckbox');
@@ -153,45 +140,42 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // === CODE JS POUR L'AFFICHAGE AUTOMATIQUE DU NOM DE L'OPÉRATION ET LA VILLE ===
-    var codeSelect = document.getElementById('Code');    
-    if (codeSelect) {
-        //console.log('✅ Élément Code trouvé');
-        
-        codeSelect.addEventListener('change', function() {
-            //console.log('🔄 Changement détecté sur Code');
-            
-            var selectedOption = this.options[this.selectedIndex];
-            console.log('Option sélectionnée:', selectedOption.text);
-            
-            var operationDescription = selectedOption.getAttribute('data-operation');
-            var villeDescription = selectedOption.getAttribute('data-ville');
-            
-           // alert('Code changé : ' + this.value + '\nOpération : ' + operationDescription + '\nVille : ' + villeDescription);
-            
-            // Mettre à jour le champ Opération
-            var operationField = document.getElementById('Operation');
+    function connectCodeToOperationAndVille(codeElement) {
+        if (!codeElement) return;
+        const parentScope = codeElement.closest('form') || codeElement.closest('.modal-body') || document;
+
+        function updateFields() {
+            const selectedOption = codeElement.selectedOptions ? codeElement.selectedOptions[0] : codeElement.options[codeElement.selectedIndex];
+            const operationDescription = selectedOption?.dataset.operation || '';
+            const villeDescription = selectedOption?.dataset.ville || '';
+
+            const operationField = parentScope.querySelector('#Operation, #operation, [name="Operation"], [name="operation"]');
             if (operationField) {
-                operationField.value = operationDescription || '';
+                operationField.value = operationDescription;
                 console.log('Champ Operation mis à jour:', operationField.value);
             } else {
-                console.error('Champ Operation non trouvé');
+                console.error('Champ Operation non trouvé (scope)', parentScope);
             }
-            
-            // Mettre à jour le champ Ville
-            var villeField = document.getElementById('Ville');
+
+            const villeField = parentScope.querySelector('#Ville, #ville, [name="Ville"], [name="ville"]');
             if (villeField) {
-                villeField.value = villeDescription || '';
+                villeField.value = villeDescription;
                 console.log('Champ Ville mis à jour:', villeField.value);
             } else {
-                console.error('Champ Ville non trouvé');
+                console.error('Champ Ville non trouvé (scope)', parentScope);
             }
-        });
-        
-        // Déclencher l'événement si une valeur est déjà sélectionnée
-        if (codeSelect.value) {
-            console.log('Déclenchement initial de l\'événement change');
-            codeSelect.dispatchEvent(new Event('change'));
         }
+
+        codeElement.addEventListener('change', updateFields);
+        if (codeElement.value) {
+            updateFields();
+        }
+    }
+
+    const codeSelects = Array.from(document.querySelectorAll('#Code, #code, select[name="IdOpe"]'));
+    if (codeSelects.length) {
+        console.log('✅ Élément(s) Code trouvé(s):', codeSelects.length);
+        codeSelects.forEach(connectCodeToOperationAndVille);
     } else {
         console.warn('⚠️ Élément Code non trouvé sur cette page');
     }
@@ -218,23 +202,6 @@ if (adpModal) {
         document.getElementById('deleteFileFlag').value = 'false';
         
         // Extraire les données des attributs data-*
-       /*  const adpId = button.getAttribute('data-adp-id');
-        const documentValue  = button.getAttribute('data-document');
-        const contact = button.getAttribute('data-contact');
-        const datedocument = button.getAttribute('data-datedocument');
-        const annee = button.getAttribute('data-annee');
-        const fonctions = button.getAttribute('data-fonctions');
-        const client = button.getAttribute('data-client');
-        const code = button.getAttribute('data-code');
-        const numDossier = button.getAttribute('data-numDossier');
-        const boite = button.getAttribute('data-boite');
-        const logement = button.getAttribute('data-logement');
-        const adresse = button.getAttribute('data-adresse');
-        const communequartier = button.getAttribute('data-communequartier');
-        const ville = button.getAttribute('data-ville');
-        const fichier = button.getAttribute('data-fichier');
-        const statutId = button.getAttribute('data-statut-id');
- */
         // Récupérer les attributs (certains nouveaux)
         const adpId = button.getAttribute('data-adp-id');
         const documentValue = button.getAttribute('data-document');
@@ -262,22 +229,6 @@ if (adpModal) {
                 htmlDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // yyyy-MM-dd
             }
         }
-        
-        // Mettre à jour le contenu de la modale ADP
-        /* document.getElementById('adpId').value = adpId;
-        document.getElementById('boite').value = boite;
-        document.getElementById('code').value = code;
-        document.getElementById('logement').value = logement;
-        document.getElementById('client').value = client;
-        document.getElementById('anneet').value = annee;
-        document.getElementById('ville').value = ville;
-        document.getElementById('numeroDossierAdpE').value = numDossier;
-        document.getElementById('document').value = documentValue;
-        document.getElementById('communequartier').value = communequartier;
-        document.getElementById('adresse').value = adresse;
-        document.getElementById('contact').value = contact;
-        document.getElementById('fonctions').value = fonctions;
-        document.getElementById('datedocument').value = htmlDate; */
 
         // Mettre à jour les champs
         document.getElementById('adpId').value = adpId;

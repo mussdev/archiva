@@ -29,64 +29,6 @@ namespace anahged.Services
             return _context.Adps.Take(10).ToList();
         }
 
-        // Methode de recherche des fichiers ADP par divers critères
-        /* public async Task<IList<Adp>> RechercherAdpAsync(string logement, string document, string client, string boite, string code, string annee)
-        {
-            if (string.IsNullOrEmpty(logement) &&
-                string.IsNullOrEmpty(document) &&
-                string.IsNullOrEmpty(client) &&
-                string.IsNullOrEmpty(boite) &&
-                string.IsNullOrEmpty(code) &&
-                string.IsNullOrEmpty(annee))
-            {
-                return new List<Adp>();
-            }
-
-            var adpQuery = _context.Adps.AsQueryable();
-
-            if (!string.IsNullOrEmpty(logement))
-            {
-                adpQuery = adpQuery.Where(a => a.Logement.Contains(logement));
-            }
-
-            if (!string.IsNullOrEmpty(document))
-            {
-                adpQuery = adpQuery.Where(a => a.Document.Contains(document));
-            }
-
-            if (!string.IsNullOrEmpty(client))
-            {
-                adpQuery = adpQuery.Where(a => a.Client.Contains(client));
-            }
-
-            if (!string.IsNullOrEmpty(boite))
-            {
-                adpQuery = adpQuery.Where(a => a.Boite.Contains(boite));
-            }
-
-            if (!string.IsNullOrEmpty(code))
-            {
-                adpQuery = adpQuery.Where(a => a.Code.Contains(code));
-            }
-
-            if (!string.IsNullOrEmpty(annee))
-            {
-                adpQuery = adpQuery.Where(a => a.Annee.Contains(annee));
-            }
-
-            if (!string.IsNullOrEmpty(boite) && !string.IsNullOrEmpty(code))
-            {
-                adpQuery = adpQuery.Where(a => a.Boite.Contains(boite) && a.Code.Contains(code));
-            }
-
-            if (!string.IsNullOrEmpty(boite) && !string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(logement))
-            {
-                adpQuery = adpQuery.Where(a => a.Boite.Contains(boite) && a.Code.Contains(code) && a.Logement.Contains(logement));
-            }
-
-            return await adpQuery.ToListAsync();
-        } */
-
         public async Task<IList<Adp>> RechercherAdpAsync(string logement, string document, string client, string boite, string code, string annee)
         {
             if (string.IsNullOrEmpty(logement) &&
@@ -124,6 +66,7 @@ namespace anahged.Services
             return await adpQuery
                 .Include(a => a.DernierStatutAdp)   // ← Charge le statut associé
                 .Include(o => o.IdOpeNavigation)
+                .Where(a => a.DernierStatutAdp == null || a.DernierStatutAdp.DescriptionStatut == "Validé")
                 .ToListAsync();
         }
 
@@ -182,11 +125,15 @@ namespace anahged.Services
                 vplQuery = vplQuery.Where(a => a.Code.Contains(code) && a.Boite.Contains(boite) && a.Logement.Contains(logement));
             }
 
-            return await vplQuery.ToListAsync();
+            return await vplQuery
+                .Include(a => a.DernierStatutVpl)
+                .Include(a => a.IdOpeNavigation)
+                .Where(a => a.DernierStatutVpl == null || a.DernierStatutVpl.DescriptionStatut == "Validé")
+                .ToListAsync();
         }
 
         // Methode de recherche des fichiers Cartes par divers critères
-        public async Task<IList<Carte>> RechercherCarteAsync(string ville, string quartier, string operation, string legende)
+        public async Task<IList<Carte>> RechercherCarteAsync(string? ville, string? quartier, string? operation, string? legende)
         {
             if (string.IsNullOrEmpty(ville) &&
                 string.IsNullOrEmpty(quartier) &&
@@ -196,29 +143,32 @@ namespace anahged.Services
                 return new List<Carte>();
             }
 
-            var adpQuery = _context.Cartes.AsQueryable();
+            var cartesQuery = _context.Cartes.AsQueryable();
 
             if (!string.IsNullOrEmpty(ville))
             {
-                adpQuery = adpQuery.Where(a => a.Ville.Contains(ville));
+                cartesQuery = cartesQuery.Where(a => a.Ville.Contains(ville));
             }
 
             if (!string.IsNullOrEmpty(quartier))
             {
-                adpQuery = adpQuery.Where(a => a.Quartier.Contains(quartier));
+                cartesQuery = cartesQuery.Where(a => a.Quartier.Contains(quartier));
             }
 
             if (!string.IsNullOrEmpty(operation))
             {
-                adpQuery = adpQuery.Where(a => a.Operation.Contains(operation));
+                cartesQuery = cartesQuery.Where(a => a.Operation.Contains(operation));
             }
 
             if (!string.IsNullOrEmpty(legende))
             {
-                adpQuery = adpQuery.Where(a => a.Legende.Contains(legende));
+                cartesQuery = cartesQuery.Where(a => a.Legende.Contains(legende));
             }
 
-            return await adpQuery.ToListAsync();
+            return await cartesQuery.Include(a => a.DernierStatutCarte)
+                                    .Include(a => a.IdOpeNavigation)
+                                    .Where(a => a.DernierStatutCarte == null || a.DernierStatutCarte.DescriptionStatut == "Validé")
+                                    .ToListAsync();
         }
 
         // methode de lecture des cartes en format PDF
@@ -334,7 +284,14 @@ namespace anahged.Services
         }
 
         // Service pour enregistrer des fichiers ADP
-        public async Task<string> EnregistrerFichierAdpAsync(IFormFile fichier, string annee, string boite, string logement, string document, string dateDocument, string client, string fonctions, string adresse, string contact, int operationId, int userId, int statutId, string? numeroDossierAdp)
+        public async Task<string> EnregistrerFichierAdpAsync
+                                (IFormFile fichier, string annee, 
+                                    string boite, string logement, 
+                                    string document, string dateDocument, 
+                                    string client, string fonctions, 
+                                    string adresse, string contact, 
+                                    int operationId, int userId, 
+                                    int statutId, string? numeroDossierAdp)
         {
             // Console.WriteLine($"Début de l'enregistrement - Fichier: {fichier?.FileName}, UserId: {userId}");
 
@@ -449,11 +406,11 @@ namespace anahged.Services
             }
         }
 
-        // Méthode d'enregistrement des fichiers VPL
+        // Service d'enregistrement des fichiers VPL
         public async Task<string> EnregistrerFichierVplAsync(
             IFormFile fichier,
             string annee,
-            string code,
+           // string code,
             string boite,
             string logement,
             string document,
@@ -462,9 +419,13 @@ namespace anahged.Services
             string fonctions,
             string adresse,
             string contact,
-            string ville,
-            string communeQuartier,
-            int userId)
+           // string ville,
+            //string communeQuartier,
+            int userId,
+            int operationId,
+            string? numeroDossierVpl,
+            int statutId
+        )
         {
             if (fichier == null || fichier.Length == 0)
             {
@@ -526,7 +487,7 @@ namespace anahged.Services
             var vpl = new Vpl
             {
                 Annee = annee,
-                Code = code,
+               // Code = code,
                 Boite = boite,
                 Logement = logement,
                 Document = document,
@@ -535,8 +496,11 @@ namespace anahged.Services
                 Fonctions = fonctions,
                 Adresse = adresse,
                 Contact = contact,
-                Ville = ville,
-                CommuneQuartier = communeQuartier,
+                // Ville = ville,
+                // CommuneQuartier = communeQuartier,
+                IdOpe = operationId,
+                NumDossierVpl = numeroDossierVpl,
+                DernierStatutVplId = statutId,
                 Lien = Path.Combine("SICOGI/NewSICOGI/", nomFichier).Replace("\\", "/") // Stocker le chemin relatif
             };
 
@@ -549,11 +513,27 @@ namespace anahged.Services
                 IdVpl = vpl.IdVpl,
                 UserId = userId,
                 DateHisto = DateTime.Now,
-                DateVu = DateOnly.FromDateTime(DateTime.Now)
+                DateVu = DateOnly.FromDateTime(DateTime.Now),
+                TypeAction = "Enregistrement",
+                Commentaire = $"Fichier VPL enregistré - Statut ID: {statutId}, Numéro Dossier: {numeroDossierVpl}, Opération ID: {operationId}, Client: {client}, Fonctions: {fonctions}, Adresse: {adresse}, Contact: {contact}, Boite: {boite}, Logement: {logement}, Document: {document}, Date Document: {dateDocument}"
             };
 
             _context.HistoriqueVpls.Add(historiqueVpl);
             await _context.SaveChangesAsync();
+
+            // Code pour historiser la gestion des validations de fichiers ADP
+                var validationfile = new Validationsfile
+                {
+                    IdAdp = vpl.IdVpl,
+                    UserId = userId,
+                    DateValidation = DateTime.Now,
+                    IdStatut = statutId,
+                    TypeAction = "Enregistrement",
+                    Commentaire = $"Fichier VPL enregistré avec le statut ID {statutId}"
+                };
+
+                _context.Validationsfiles.Add(validationfile);
+                await _context.SaveChangesAsync();
 
             return "Fichier VPL enregistré avec succès";
         }
@@ -561,16 +541,19 @@ namespace anahged.Services
         // Méthode d'enregistrement des fichiers Cartes
         public async Task<string> EnregistrerFichierCarteAsync(
         IFormFile fichier,
-        string tube,
-        string ville,
-        string quartier,
-        string operation,
-        string legende,
-        string originalite,
-        string echelle,
-        string date_carte,
-        string cote,
-        int userId)
+        string? tube,
+        string? ville,
+        string? quartier,
+        int idOperation,
+        string? operation,
+        string? legende,
+        string? originalite,
+        string? echelle,
+        string? date_carte,
+        string? cote,
+        int userId,
+        int statutId
+        )
         {
             if (fichier == null || fichier.Length == 0)
             {
@@ -617,7 +600,7 @@ namespace anahged.Services
             }
 
             // === CONVERSION DE LA DATE ===
-            string formattedDate = date_carte; // Par défaut, on garde la valeur originale
+            string formattedDate = date_carte ?? string.Empty; // Par défaut, on garde la valeur originale
             
             if (!string.IsNullOrEmpty(date_carte))
             {
@@ -633,18 +616,31 @@ namespace anahged.Services
                 }
             }
 
+            // Chercher l'opération/ville dans la table operations quand nécessaire
+            if (idOperation > 0)
+            {
+                var ope = await _context.Operations.Include(o => o.IdVilleNavigation).FirstOrDefaultAsync(o => o.IdOpe == idOperation);
+                if (ope != null)
+                {
+                    if (string.IsNullOrWhiteSpace(operation)) operation = ope.DescriptionOpe;
+                    if (string.IsNullOrWhiteSpace(ville)) ville = ope.IdVilleNavigation?.DescriptionVille;
+                }
+            }
+
             // Enregistrer les informations du fichier dans la base de données
             var cartes = new Carte
             {
-                Tube = tube,
-                Ville = ville,
-                Quartier = quartier,
-                Operation = operation,
-                Legende = legende,
-                Originalite = originalite,
-                Echelle = echelle,
-                Cote = cote,
-                DateCarte = formattedDate,
+                Tube = tube ?? string.Empty,
+                Ville = string.IsNullOrWhiteSpace(ville) ? null : ville,
+                Quartier = string.IsNullOrWhiteSpace(quartier) ? null : quartier,
+                IdOpe = idOperation > 0 ? idOperation : null,
+                Operation = string.IsNullOrWhiteSpace(operation) ? null : operation,
+                Legende = legende ?? string.Empty,
+                Originalite = string.IsNullOrWhiteSpace(originalite) ? null : originalite,
+                Echelle = string.IsNullOrWhiteSpace(echelle) ? null : echelle,
+                Cote = string.IsNullOrWhiteSpace(cote) ? null : cote,
+                DateCarte = formattedDate ?? string.Empty,
+                DernierStatutCarteId = statutId,
                 Lien = Path.Combine("CARTES/NewCARTES/", nomFichier).Replace("\\", "/")
             };
 
@@ -656,11 +652,27 @@ namespace anahged.Services
             {
                 IdCarte = cartes.IdCarte,
                 UserId = userId,
+                TypeAction = "Enregistrement",
+                Commentaire = $"Fichier Carte enregistré - Statut ID: {statutId}, Opération ID: {idOperation}, Legende: {legende}, Originalite: {originalite}, Echelle: {echelle}, Cote: {cote}, Date Carte: {date_carte}",
                 DateHisto = DateTime.Now,
                 DateVu = DateOnly.FromDateTime(DateTime.Now)
             };
 
             _context.HistoriqueCartes.Add(historiqueCarte);
+            await _context.SaveChangesAsync();
+
+            // Code pour historiser la gestion des validations de fichiers Cartes
+            var validationfile = new Validationsfile
+            {
+                IdCarte = cartes.IdCarte,
+                UserId = userId,
+                DateValidation = DateTime.Now,
+                IdStatut = statutId,
+                TypeAction = "Enregistrement",
+                Commentaire = $"Fichier Carte enregistré avec le statut ID {statutId}"
+            };
+
+            _context.Validationsfiles.Add(validationfile);
             await _context.SaveChangesAsync();
 
             return "Carte enregistrée avec succès";

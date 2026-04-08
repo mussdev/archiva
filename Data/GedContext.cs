@@ -43,7 +43,7 @@ public partial class GedContext : DbContext
 
     public virtual DbSet<Vpl> Vpls { get; set; }
 
-    /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+   /*  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseMySql("server=127.0.0.1;database=bdsicogi;user=root", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.2.0-mysql"));
  */
@@ -163,6 +163,8 @@ public partial class GedContext : DbContext
                 .HasCharSet("latin1")
                 .UseCollation("latin1_swedish_ci");
 
+            entity.HasIndex(e => e.DernierStatutCarteId, "idx_carte_dernierstatutcarteId");
+
             entity.HasIndex(e => e.IdOpe, "idx_carte_idope");
 
             entity.Property(e => e.IdCarte).HasColumnName("id_carte");
@@ -218,6 +220,11 @@ public partial class GedContext : DbContext
                 .UseCollation("utf8mb3_general_ci")
                 .HasCharSet("utf8mb3");
 
+            entity.HasOne(d => d.DernierStatutCarte).WithMany(p => p.Cartes)
+                .HasForeignKey(d => d.DernierStatutCarteId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("fk_carte_statuts");
+
             entity.HasOne(d => d.IdOpeNavigation).WithMany(p => p.Cartes)
                 .HasForeignKey(d => d.IdOpe)
                 .OnDelete(DeleteBehavior.SetNull)
@@ -260,12 +267,14 @@ public partial class GedContext : DbContext
             entity.HasIndex(e => e.UserId, "user_id");
 
             entity.Property(e => e.IdHistoriqueAdp).HasColumnName("id_historique_adp");
+            entity.Property(e => e.Commentaire).HasMaxLength(255);
             entity.Property(e => e.DateHisto)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("date_histo");
             entity.Property(e => e.DateVu).HasColumnName("date_vu");
             entity.Property(e => e.IdAdp).HasColumnName("id_adp");
+            entity.Property(e => e.TypeAction).HasMaxLength(55);
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.IdAdpNavigation).WithMany(p => p.HistoriqueAdps)
@@ -275,15 +284,6 @@ public partial class GedContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.HistoriqueAdps)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("historique_adp_ibfk_2");
-            entity.Property(e => e.TypeAction)
-                .HasMaxLength(55)
-                .UseCollation("utf8mb3_general_ci")
-                .HasCharSet("utf8mb3");
-            entity.Property(e => e.Commentaire)
-                .HasMaxLength(255)
-                .HasColumnName("commentaire")
-                .UseCollation("utf8mb3_general_ci")
-                .HasCharSet("utf8mb3");
         });
 
         modelBuilder.Entity<HistoriqueCarte>(entity =>
@@ -300,12 +300,14 @@ public partial class GedContext : DbContext
             entity.HasIndex(e => e.UserId, "user_id");
 
             entity.Property(e => e.IdHistoriqueCarte).HasColumnName("id_historique_carte");
+            entity.Property(e => e.Commentaire).HasMaxLength(255);
             entity.Property(e => e.DateHisto)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("date_histo");
             entity.Property(e => e.DateVu).HasColumnName("date_vu");
             entity.Property(e => e.IdCarte).HasColumnName("id_carte");
+            entity.Property(e => e.TypeAction).HasMaxLength(55);
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.IdCarteNavigation).WithMany(p => p.HistoriqueCartes)
@@ -315,18 +317,6 @@ public partial class GedContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.HistoriqueCartes)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("historique_carte_ibfk_2");
-            
-            entity.Property(e => e.TypeAction)
-                .HasMaxLength(55)
-                .UseCollation("utf8mb3_general_ci")
-                .HasCharSet("utf8mb3");
-            
-            entity.Property(e => e.Commentaire)
-                .HasMaxLength(255)
-                .HasColumnName("commentaire")
-                .UseCollation("utf8mb3_general_ci")
-                .HasCharSet("utf8mb3");
-
         });
 
         modelBuilder.Entity<HistoriqueVpl>(entity =>
@@ -343,12 +333,14 @@ public partial class GedContext : DbContext
             entity.HasIndex(e => e.UserId, "user_id");
 
             entity.Property(e => e.IdHistoriqueVpl).HasColumnName("id_historique_vpl");
+            entity.Property(e => e.Commentaire).HasMaxLength(255);
             entity.Property(e => e.DateHisto)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("date_histo");
             entity.Property(e => e.DateVu).HasColumnName("date_vu");
             entity.Property(e => e.IdVpl).HasColumnName("id_vpl");
+            entity.Property(e => e.TypeAction).HasMaxLength(55);
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.IdVplNavigation).WithMany(p => p.HistoriqueVpls)
@@ -358,16 +350,6 @@ public partial class GedContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.HistoriqueVpls)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("historique_vpl_ibfk_2");
-
-            entity.Property(e => e.TypeAction)
-                .HasMaxLength(55)
-                .UseCollation("utf8mb3_general_ci")
-                .HasCharSet("utf8mb3");
-            entity.Property(e => e.Commentaire)
-                .HasMaxLength(255)
-                .HasColumnName("commentaire")
-                .UseCollation("utf8mb3_general_ci")
-                .HasCharSet("utf8mb3");
         });
 
         modelBuilder.Entity<Operation>(entity =>
@@ -463,22 +445,14 @@ public partial class GedContext : DbContext
 
             entity.ToTable("validationsfiles");
 
+            entity.Property(e => e.Commentaire).HasMaxLength(255);
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp");
             entity.Property(e => e.DateValidation).HasColumnType("datetime");
             entity.Property(e => e.IdStatut).HasDefaultValueSql("'1'");
             entity.Property(e => e.MotifRejet).HasColumnType("text");
-
-            entity.Property(e => e.TypeAction)
-                .HasMaxLength(55)
-                .UseCollation("utf8mb3_general_ci")
-                .HasCharSet("utf8mb3");
-            entity.Property(e => e.Commentaire)
-                .HasMaxLength(255)
-                .HasColumnName("commentaire")
-                .UseCollation("utf8mb3_general_ci")
-                .HasCharSet("utf8mb3");
+            entity.Property(e => e.TypeAction).HasMaxLength(55);
         });
 
         modelBuilder.Entity<Ville>(entity =>
@@ -507,6 +481,8 @@ public partial class GedContext : DbContext
                 .ToTable("vpl")
                 .HasCharSet("latin1")
                 .UseCollation("latin1_swedish_ci");
+
+            entity.HasIndex(e => e.DernierStatutVplId, "idx_vpl_dernierstatutvplId");
 
             entity.HasIndex(e => e.IdOpe, "idx_vpl_idope");
 
@@ -586,6 +562,11 @@ public partial class GedContext : DbContext
                 .HasColumnName("ville")
                 .UseCollation("utf8mb3_general_ci")
                 .HasCharSet("utf8mb3");
+
+            entity.HasOne(d => d.DernierStatutVpl).WithMany(p => p.Vpls)
+                .HasForeignKey(d => d.DernierStatutVplId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("fk_vpl_statuts");
 
             entity.HasOne(d => d.IdOpeNavigation).WithMany(p => p.Vpls)
                 .HasForeignKey(d => d.IdOpe)

@@ -3,6 +3,7 @@ using System.Security.Claims;
 using anahged.Data;
 using anahged.Models;
 using anahged.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,10 +11,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace anahged.Pages
 {
+    [Authorize]
     public class AdpListModel : PageModel
     {
         private readonly GedServices _gedservices;
         public IList<Models.Adp> AdpList { get; set; } = new List<Models.Adp>();
+        public IList<Models.Adp> AdpListEnAttenteValidation { get; set;} = new List<Models.Adp>();
         public IList<Models.Operation> OperationList { get; set; } = new List<Models.Operation>();
         public IList<SelectListItem> UserAllowedStatuts { get; set; } = new List<SelectListItem>();
 
@@ -83,6 +86,13 @@ namespace anahged.Pages
         }
         public async Task OnGetAsync()
         {
+            if (User?.Identity?.IsAuthenticated != true)
+            {
+                TempData["ErrorMessage"] = "Vous devez être connecté pour accéder à cette page.";
+                Response.Redirect("/Login");
+                return;
+            }
+
             //ViewData["MessageRecherche"] = "Recherchez ici vos documents ADP 🔍 !";
             var resulAdp = await _gedservices.RechercherAdpAsync(Logement, Document, Client, Boite, Code, Annee);
             
@@ -111,6 +121,14 @@ namespace anahged.Pages
                         Text = statut.DescriptionStatut
                     })
                 .Distinct()
+                .ToListAsync();
+
+            // Charger la liste des fichiers Adp en statut en attente et nouveau
+            AdpListEnAttenteValidation = await _gedcontext.Adps
+                .Include(o => o.IdOpeNavigation)
+                .Include(v => v.IdOpeNavigation.IdVilleNavigation)
+                .Include(s => s.DernierStatutAdp)
+                .Where(s => s.DernierStatutAdp.DescriptionStatut == "En attente" || s.DernierStatutAdp.DescriptionStatut == "Nouveau")
                 .ToListAsync();
         }
 
@@ -163,6 +181,12 @@ namespace anahged.Pages
             {
                 // Récupérer l'ID de l'utilisateur connecté
                 var userId = GetCurrentUserId();
+                if (userId <= 0)
+                {
+                    TempData["ErrorMessage"] = "Utilisateur non authentifié. Veuillez vous connecter.";
+                    return RedirectToPage("/Login");
+                }
+
                 // Console.WriteLine($"ID Utilisateur connecté : {userId}");
 
                 var message = await _gedservices.EnregistrerFichierAdpAsync(
@@ -182,15 +206,7 @@ namespace anahged.Pages
             }
             catch (Exception ex)
             {
-               /*  Console.WriteLine($"Erreur: {ex.Message}");
-                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-                ModelState.AddModelError(string.Empty, $"Erreur lors de l'enregistrement du fichier : {ex.Message} ❌.");
-                return Page(); */
-                /* Console.WriteLine("=== EXCEPTION DÉTAILLÉE ===");
-                Console.WriteLine(ex.ToString()); // Affiche toute la pile
-                ModelState.AddModelError(string.Empty, $"Erreur : {ex.Message}");
-                return Page(); */
-                Console.WriteLine("=== EXCEPTION ===");
+                ///Console.WriteLine("=== EXCEPTION ===");
                 Console.WriteLine($"Message: {ex.Message}");
                 if (ex.InnerException != null)
                     Console.WriteLine($"Inner: {ex.InnerException.Message}");
@@ -227,138 +243,30 @@ namespace anahged.Pages
         // Methode pour obtenir l'ID de l'utilisateur connecté
         private int GetCurrentUserId()
         {
-            if (!User.Identity.IsAuthenticated)
+            if (User?.Identity?.IsAuthenticated != true)
             {
-                throw new Exception("Utilisateur non authentifié.");
+                return 0;
             }
 
             var userIdClaim = User.FindFirst("UserId")?.Value;
 
             if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
             {
-                throw new Exception("Impossible de récupérer l'ID utilisateur. Veuillez vous reconnecter.");
+                return 0;
             }
 
             return userId;
         }
 
-        // handler methode pour modifier les informations d'un enregistrement ADP
-        /* public async Task<IActionResult> OnPostUpdateAdp()
-        {
-            try
-            {
-                var id = int.Parse(Request.Form["IdAdp"]);
-                var adp = await _gedcontext.Adps.FindAsync(id);
-                if (adp == null)
-                {
-                    return NotFound();
-                }
-
-                // Mettre à jour les champs
-                adp.Boite = Request.Form["Boite"];
-                adp.Code = Request.Form["Code"];
-                adp.Logement = Request.Form["Logement"];
-                adp.Client = Request.Form["Client"];
-                adp.Annee = Request.Form["Annee"];
-                adp.Ville = Request.Form["Ville"];
-                adp.Document = Request.Form["Document"];
-                adp.CommuneQuartier = Request.Form["CommuneQuartier"];
-                adp.Adresse = Request.Form["Adresse"];
-                adp.Contact = Request.Form["Contact"];
-                adp.Fonctions = Request.Form["Fonctions"];
-                adp.NumDossierAdp = Request.Form["NumeroDossierAdp"];
-                adp.IdOpe = int.TryParse(Request.Form["IdOpe"], out int idOpe) ? idOpe : (int?)null;
-                adp.DernierStatutAdpId = int.TryParse(Request.Form["statutId"], out int statutId) ? statutId : (int?)null;
-                
-                // Gérer la date
-                if (DateTime.TryParse(Request.Form["DateDocument"], out DateTime dateDoc))
-                {
-                    adp.DateDocument = dateDoc.ToString("dd/MM/yyyy");
-                }
-
-                // Gérer le nouveau fichier uploadé
-                var fichier = Request.Form.Files["Fichier"];
-                if (fichier != null && fichier.Length > 0)
-                {
-                    // Supprimer l'ancien fichier s'il existe
-                    if (!string.IsNullOrEmpty(adp.Lien))
-                    {
-                        var oldFilePath = Path.Combine(_environment.WebRootPath, adp.Lien);
-                        if (System.IO.File.Exists(oldFilePath))
-                        {
-                            System.IO.File.Delete(oldFilePath);
-                        }
-                    }
-
-                    // UTILISER LE NOM ORIGINAL DU FICHIER AVEC EXTENSION
-                    var originalFileName = fichier.FileName; // Récupère le nom complet avec extension
-                    var filePath = Path.Combine(_environment.WebRootPath, "ADP/NewADP/", originalFileName);
-                    
-                    // Créer le dossier s'il n'existe pas
-                    var directory = Path.GetDirectoryName(filePath);
-                    if (!Directory.Exists(directory))
-                    {
-                        Directory.CreateDirectory(directory);
-                    }
-                    
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await fichier.CopyToAsync(stream);
-                    }
-                    
-                    adp.Lien = Path.Combine("ADP/NewADP/", originalFileName).Replace("\\", "/");
-                }
-                // Gérer la suppression du fichier (si le flag est true et pas de nouveau fichier)
-                else if (Request.Form["DeleteFile"] == "true")
-                {
-                    if (!string.IsNullOrEmpty(adp.Lien))
-                    {
-                        var oldFilePath = Path.Combine(_environment.WebRootPath, adp.Lien);
-                        if (System.IO.File.Exists(oldFilePath))
-                        {
-                            System.IO.File.Delete(oldFilePath);
-                        }
-                    }
-                    adp.Lien = null;
-                }
-
-                await _gedcontext.SaveChangesAsync();
-
-                // enregistrer l'historique de la modification
-                var historiqueAdp = new HistoriqueAdp
-                {
-                    IdAdp = adp.IdAdp,
-                    UserId = GetCurrentUserId(),
-                    DateHisto = DateTime.Now,
-                    DateVu = DateOnly.FromDateTime(DateTime.Now),
-                    TypeAction = "Modification",
-                    Commentaire = $"ADP modifié - Boite: {adp.Boite}, Logement: {adp.Logement}, Client: {adp.Client}, Statut ID: {adp.DernierStatutAdpId}, Numéro Dossier: {adp.NumDossierAdp}, Opération ID: {adp.IdOpe}"
-                };
-                _gedcontext.HistoriqueAdps.Add(historiqueAdp);
-                await _gedcontext.SaveChangesAsync();
-
-                // Code pour historiser la gestion des validations de fichiers ADP
-                var validationfile = new Validationsfile
-                {
-                    IdAdp = adp.IdAdp,
-                    UserId = GetCurrentUserId(),
-                    DateValidation = DateTime.Now,
-                    TypeAction = "Modification",
-                    Commentaire = $"Statut modifié - Nouveau statut ID: {adp.DernierStatutAdpId}"
-                };
-                _gedcontext.Validationsfiles.Add(validationfile);
-                await _gedcontext.SaveChangesAsync();
-                
-                return Content("Mise à jour réussie");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Erreur lors de la modification: " + ex.Message);
-            }
-        } */
-
+        // Methode de modification des enregistrements ADP
         public async Task<IActionResult> OnPostUpdateAdp()
         {
+            if (User?.Identity?.IsAuthenticated != true)
+            {
+                TempData["ErrorMessage"] = "Vous devez être connecté pour effectuer cette action.";
+                return RedirectToPage("/Login");
+            }
+
             try
             {
                 var id = int.Parse(Request.Form["IdAdp"]);

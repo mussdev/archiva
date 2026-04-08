@@ -9,28 +9,28 @@
       "PackagePath": "staticwebassets\\ADP\\1997\\971700\\00001\\00001\\dr05.pdf"
     },
     {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\BULLETIN DE VOTE ANAH - Copie.docx",
+      "PackagePath": "staticwebassets\\ADP\\NewADP\\BULLETIN DE VOTE ANAH - Copie.docx"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\Bulletin d'adhésion QUIETIS Plus.pdf",
+      "PackagePath": "staticwebassets\\ADP\\NewADP\\Bulletin d'adhésion QUIETIS Plus.pdf"
+    },
+    {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\FNE-Guide utilisateur.pdf",
       "PackagePath": "staticwebassets\\ADP\\NewADP\\FNE-Guide utilisateur.pdf"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\Quittance de paiement.pdf",
+      "PackagePath": "staticwebassets\\ADP\\NewADP\\Quittance de paiement.pdf"
     },
     {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\ReportDCM.pdf",
       "PackagePath": "staticwebassets\\ADP\\NewADP\\ReportDCM.pdf"
     },
     {
-      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\bulletin-vote-1112025.pdf",
-      "PackagePath": "staticwebassets\\ADP\\NewADP\\bulletin-vote-1112025.pdf"
-    },
-    {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\bulletin-vote-1212025-sante.pdf",
       "PackagePath": "staticwebassets\\ADP\\NewADP\\bulletin-vote-1212025-sante.pdf"
-    },
-    {
-      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\bulletin-vote-1212025.pdf",
-      "PackagePath": "staticwebassets\\ADP\\NewADP\\bulletin-vote-1212025.pdf"
-    },
-    {
-      "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\bulletin-vote-anah-17112025.pdf",
-      "PackagePath": "staticwebassets\\ADP\\NewADP\\bulletin-vote-anah-17112025.pdf"
     },
     {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\ADP\\NewADP\\bulletin-vote-diaby.pdf",
@@ -69,16 +69,24 @@
       "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\7c092fd5-4e36-4bd3-9930-fb2c222efb2a_CVDOSSO.pdf"
     },
     {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\CS_14076-05_FR_05.pdf",
+      "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\CS_14076-05_FR_05.pdf"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\Quittancedepaiement.pdf",
+      "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\Quittancedepaiement.pdf"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\ReportDCM.pdf",
+      "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\ReportDCM.pdf"
+    },
+    {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\bulletin-vote-1212025-sante.pdf",
       "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\bulletin-vote-1212025-sante.pdf"
     },
     {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\bulletin-vote-anah-17112025.pdf",
       "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\bulletin-vote-anah-17112025.pdf"
-    },
-    {
-      "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\bulletin-vote-diaby.pdf",
-      "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\bulletin-vote-diaby.pdf"
     },
     {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\catographie_interaction_application_21052025.pdf",
@@ -169,6 +177,14 @@
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\8bfcf00a-ec97-46aa-8740-693bd736d2f0_catographie_interaction_application_21052025.pdf"
     },
     {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\Quittance de paiement.pdf",
+      "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\Quittance de paiement.pdf"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\Quittancedepaiement.pdf",
+      "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\Quittancedepaiement.pdf"
+    },
+    {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\a284903f-84a0-4460-925d-55d7a788901f_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\a284903f-84a0-4460-925d-55d7a788901f_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf"
     },
@@ -205,12 +221,20 @@
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\ce1b7da9-a2fb-4949-a229-553d673fed85_catographie_interaction_application_21052025.pdf"
     },
     {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\commission-gimmo.pdf",
+      "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\commission-gimmo.pdf"
+    },
+    {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\d2fa645f-8bd7-42c8-8941-3b275827ef1a_catographie_interaction_application_22052025.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\d2fa645f-8bd7-42c8-8941-3b275827ef1a_catographie_interaction_application_22052025.pdf"
     },
     {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\doc-22025-04-201519.pdf",
       "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\doc-22025-04-201519.pdf"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\draft-etat-periodique-commission-loyer-GI.pdf",
+      "PackagePath": "staticwebassets\\SICOGI\\NewSICOGI\\draft-etat-periodique-commission-loyer-GI.pdf"
     },
     {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\SICOGI\\NewSICOGI\\e6c2e294-9fcb-4c51-a782-bad3b876b722_DOSSO Vazoumana lettre-motivation-Ageroute-1.pdf",
@@ -237,6 +261,10 @@
       "PackagePath": "staticwebassets\\css\\adp.css"
     },
     {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\css\\carte.css",
+      "PackagePath": "staticwebassets\\css\\carte.css"
+    },
+    {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\css\\importVille.css",
       "PackagePath": "staticwebassets\\css\\importVille.css"
     },
@@ -249,12 +277,20 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\css\\vpl.css",
+      "PackagePath": "staticwebassets\\css\\vpl.css"
+    },
+    {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\js\\adp.js",
       "PackagePath": "staticwebassets\\js\\adp.js"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\js\\carte.js",
+      "PackagePath": "staticwebassets\\js\\carte.js"
     },
     {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\js\\importVille.js",
@@ -271,6 +307,10 @@
     {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\js\\users.js",
       "PackagePath": "staticwebassets\\js\\users.js"
+    },
+    {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\js\\vpl.js",
+      "PackagePath": "staticwebassets\\js\\vpl.js"
     },
     {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\lib\\bootstrap\\LICENSE",

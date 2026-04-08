@@ -23,7 +23,7 @@ public partial class Validationsfile
 
     public DateTime? CreatedAt { get; set; }
 
-    public string? Commentaire { get; set; } = string.Empty;
+    public string? TypeAction { get; set; }
 
-    public string? TypeAction { get; set; } = string.Empty;
+    public string? Commentaire { get; set; }
 }

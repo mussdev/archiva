@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using System.Security.Claims;
 using anahged.Data;
 using anahged.Models;
 using anahged.Services;
@@ -11,39 +12,78 @@ using Microsoft.EntityFrameworkCore;
 namespace anahged.Pages
 {
     [Authorize]
-    public class CartesListModel : PageModel
+    public class TraitementFicherAdpModel : PageModel
     {
+        private readonly GedServices _gedservices;
+       // public IList<Models.Adp> AdpList { get; set; } = new List<Models.Adp>();
+        public IList<Models.Adp> AdpListEnAttenteValidation { get; set;} = new List<Models.Adp>();
+        public IList<Models.Operation> OperationList { get; set; } = new List<Models.Operation>();
+        public IList<SelectListItem> UserAllowedStatuts { get; set; } = new List<SelectListItem>();
 
-        private readonly GedServices _gedServices;
         private readonly IWebHostEnvironment _environment;
         public readonly GedContext _gedcontext;
-        public IList<SelectListItem> UserAllowedStatuts { get; set; } = new List<SelectListItem>();
-        public IList<Models.Operation> OperationList { get; set; } = new List<Models.Operation>();
 
-        public CartesListModel(GedServices gedServices, IWebHostEnvironment environment, GedContext context)
+        // Handler for search functionality
+        [BindProperty(SupportsGet = true)]
+        public string Logement { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string Document { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string Client { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string Boite { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string Code { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string Annee { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string Fonctions { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string Adresse { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string Contact { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string Ville { get; set; }
+
+/*         [BindProperty(SupportsGet = true)]
+        public string CommuneQuartier { get; set; } */
+
+       // [BindProperty(SupportsGet = true)]
+       // public string Cote { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string DateDocument { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public IFormFile Fichier { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int IdOpe { get; set; }
+        
+        [BindProperty(SupportsGet = true)]
+        public int statutId { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string? NumeroDossierAdp { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int DernierStatutAdpId { get; set; }
+        
+        public TraitementFicherAdpModel(GedServices gedservices, GedContext gedcontext, IWebHostEnvironment environment)
         {
-            _gedServices = gedServices;
+            _gedservices = gedservices;
+            _gedcontext = gedcontext;
             _environment = environment;
-            _gedcontext = context;
         }
-
-        public IList<Carte> CartesList { get; set; } = new List<Carte>();
-
-        // Propriétés de recherche et d'ajout
-        [BindProperty(SupportsGet = true)] public string? Tube { get; set; }
-        [BindProperty(SupportsGet = true)] public string? Ville { get; set; }
-        [BindProperty(SupportsGet = true)] public string? Quartier { get; set; }
-        [BindProperty(SupportsGet = true)] public string? Operation { get; set; }
-        [BindProperty(SupportsGet = true)] public string? Legende { get; set; }
-        [BindProperty(SupportsGet = true)] public string? Originalite { get; set; }
-        [BindProperty(SupportsGet = true)] public string? Echelle { get; set; }
-        [BindProperty(SupportsGet = true)] public string? DateCarte { get; set; }
-        [BindProperty(SupportsGet = true)] public string? Cote { get; set; }
-        [BindProperty(SupportsGet = true)] public IFormFile? Fichier { get; set; }
-        [BindProperty(SupportsGet = true)] public int IdOperation { get; set; }
-        [BindProperty(SupportsGet = true)] public int StatutId { get; set; }
-
-
         public async Task OnGetAsync()
         {
             if (User?.Identity?.IsAuthenticated != true)
@@ -53,13 +93,18 @@ namespace anahged.Pages
                 return;
             }
 
-            CartesList = await _gedServices.RechercherCarteAsync(Ville, Quartier, Operation, Legende)
-                          ?? new List<Carte>();
+            //ViewData["MessageRecherche"] = "Recherchez ici vos documents ADP 🔍 !";
+           // var resulAdp = await _gedservices.RechercherAdpAsync(Logement, Document, Client, Boite, Code, Annee);
+            
+           // AdpList = resulAdp?? new List<Models.Adp>();
 
-            if (!CartesList.Any())
+            if (AdpListEnAttenteValidation.Count == 0)
             {
-                ViewData["MessageRechercheCarte"] = "Aucun résultat trouvé 😓!";
+                ViewData["MessageRecherche"] = "Aucun résultat trouvé 😓!";
             }
+            // Cette méthode est appelée quand la page se charge
+            // On s'assure que le ModelState est clean
+            ModelState.Clear();
 
             // Charger la liste des opérations pour le dropdown
             OperationList = await _gedcontext.Operations.Include(o => o.IdVilleNavigation).ToListAsync();
@@ -78,41 +123,41 @@ namespace anahged.Pages
                 .Distinct()
                 .ToListAsync();
 
-            ModelState.Clear();
+            // Charger la liste des fichiers Adp en statut en attente et nouveau
+            AdpListEnAttenteValidation = await _gedcontext.Adps
+                .Include(o => o.IdOpeNavigation)
+                .Include(v => v.IdOpeNavigation.IdVilleNavigation)
+                .Include(s => s.DernierStatutAdp)
+                .Where(s => s.DernierStatutAdp.DescriptionStatut == "En attente" || s.DernierStatutAdp.DescriptionStatut == "Nouveau")
+                .ToListAsync();
         }
 
-        public async Task<IActionResult> OnPostViewAsync(int id)
+        public async Task<IActionResult> OnPostView(int id)
         {
+          
             try
             {
-                var fichierPdf = await _gedServices.GetFichierPdfAsync(id);
+                var fichierPdf = await _gedservices.GetFichierPdfAdpAsync(id);
                 return File(fichierPdf, "application/pdf", string.Empty);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erreur lors de la récupération du fichier PDF : {ex.Message}");
-                Console.WriteLine($"Erreur dans OnPostView: {ex.Message}");
+                Console.WriteLine($"Erreur: {ex.Message}");
                 Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-                ModelState.AddModelError(string.Empty, "Erreur lors de la récupération du fichier PDF ❌.");
                 return NotFound($"Impossible d'ouvrir le fichier: {ex.Message}");
             }
         }
 
-        // Méthode pour enregistrer un fichier PDF de carte
-        public async Task<IActionResult> OnPostUploadFileCarteAsync()
+        // handler pour l'enregistrement de nouveaux fichiers ADP
+        public async Task<IActionResult> OnPostUploadFileAdp()
         {
-            if (User?.Identity?.IsAuthenticated != true)
-            {
-                TempData["ErrorMessage"] = "Vous devez être connecté pour effectuer cette action.";
-                return RedirectToPage("/Login");
-            }
-
             if (Fichier == null || Fichier.Length == 0)
             {
                 ModelState.AddModelError("Fichier", "Veuillez sélectionner un fichier ❌.");
                 return Page();
             }
 
+            // Validation du type de fichier
             var extension = Path.GetExtension(Fichier.FileName).ToLower();
             if (extension != ".pdf")
             {
@@ -120,35 +165,40 @@ namespace anahged.Pages
                 return Page();
             }
 
+            // Vérification de la validité de l'id de l'opération sélectionnée et statut
+            if(IdOpe <= 0)
+            {
+                ModelState.AddModelError("IdOpe", "Veuillez sélectionner une opération valide ❌.");
+                return Page();
+            }            
+            if (statutId <= 0)
+            {
+                ModelState.AddModelError("statutId", "Veuillez sélectionner un statut valide ❌.");
+                return Page();
+            }
+            
             try
             {
+                // Récupérer l'ID de l'utilisateur connecté
                 var userId = GetCurrentUserId();
-
-                if (IdOperation <= 0)
+                if (userId <= 0)
                 {
-                    ModelState.AddModelError("IdOperation", "Veuillez sélectionner une opération valide.");
-                    return Page();
+                    TempData["ErrorMessage"] = "Utilisateur non authentifié. Veuillez vous connecter.";
+                    return RedirectToPage("/Login");
                 }
 
-                var message = await _gedServices.EnregistrerFichierCarteAsync(
-                    Fichier!,
-                    Tube,
-                    Ville,
-                    Quartier,
-                    IdOperation,
-                    Operation,
-                    Legende,
-                    Originalite,
-                    Echelle,
-                    DateCarte,
-                    Cote,
-                    userId,
-                    StatutId
+                // Console.WriteLine($"ID Utilisateur connecté : {userId}");
+
+                var message = await _gedservices.EnregistrerFichierAdpAsync(
+                    Fichier, Annee, Boite, Logement, Document,
+                    DateDocument, Client, Fonctions, Adresse, Contact,
+                    IdOpe, userId, statutId, NumeroDossierAdp
                 );
 
                 TempData["SuccessMessage"] = message;
-                ViewData["MessageUpload"] = "Carte enregistrée avec succès ✅ !";
-
+                ViewData["MessageUpload"] = "Fichier ADP enregistré avec succès ✅ !";
+                Console.WriteLine($"Message du service : {message}");
+                // Réinitialiser les propriétés après succès
                 ResetProperties();
                 ModelState.Clear();
 
@@ -156,34 +206,60 @@ namespace anahged.Pages
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erreur: {ex.Message}");
-                ModelState.AddModelError(string.Empty, $"Erreur lors de l'enregistrement du fichier : {ex.Message} ❌.");
+                ///Console.WriteLine("=== EXCEPTION ===");
+                Console.WriteLine($"Message: {ex.Message}");
+                if (ex.InnerException != null)
+                    Console.WriteLine($"Inner: {ex.InnerException.Message}");
+                // Pour DbUpdateException, afficher les entités en conflit
+                if (ex is DbUpdateException dbEx)
+                {
+                    foreach (var entry in dbEx.Entries)
+                    {
+                        Console.WriteLine($"Entité: {entry.Entity.GetType().Name}, État: {entry.State}");
+                    }
+                }
+                ModelState.AddModelError(string.Empty, $"Erreur : {ex.Message}");
                 return Page();
             }
         }
-
-        // Réinitialiser les propriétés après un enregistrement réussi
+        
         private void ResetProperties()
         {
-            Tube = Ville = Quartier = Operation = Legende = Originalite = Echelle = Cote = DateCarte = string.Empty;
+            Annee = string.Empty;
+            Code = string.Empty;
+            Boite = string.Empty;
+            Logement = string.Empty;
+            Document = string.Empty;
+            DateDocument = string.Empty;
+            Client = string.Empty;
+            Fonctions = string.Empty;
+            Adresse = string.Empty;
+            Contact = string.Empty;
+            Ville = string.Empty;
+         //   CommuneQuartier = string.Empty;
             Fichier = null!;
         }
 
-        // Méthode pour obtenir l'ID de l'utilisateur connecté
+        // Methode pour obtenir l'ID de l'utilisateur connecté
         private int GetCurrentUserId()
         {
             if (User?.Identity?.IsAuthenticated != true)
+            {
                 return 0;
+            }
 
             var userIdClaim = User.FindFirst("UserId")?.Value;
+
             if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+            {
                 return 0;
+            }
 
             return userId;
         }
 
-        // Méthode pour modifier les informations d'un enregistrement d'une carte
-        public async Task<IActionResult> OnPostUpdateCarte()
+        // Methode de modification des enregistrements ADP
+        public async Task<IActionResult> OnPostUpdateAdp()
         {
             if (User?.Identity?.IsAuthenticated != true)
             {
@@ -193,136 +269,118 @@ namespace anahged.Pages
 
             try
             {
-                // Récupération de l'ID
-                if (!int.TryParse(Request.Form["IdCarte"], out int id))
-                    return BadRequest("ID invalide");
-
-                var carte = await _gedcontext.Cartes.FindAsync(id);
-                if (carte == null)
+                var id = int.Parse(Request.Form["IdAdp"]);
+                var adp = await _gedcontext.Adps.FindAsync(id);
+                if (adp == null)
                     return NotFound();
 
-                // --- Conservation des anciennes valeurs ---
-                var ancienCarte = new
+                // Conserver une copie des anciennes valeurs pour comparaison
+                var ancienAdp = new
                 {
-                    carte.Tube,
-                    carte.Legende,
-                    carte.DateCarte,
-                    carte.Operation,
-                    carte.Echelle,
-                    carte.Originalite,
-                    carte.Cote,
-                    carte.Ville,
-                    carte.Quartier,
-                    carte.Lien,
-                    carte.IdOpe,
-                    carte.DernierStatutCarteId
+                    adp.Boite,
+                    adp.Code,
+                    adp.Logement,
+                    adp.Client,
+                    adp.Annee,
+                    adp.Ville,
+                    adp.Document,
+                    adp.CommuneQuartier,
+                    adp.Adresse,
+                    adp.Contact,
+                    adp.Fonctions,
+                    adp.NumDossierAdp,
+                    adp.IdOpe,
+                    adp.DernierStatutAdpId,
+                    adp.DateDocument,
+                    adp.Lien
                 };
 
+                // Variables pour savoir si des changements ont eu lieu
                 bool modificationChamps = false;
                 bool changementStatut = false;
                 bool changementFichier = false;
 
-                // --- Mise à jour des champs simples ---
-                string newTube = Request.Form["Tube"].ToString() ?? "";
-                if (newTube != ancienCarte.Tube)
+                // Mise à jour des champs
+                adp.Boite = Request.Form["Boite"];
+                if (adp.Boite != ancienAdp.Boite) modificationChamps = true;
+
+                adp.Code = Request.Form["Code"];
+                if (adp.Code != ancienAdp.Code) modificationChamps = true;
+
+                adp.Logement = Request.Form["Logement"];
+                if (adp.Logement != ancienAdp.Logement) modificationChamps = true;
+
+                adp.Client = Request.Form["Client"];
+                if (adp.Client != ancienAdp.Client) modificationChamps = true;
+
+                adp.Annee = Request.Form["Annee"];
+                if (adp.Annee != ancienAdp.Annee) modificationChamps = true;
+
+                adp.Ville = Request.Form["Ville"];
+                if (adp.Ville != ancienAdp.Ville) modificationChamps = true;
+
+                adp.Document = Request.Form["Document"];
+                if (adp.Document != ancienAdp.Document) modificationChamps = true;
+
+                adp.CommuneQuartier = Request.Form["CommuneQuartier"];
+                if (adp.CommuneQuartier != ancienAdp.CommuneQuartier) modificationChamps = true;
+
+                adp.Adresse = Request.Form["Adresse"];
+                if (adp.Adresse != ancienAdp.Adresse) modificationChamps = true;
+
+                adp.Contact = Request.Form["Contact"];
+                if (adp.Contact != ancienAdp.Contact) modificationChamps = true;
+
+                adp.Fonctions = Request.Form["Fonctions"];
+                if (adp.Fonctions != ancienAdp.Fonctions) modificationChamps = true;
+
+                adp.NumDossierAdp = Request.Form["NumeroDossierAdp"];
+                if (adp.NumDossierAdp != ancienAdp.NumDossierAdp) modificationChamps = true;
+
+                // IdOpe
+                int? newIdOpe = int.TryParse(Request.Form["IdOpe"], out int idOpe) ? idOpe : (int?)null;
+                if (newIdOpe != ancienAdp.IdOpe)
                 {
-                    carte.Tube = newTube;
+                    adp.IdOpe = newIdOpe;
                     modificationChamps = true;
                 }
 
-                string newLegende = Request.Form["Legende"].ToString() ?? "";
-                if (newLegende != ancienCarte.Legende)
-                {
-                    carte.Legende = newLegende;
-                    modificationChamps = true;
-                }
-
-                string newOperation = Request.Form["Operation"].ToString() ?? "";
-                if (newOperation != ancienCarte.Operation)
-                {
-                    carte.Operation = newOperation;
-                    modificationChamps = true;
-                }
-
-                string newEchelle = Request.Form["Echelle"].ToString() ?? "";
-                if (newEchelle != ancienCarte.Echelle)
-                {
-                    carte.Echelle = newEchelle;
-                    modificationChamps = true;
-                }
-
-                string newOriginalite = Request.Form["Originalite"].ToString() ?? "";
-                if (newOriginalite != ancienCarte.Originalite)
-                {
-                    carte.Originalite = newOriginalite;
-                    modificationChamps = true;
-                }
-
-                string newCote = Request.Form["Cote"].ToString() ?? "";
-                if (newCote != ancienCarte.Cote)
-                {
-                    carte.Cote = newCote;
-                    modificationChamps = true;
-                }
-
-                string newVille = Request.Form["Ville"].ToString() ?? "";
-                if (newVille != ancienCarte.Ville)
-                {
-                    carte.Ville = newVille;
-                    modificationChamps = true;
-                }
-
-                string newQuartier = Request.Form["Quartier"].ToString() ?? "";
-                if (newQuartier != ancienCarte.Quartier)
-                {
-                    carte.Quartier = newQuartier;
-                    modificationChamps = true;
-                }
-
-                int? newIdOpe = int.TryParse(Request.Form["IdOperation"], out int idOpe) ? idOpe : (int?)null;
-                if (newIdOpe != ancienCarte.IdOpe)
-                {
-                    carte.IdOpe = newIdOpe;
-                    modificationChamps = true;
-                }
-
-                // --- Gestion de la date ---
-                if (DateTime.TryParse(Request.Form["DateCarte"], out DateTime dateDoc))
-                {
-                    string newDate = dateDoc.ToString("dd/MM/yyyy");
-                    if (newDate != ancienCarte.DateCarte)
-                    {
-                        carte.DateCarte = newDate;
-                        modificationChamps = true;
-                    }
-                }
-
-                // --- Gestion du statut ---
+                // Statut
                 int? newStatutId = int.TryParse(Request.Form["statutId"], out int statutId) ? statutId : (int?)null;
-                if (newStatutId != ancienCarte.DernierStatutCarteId)
+                if (newStatutId != ancienAdp.DernierStatutAdpId)
                 {
-                    carte.DernierStatutCarteId = newStatutId;
+                    adp.DernierStatutAdpId = newStatutId;
                     modificationChamps = true;
                     changementStatut = true;
                 }
 
-                // --- Gestion du fichier ---
+                // Date
+                if (DateTime.TryParse(Request.Form["DateDocument"], out DateTime dateDoc))
+                {
+                    string newDate = dateDoc.ToString("dd/MM/yyyy");
+                    if (newDate != ancienAdp.DateDocument)
+                    {
+                        adp.DateDocument = newDate;
+                        modificationChamps = true;
+                    }
+                }
+
+                // Gestion du fichier
                 var fichier = Request.Form.Files["Fichier"];
                 bool deleteFile = Request.Form["DeleteFile"] == "true";
 
                 if (fichier != null && fichier.Length > 0)
                 {
-                    // Supprimer l'ancien fichier s'il existe
-                    if (!string.IsNullOrEmpty(carte.Lien))
+                    // Nouveau fichier uploadé → suppression de l'ancien
+                    if (!string.IsNullOrEmpty(adp.Lien))
                     {
-                        var oldFilePath = Path.Combine(_environment.WebRootPath, carte.Lien);
+                        var oldFilePath = Path.Combine(_environment.WebRootPath, adp.Lien);
                         if (System.IO.File.Exists(oldFilePath))
                             System.IO.File.Delete(oldFilePath);
                     }
 
-                    // Sauvegarder le nouveau fichier
                     var originalFileName = fichier.FileName;
-                    var filePath = Path.Combine(_environment.WebRootPath, "CARTES/NewCARTES/", originalFileName);
+                    var filePath = Path.Combine(_environment.WebRootPath, "ADP/NewADP/", originalFileName);
                     var directory = Path.GetDirectoryName(filePath);
                     if (!Directory.Exists(directory))
                         Directory.CreateDirectory(directory);
@@ -332,67 +390,70 @@ namespace anahged.Pages
                         await fichier.CopyToAsync(stream);
                     }
 
-                    carte.Lien = Path.Combine("CARTES/NewCARTES/", originalFileName).Replace("\\", "/");
+                    adp.Lien = Path.Combine("ADP/NewADP/", originalFileName).Replace("\\", "/");
                     modificationChamps = true;
                     changementFichier = true;
                 }
-                else if (deleteFile && !string.IsNullOrEmpty(carte.Lien))
+                else if (deleteFile && !string.IsNullOrEmpty(adp.Lien))
                 {
-                    // Suppression du fichier sans remplacement
-                    var oldFilePath = Path.Combine(_environment.WebRootPath, carte.Lien);
+                    // Suppression demandée sans nouveau fichier
+                    var oldFilePath = Path.Combine(_environment.WebRootPath, adp.Lien);
                     if (System.IO.File.Exists(oldFilePath))
                         System.IO.File.Delete(oldFilePath);
 
-                    carte.Lien = null;
+                    adp.Lien = null;
                     modificationChamps = true;
                     changementFichier = true;
                 }
 
-                // Si aucune modification, retourner directement
-                if (!modificationChamps)
+                // Sauvegarder les modifications si quelque chose a changé
+                if (modificationChamps)
                 {
+                    await _gedcontext.SaveChangesAsync();
+
+                    // Historique général (pour toute modification)
+                    var historiqueAdp = new HistoriqueAdp
+                    {
+                        IdAdp = adp.IdAdp,
+                        UserId = GetCurrentUserId(),
+                        DateHisto = DateTime.Now,
+                        DateVu = DateOnly.FromDateTime(DateTime.Now),
+                        TypeAction = "Modification",
+                        Commentaire = $"ADP modifié - Boite: {adp.Boite}, Logement: {adp.Logement}, Client: {adp.Client}, Statut ID: {adp.DernierStatutAdpId}, Numéro Dossier: {adp.NumDossierAdp}, Opération ID: {adp.IdOpe}"
+                    };
+                    _gedcontext.HistoriqueAdps.Add(historiqueAdp);
+
+                    // Validation seulement si le statut a changé
+                    if (changementStatut)
+                    {
+                        var validationfile = new Validationsfile
+                        {
+                            IdAdp = adp.IdAdp,
+                            UserId = GetCurrentUserId(),
+                            DateValidation = DateTime.Now,
+                            TypeAction = "Modification",
+                            Commentaire = $"Statut modifié - Nouveau statut ID: {adp.DernierStatutAdpId}"
+                        };
+                        _gedcontext.Validationsfiles.Add(validationfile);
+                    }
+
+                    // Si vous voulez aussi tracer les modifications de fichier, vous pouvez ajouter un autre type d'historique
+                    if (changementFichier)
+                    {
+                        // Par exemple, ajouter un commentaire supplémentaire dans l'historique général
+                        // ou créer une autre table dédiée. Ici, on peut juste enrichir le commentaire.
+                        // Pour simplifier, on peut ajouter une entrée spécifique si nécessaire.
+                    }
+
+                    await _gedcontext.SaveChangesAsync();
+
+                    return Content("Mise à jour réussie");
+                }
+                else
+                {
+                    // Rien n'a changé : on ne fait rien, mais on peut retourner un message
                     return Content("Aucune modification détectée");
                 }
-
-                // Sauvegarde des modifications
-                await _gedcontext.SaveChangesAsync();
-
-                // --- Enregistrement de l'historique général (HistoriqueCarte) ---
-                var historiqueCarte = new HistoriqueCarte
-                {
-                    IdCarte = carte.IdCarte,
-                    UserId = GetCurrentUserId(),
-                    DateHisto = DateTime.Now,
-                    DateVu = DateOnly.FromDateTime(DateTime.Now),
-                    TypeAction = "Modification",
-                    Commentaire = $"Carte modifiée - Tube: {carte.Tube}, Légende: {carte.Legende}, Date: {carte.DateCarte}, Opération: {carte.Operation}, Ville: {carte.Ville}, Statut ID: {carte.DernierStatutCarteId}"
-                };
-                _gedcontext.HistoriqueCartes.Add(historiqueCarte);
-
-                // --- Si changement de statut, ajouter une entrée dans Validationsfile (ou table dédiée) ---
-                if (changementStatut)
-                {
-                    var validationfile = new Validationsfile
-                    {
-                        IdCarte = carte.IdCarte,  // Assurez-vous que Validationsfile a une propriété IdCarte
-                        UserId = GetCurrentUserId(),
-                        DateValidation = DateTime.Now,
-                        TypeAction = "ModificationStatut",
-                        Commentaire = $"Statut modifié - Nouveau statut ID: {carte.DernierStatutCarteId}"
-                    };
-                    _gedcontext.Validationsfiles.Add(validationfile);
-                }
-
-                // Optionnel : tracer le changement de fichier si nécessaire
-                if (changementFichier)
-                {
-                    // Vous pouvez ajouter une autre entrée d'historique spécifique au fichier
-                    // Par exemple, ajouter une ligne dans une table "FichierHistorique" ou enrichir le commentaire
-                }
-
-                await _gedcontext.SaveChangesAsync();
-
-                return Content("Mise à jour réussie");
             }
             catch (Exception ex)
             {
@@ -400,10 +461,8 @@ namespace anahged.Pages
             }
         }
 
- 
-
-         // Methode pour supprimer le fichier ADP associé à un enregistrement ADP
-        public async Task<IActionResult> OnPostDeleteFileCarte(int id)
+        // handler methode pour supprimer le fichier ADP associé à un enregistrement ADP
+        public async Task<IActionResult> OnPostDeleteFileAdp(int id)
         {
             try
             {
@@ -412,16 +471,16 @@ namespace anahged.Pages
                     return BadRequest("ID invalide pour la suppression du fichier.");
                 }   
 
-                var carte = await _gedcontext.Cartes.FindAsync(id);
-                if (carte == null)
+                var adp = await _gedcontext.Adps.FindAsync(id);
+                if (adp == null)
                 {
                     return NotFound();
                 }
 
                 // Supprimer le fichier physique
-                if (!string.IsNullOrEmpty(carte.Lien))
+                if (!string.IsNullOrEmpty(adp.Lien))
                 {
-                    var filePath = Path.Combine(_environment.WebRootPath, carte.Lien);
+                    var filePath = Path.Combine(_environment.WebRootPath, adp.Lien);
                     if (System.IO.File.Exists(filePath))
                     {
                         System.IO.File.Delete(filePath);
@@ -429,7 +488,7 @@ namespace anahged.Pages
                 }
 
                 // Mettre à jour la base de données
-                carte.Lien = null;
+                adp.Lien = null;
                 await _gedcontext.SaveChangesAsync();
 
                 return Content("Fichier supprimé avec succès");
@@ -441,21 +500,21 @@ namespace anahged.Pages
             }
         }
 
-        // Methode pour supprimer le fichier VPL associé à un enregistrement VPL
+        // handler methode pour supprimer le fichier VPL associé à un enregistrement VPL
         public async Task<IActionResult> OnPostDeleteAdp(int id)
         {
             try
             {
-                var carte = await _gedcontext.Cartes.FindAsync(id);
-                if (carte == null)
+                var adp = await _gedcontext.Adps.FindAsync(id);
+                if (adp == null)
                 {
                     return NotFound();
                 }
 
                 // Supprimer le fichier physique
-                if (!string.IsNullOrEmpty(carte.Lien))
+                if (!string.IsNullOrEmpty(adp.Lien))
                 {
-                    var filePath = Path.Combine(_environment.WebRootPath, carte.Lien);
+                    var filePath = Path.Combine(_environment.WebRootPath, adp.Lien);
                     if (System.IO.File.Exists(filePath))
                     {
                         System.IO.File.Delete(filePath);
@@ -463,7 +522,7 @@ namespace anahged.Pages
                 }
 
                 // Supprimer de la base de données
-                _gedcontext.Cartes.Remove(carte);
+                _gedcontext.Adps.Remove(adp);
                 await _gedcontext.SaveChangesAsync();
 
                 return Content("Suppression réussie");
@@ -480,8 +539,8 @@ namespace anahged.Pages
             try
             {
                 // Récupérer les fichiers sélectionnés
-                var selectedFiles = await _gedcontext.Cartes
-                    .Where(a => selectedIds.Contains(a.IdCarte))
+                var selectedFiles = await _gedcontext.Adps
+                    .Where(a => selectedIds.Contains(a.IdAdp))
                     .ToListAsync();
 
                 Console.WriteLine($"Fichiers trouvés en BD: {selectedFiles.Count}");
@@ -501,7 +560,7 @@ namespace anahged.Pages
 
                 foreach (var file in selectedFiles)
                 {
-                    Console.WriteLine($"Vérification fichier ID {file.IdCarte}: {file.Lien}");
+                    Console.WriteLine($"Vérification fichier ID {file.IdAdp}: {file.Lien}");
 
                     if (!string.IsNullOrEmpty(file.Lien))
                     {
@@ -524,7 +583,7 @@ namespace anahged.Pages
 
                         if (System.IO.File.Exists(fullPath))
                         {
-                            var fileName = $"{file.Tube}_{file.IdCarte}_{Path.GetFileName(file.Lien)}";
+                            var fileName = $"{file.Boite}_{file.Code}_{Path.GetFileName(file.Lien)}";
                             validFiles.Add((fullPath, fileName));
                             Console.WriteLine($"Fichier valide: {fullPath}");
                         }
@@ -545,7 +604,7 @@ namespace anahged.Pages
                                 if (System.IO.File.Exists(altPath))
                                 {
                                     Console.WriteLine($"Fichier trouvé à l'emplacement alternatif: {altPath}");
-                                    var fileName = $"{file.Tube}_{file.IdCarte}_{Path.GetFileName(file.Lien)}";
+                                    var fileName = $"{file.Boite}_{file.Code}_{Path.GetFileName(file.Lien)}";
                                     validFiles.Add((altPath, fileName));
                                     break;
                                 }
@@ -554,7 +613,7 @@ namespace anahged.Pages
                     }
                     else
                     {
-                        Console.WriteLine($"Chemin vide pour l'ID {file.IdCarte}");
+                        Console.WriteLine($"Chemin vide pour l'ID {file.IdAdp}");
                     }
                 }
 
@@ -637,8 +696,8 @@ namespace anahged.Pages
                     return RedirectToPage();
                 }
 
-                var filesToDelete = await _gedcontext.Cartes
-                    .Where(a => selectedIds.Contains(a.IdCarte))
+                var filesToDelete = await _gedcontext.Adps
+                    .Where(a => selectedIds.Contains(a.IdAdp))
                     .ToListAsync();
 
                 foreach (var file in filesToDelete)
@@ -649,7 +708,7 @@ namespace anahged.Pages
                         System.IO.File.Delete(file.Lien);
                     }
                     // Supprimer l'enregistrement de la base
-                    _gedcontext.Cartes.Remove(file);
+                    _gedcontext.Adps.Remove(file);
                 }
 
                 await _gedcontext.SaveChangesAsync();
@@ -663,6 +722,7 @@ namespace anahged.Pages
             return RedirectToPage();
         }
 
-        
     }
+
+       
 }

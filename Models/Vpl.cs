@@ -9,7 +9,7 @@ public partial class Vpl
 
     public string Annee { get; set; } = null!;
 
-    public string Code { get; set; } = null!;
+    public string? Code { get; set; }
 
     public string Boite { get; set; } = null!;
 
@@ -38,6 +38,10 @@ public partial class Vpl
     public int? IdOpe { get; set; }
 
     public string? NumDossierVpl { get; set; }
+
+    public int? DernierStatutVplId { get; set; }
+
+    public virtual Statut? DernierStatutVpl { get; set; }
 
     public virtual ICollection<HistoriqueVpl> HistoriqueVpls { get; set; } = new List<HistoriqueVpl>();
 

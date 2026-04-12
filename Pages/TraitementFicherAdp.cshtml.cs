@@ -128,7 +128,7 @@ namespace anahged.Pages
                 .Include(o => o.IdOpeNavigation)
                 .Include(v => v.IdOpeNavigation.IdVilleNavigation)
                 .Include(s => s.DernierStatutAdp)
-                .Where(s => s.DernierStatutAdp.DescriptionStatut == "En attente" || s.DernierStatutAdp.DescriptionStatut == "Nouveau")
+                .Where(s => s.DernierStatutAdp.DescriptionStatut == "En attente" || s.DernierStatutAdp.DescriptionStatut == "Nouveau" || s.DernierStatutAdp.DescriptionStatut == "Réjeté")
                 .ToListAsync();
         }
 
@@ -720,6 +720,180 @@ namespace anahged.Pages
             }
 
             return RedirectToPage();
+        }
+
+        // Methode de validation des fichiers ADP sélectionnés
+        public async Task<IActionResult> OnPostValidateSelectedFilesAdp([FromForm] List<int> selectedIds)
+        {
+            try
+            {
+                // Vérifier si l'utilisateur est connecté
+                if (User?.Identity?.IsAuthenticated != true)
+                {
+                    TempData["ErrorMessage"] = "Vous devez être connecté pour effectuer cette action.";
+                    return RedirectToPage("/Login");
+                }
+
+                if (selectedIds == null || !selectedIds.Any())
+                    return new JsonResult(new { success = false, message = "Aucun fichier sélectionné." });
+
+                // Récupérer les ADP avec leur statut actuel
+                var adps = await _gedcontext.Adps
+                    .Include(a => a.DernierStatutAdp)
+                    .Where(a => selectedIds.Contains(a.IdAdp))
+                    .ToListAsync();
+
+                if (!adps.Any())
+                    return new JsonResult(new { success = false, message = "Aucun ADP trouvé avec les IDs fournis." });
+
+                // Déterminer l'ID du statut "Validé" (à adapter selon votre base)
+                // Hypothèse : le code statut pour "Validé" est "VALIDE"
+                var statutValide = await _gedcontext.Statuts
+                    .FirstOrDefaultAsync(s => s.CodeStatut == "VALIDE" || s.DescriptionStatut == "Validé");
+
+                if (statutValide == null)
+                    return new JsonResult(new { success = false, message = "Statut 'Validé' introuvable dans la table Statut." });
+
+                // Récupérer l'ID de l'utilisateur connecté (ex: avec Identity)
+                int userId = GetCurrentUserId();
+                if (userId == 0)
+                    return new JsonResult(new { success = false, message = "Utilisateur non authentifié." });
+
+                int countUpdated = 0;
+                var validations = new List<Validationsfile>();
+
+                foreach (var adp in adps)
+                {
+                    // Vérifier si l'ADP n'est déjà pas dans l'état "Validé"
+                    if (adp.DernierStatutAdpId == statutValide.IdStatut)
+                        continue; // déjà validé, on ignore
+
+                    // 1. Mettre à jour le statut de l'ADP
+                    adp.DernierStatutAdpId = statutValide.IdStatut;
+                    adp.DernierStatutAdp = statutValide; // si vous voulez mettre à jour la navigation
+
+                    // 2. Préparer l'enregistrement dans Validationsfile
+                    var validation = new Validationsfile
+                    {
+                        IdStatut = statutValide.IdStatut,
+                        IdAdp = adp.IdAdp,
+                        UserId = userId, // suppose que UserId est un int
+                        DateValidation = DateTime.Now,
+                        TypeAction = "VALIDATION",
+                        Commentaire = "Validation Automatique des fichiers Adp en cours de validation depuis l'interface",
+                        CreatedAt = DateTime.Now
+                    };
+                    validations.Add(validation);
+                    countUpdated++;
+                }
+
+                if (countUpdated == 0)
+                    return new JsonResult(new { success = false, message = "Aucun ADP à valider (ils sont déjà dans l'état validé)." });
+
+                // Ajouter les historiques et sauvegarder
+                await _gedcontext.Validationsfiles.AddRangeAsync(validations);
+                await _gedcontext.SaveChangesAsync();
+
+                return new JsonResult(new
+                {
+                    success = true,
+                    message = $"{countUpdated} fichier(s) ADP validé(s) avec succès.",
+                    total = countUpdated
+                });
+            }
+            catch (Exception ex)
+            {
+                // Journaliser l'erreur (ex: ILogger)
+                Console.WriteLine($"Erreur validation : {ex.Message}");
+                return new JsonResult(new { success = false, message = $"Erreur technique : {ex.Message}" });
+            }
+        }
+
+        // Methode de rejet des fichiers ADP sélectionnés
+        public async Task<IActionResult> OnPostRejectSelectedFilesAdp([FromForm] List<int> selectedIds)
+        {
+            try
+            {
+                // Vérifier si l'utilisateur est connecté
+                if (User?.Identity?.IsAuthenticated != true)
+                {
+                    TempData["ErrorMessage"] = "Vous devez être connecté pour effectuer cette action.";
+                    return RedirectToPage("/Login");
+                }
+
+                if (selectedIds == null || !selectedIds.Any())
+                    return new JsonResult(new { success = false, message = "Aucun fichier sélectionné." });
+
+                // Récupérer les ADP avec leur statut actuel
+                var adps = await _gedcontext.Adps
+                    .Include(a => a.DernierStatutAdp)
+                    .Where(a => selectedIds.Contains(a.IdAdp))
+                    .ToListAsync();
+
+                if (!adps.Any())
+                    return new JsonResult(new { success = false, message = "Aucun ADP trouvé avec les IDs fournis." });
+
+                // Déterminer l'ID du statut "Validé" (à adapter selon votre base)
+                // Hypothèse : le code statut pour "Validé" est "VALIDE"
+                var statutValide = await _gedcontext.Statuts
+                    .FirstOrDefaultAsync(s => s.CodeStatut == "REJET" || s.DescriptionStatut == "Réjeté");
+
+                if (statutValide == null)
+                    return new JsonResult(new { success = false, message = "Statut 'Réjeté' introuvable dans la table Statut." });
+
+                // Récupérer l'ID de l'utilisateur connecté (ex: avec Identity)
+                int userId = GetCurrentUserId();
+                if (userId == 0)
+                    return new JsonResult(new { success = false, message = "Utilisateur non authentifié." });
+
+                int countUpdated = 0;
+                var validations = new List<Validationsfile>();
+
+                foreach (var adp in adps)
+                {
+                    // Vérifier si l'ADP n'est déjà pas dans l'état "Validé"
+                    if (adp.DernierStatutAdpId == statutValide.IdStatut)
+                        continue; // déjà validé, on ignore
+
+                    // 1. Mettre à jour le statut de l'ADP
+                    adp.DernierStatutAdpId = statutValide.IdStatut;
+                    adp.DernierStatutAdp = statutValide; // si vous voulez mettre à jour la navigation
+
+                    // 2. Préparer l'enregistrement dans Validationsfile
+                    var validation = new Validationsfile
+                    {
+                        IdStatut = statutValide.IdStatut,
+                        IdAdp = adp.IdAdp,
+                        UserId = userId, // suppose que UserId est un int
+                        DateValidation = DateTime.Now,
+                        TypeAction = "REJET",
+                        Commentaire = "Rejet Automatique des fichiers Adp en cours de rejet depuis l'interface",
+                        CreatedAt = DateTime.Now
+                    };
+                    validations.Add(validation);
+                    countUpdated++;
+                }
+
+                if (countUpdated == 0)
+                    return new JsonResult(new { success = false, message = "Aucun ADP à rejetter (ils sont déjà dans l'état rejeté)." });
+
+                // Ajouter les historiques et sauvegarder
+                await _gedcontext.Validationsfiles.AddRangeAsync(validations);
+                await _gedcontext.SaveChangesAsync();
+
+                return new JsonResult(new
+                {
+                    success = true,
+                    message = $"{countUpdated} fichier(s) ADP validé(s) avec succès.",
+                    total = countUpdated
+                });
+            }
+            catch (Exception ex)
+            {
+                // Journaliser l'erreur (ex: ILogger)
+                Console.WriteLine($"Erreur validation : {ex.Message}");
+                return new JsonResult(new { success = false, message = $"Erreur technique : {ex.Message}" });
+            }
         }
 
     }

@@ -396,6 +396,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\CARTES\NewCARTES\imm0157f.pdf'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\CARTES\NewCARTES\Quittance de paiement.pdf'))">
+      <SourceType>Package</SourceType>
+      <SourceId>anahged</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/anahged</BasePath>
+      <RelativePath>CARTES/NewCARTES/Quittance de paiement.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>y7i745pvj6</Fingerprint>
+      <Integrity>/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\CARTES\NewCARTES\Quittance de paiement.pdf'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\CARTES\NewCARTES\Quittancedepaiement.pdf'))">
       <SourceType>Package</SourceType>
       <SourceId>anahged</SourceId>
@@ -444,8 +462,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>57j9s9bsl5</Fingerprint>
-      <Integrity>jyZ+puCOf0v4eDJZdQVp6drPCvL2GtaOROEi+fvaFm8=</Integrity>
+      <Fingerprint>erz4vfzu40</Fingerprint>
+      <Integrity>ClkcSz+G3ZgiipQ0fjKLiD6CuueALWl8qbkr2oWG5cM=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\administration.css'))</OriginalItemSpec>
@@ -588,8 +606,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>qrxfb59qwj</Fingerprint>
-      <Integrity>toegNxJ6qsodx5PsRnMZCSZxgbTEQd6t8A8HOIjnJ90=</Integrity>
+      <Fingerprint>l4sblj0xx4</Fingerprint>
+      <Integrity>2/srxQO3iZP2jmpZvXSl8QRznEc7wFFhQ3L/WW6StMs=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\adp.js'))</OriginalItemSpec>
@@ -606,8 +624,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>4o02k3mahx</Fingerprint>
-      <Integrity>HDC/rWn5hfGzRidoMIdneGu1vFzXWqr3l5BpIwwmx1E=</Integrity>
+      <Fingerprint>l6tydsta2c</Fingerprint>
+      <Integrity>PTVl47ra7R1tETHlrC1yIKEjtDFFHd/2ZpKZW5LCKoc=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\carte.js'))</OriginalItemSpec>
@@ -696,8 +714,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>ffn38yx6f2</Fingerprint>
-      <Integrity>pQYZUIlzFRnJ+TUy0eZM6n4vyiZvVPmkWctJHYFgY0M=</Integrity>
+      <Fingerprint>i8wbkxsvrq</Fingerprint>
+      <Integrity>DlBVrVipsZOdFndP8rhFvVD+RCa7byQ5HuVXPI8oW/s=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\vpl.js'))</OriginalItemSpec>

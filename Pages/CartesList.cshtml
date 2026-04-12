@@ -173,10 +173,15 @@ else
                             <td style="font-size: 12px;">@carte.Echelle</td>
                             <td style="font-size: 12px;">@carte.Cote</td>
                             <td style="font-size: 12px;">@carte.DateCarte</td>
-                            <td style="font-size: 12px;">
+                            @* <td style="font-size: 12px;">
                                 <form method="post" asp-page-handler="View" asp-route-id="@carte.IdCarte" target="_blank">
                                     <button class="btn btn-warning btn-sm">👁️ Voir</button>
                                 </form>
+                            </td> *@
+                            <td style="font-size: 12px;">
+                                <a href="/ViewPdfSecureCarte?id=@carte.IdCarte" target="_blank" class="btn btn-warning btn-sm">
+                                    Voir 👁️
+                                </a>
                             </td>
                         </tr>
                     }

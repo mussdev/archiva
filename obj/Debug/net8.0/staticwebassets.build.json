@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "i8yNjHXcfzEb4x+yTiBszoMuKSF/Kj9rGzU2XXg1ER4=",
+  "Hash": "Nz5bjTMyhsEdh/P4iIQIBob5j9eFXMGSL1+iGCPdU/E=",
   "Source": "anahged",
   "BasePath": "_content/anahged",
   "Mode": "Default",
@@ -500,6 +500,27 @@
       "OriginalItemSpec": "wwwroot\\CARTES\\NewCARTES\\imm0157f.pdf"
     },
     {
+      "Identity": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\Quittance de paiement.pdf",
+      "SourceId": "anahged",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\projets_apps\\archiva\\wwwroot\\",
+      "BasePath": "_content/anahged",
+      "RelativePath": "CARTES/NewCARTES/Quittance de paiement#[.{fingerprint}]?.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "y7i745pvj6",
+      "Integrity": "/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\CARTES\\NewCARTES\\Quittance de paiement.pdf"
+    },
+    {
       "Identity": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\Quittancedepaiement.pdf",
       "SourceId": "anahged",
       "SourceType": "Discovered",
@@ -556,8 +577,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "57j9s9bsl5",
-      "Integrity": "jyZ+puCOf0v4eDJZdQVp6drPCvL2GtaOROEi+fvaFm8=",
+      "Fingerprint": "erz4vfzu40",
+      "Integrity": "ClkcSz+G3ZgiipQ0fjKLiD6CuueALWl8qbkr2oWG5cM=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\administration.css"
@@ -724,8 +745,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "qrxfb59qwj",
-      "Integrity": "toegNxJ6qsodx5PsRnMZCSZxgbTEQd6t8A8HOIjnJ90=",
+      "Fingerprint": "l4sblj0xx4",
+      "Integrity": "2/srxQO3iZP2jmpZvXSl8QRznEc7wFFhQ3L/WW6StMs=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\adp.js"
@@ -745,8 +766,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "4o02k3mahx",
-      "Integrity": "HDC/rWn5hfGzRidoMIdneGu1vFzXWqr3l5BpIwwmx1E=",
+      "Fingerprint": "l6tydsta2c",
+      "Integrity": "PTVl47ra7R1tETHlrC1yIKEjtDFFHd/2ZpKZW5LCKoc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\carte.js"
@@ -850,8 +871,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "ffn38yx6f2",
-      "Integrity": "pQYZUIlzFRnJ+TUy0eZM6n4vyiZvVPmkWctJHYFgY0M=",
+      "Fingerprint": "i8wbkxsvrq",
+      "Integrity": "DlBVrVipsZOdFndP8rhFvVD+RCa7byQ5HuVXPI8oW/s=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\vpl.js"
@@ -3553,7 +3574,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 05 Apr 2026 17:25:56 GMT"
+          "Value": "Thu, 09 Apr 2026 23:39:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3598,7 +3619,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 05 Apr 2026 17:25:56 GMT"
+          "Value": "Thu, 09 Apr 2026 23:39:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3717,7 +3738,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 14 Mar 2026 17:41:46 GMT"
+          "Value": "Thu, 09 Apr 2026 11:36:04 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3754,7 +3775,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 14 Mar 2026 17:41:46 GMT"
+          "Value": "Thu, 09 Apr 2026 11:36:04 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3881,7 +3902,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 06 Apr 2026 11:07:03 GMT"
+          "Value": "Thu, 09 Apr 2026 18:01:33 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3918,7 +3939,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 06 Apr 2026 11:07:03 GMT"
+          "Value": "Thu, 09 Apr 2026 18:01:33 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3963,7 +3984,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 06 Apr 2026 11:07:03 GMT"
+          "Value": "Thu, 09 Apr 2026 18:01:33 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4008,7 +4029,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 06 Apr 2026 11:07:03 GMT"
+          "Value": "Thu, 09 Apr 2026 18:01:33 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4761,6 +4782,88 @@
       ]
     },
     {
+      "Route": "CARTES/NewCARTES/Quittance de paiement.pdf",
+      "AssetFile": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\Quittance de paiement.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "69294"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 10 Apr 2026 21:18:05 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88="
+        }
+      ]
+    },
+    {
+      "Route": "CARTES/NewCARTES/Quittance de paiement.y7i745pvj6.pdf",
+      "AssetFile": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\Quittance de paiement.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "69294"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 10 Apr 2026 21:18:05 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "y7i745pvj6"
+        },
+        {
+          "Name": "label",
+          "Value": "CARTES/NewCARTES/Quittance de paiement.pdf"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-/l+er/3ptNx3PuKu25jSUe3wtCJ3x6EQN2a/+hcMS88="
+        }
+      ]
+    },
+    {
       "Route": "CARTES/NewCARTES/Quittancedepaiement.pdf",
       "AssetFile": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\Quittancedepaiement.pdf",
       "Selectors": [],
@@ -4783,7 +4886,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 16 Mar 2026 18:20:55 GMT"
+          "Value": "Thu, 09 Apr 2026 16:03:18 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4820,7 +4923,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 16 Mar 2026 18:20:55 GMT"
+          "Value": "Thu, 09 Apr 2026 16:03:18 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4925,51 +5028,6 @@
       ]
     },
     {
-      "Route": "css/administration.57j9s9bsl5.css",
-      "AssetFile": "C:\\projets_apps\\archiva\\wwwroot\\css\\administration.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "3764"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"jyZ+puCOf0v4eDJZdQVp6drPCvL2GtaOROEi+fvaFm8=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 29 Jan 2026 23:12:33 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "57j9s9bsl5"
-        },
-        {
-          "Name": "label",
-          "Value": "css/administration.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-jyZ+puCOf0v4eDJZdQVp6drPCvL2GtaOROEi+fvaFm8="
-        }
-      ]
-    },
-    {
       "Route": "css/administration.css",
       "AssetFile": "C:\\projets_apps\\archiva\\wwwroot\\css\\administration.css",
       "Selectors": [],
@@ -4980,7 +5038,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3764"
+          "Value": "3935"
         },
         {
           "Name": "Content-Type",
@@ -4988,11 +5046,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"jyZ+puCOf0v4eDJZdQVp6drPCvL2GtaOROEi+fvaFm8=\""
+          "Value": "\"ClkcSz+G3ZgiipQ0fjKLiD6CuueALWl8qbkr2oWG5cM=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 29 Jan 2026 23:12:33 GMT"
+          "Value": "Sat, 11 Apr 2026 23:25:31 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5002,7 +5060,52 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-jyZ+puCOf0v4eDJZdQVp6drPCvL2GtaOROEi+fvaFm8="
+          "Value": "sha256-ClkcSz+G3ZgiipQ0fjKLiD6CuueALWl8qbkr2oWG5cM="
+        }
+      ]
+    },
+    {
+      "Route": "css/administration.erz4vfzu40.css",
+      "AssetFile": "C:\\projets_apps\\archiva\\wwwroot\\css\\administration.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3935"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ClkcSz+G3ZgiipQ0fjKLiD6CuueALWl8qbkr2oWG5cM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 11 Apr 2026 23:25:31 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "erz4vfzu40"
+        },
+        {
+          "Name": "label",
+          "Value": "css/administration.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ClkcSz+G3ZgiipQ0fjKLiD6CuueALWl8qbkr2oWG5cM="
         }
       ]
     },
@@ -5591,7 +5694,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "21308"
+          "Value": "31020"
         },
         {
           "Name": "Content-Type",
@@ -5599,11 +5702,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"toegNxJ6qsodx5PsRnMZCSZxgbTEQd6t8A8HOIjnJ90=\""
+          "Value": "\"2/srxQO3iZP2jmpZvXSl8QRznEc7wFFhQ3L/WW6StMs=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 14 Mar 2026 21:34:05 GMT"
+          "Value": "Fri, 10 Apr 2026 21:39:19 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5613,12 +5716,12 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-toegNxJ6qsodx5PsRnMZCSZxgbTEQd6t8A8HOIjnJ90="
+          "Value": "sha256-2/srxQO3iZP2jmpZvXSl8QRznEc7wFFhQ3L/WW6StMs="
         }
       ]
     },
     {
-      "Route": "js/adp.qrxfb59qwj.js",
+      "Route": "js/adp.l4sblj0xx4.js",
       "AssetFile": "C:\\projets_apps\\archiva\\wwwroot\\js\\adp.js",
       "Selectors": [],
       "ResponseHeaders": [
@@ -5628,7 +5731,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "21308"
+          "Value": "31020"
         },
         {
           "Name": "Content-Type",
@@ -5636,11 +5739,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"toegNxJ6qsodx5PsRnMZCSZxgbTEQd6t8A8HOIjnJ90=\""
+          "Value": "\"2/srxQO3iZP2jmpZvXSl8QRznEc7wFFhQ3L/WW6StMs=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 14 Mar 2026 21:34:05 GMT"
+          "Value": "Fri, 10 Apr 2026 21:39:19 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5650,7 +5753,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "qrxfb59qwj"
+          "Value": "l4sblj0xx4"
         },
         {
           "Name": "label",
@@ -5658,52 +5761,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-toegNxJ6qsodx5PsRnMZCSZxgbTEQd6t8A8HOIjnJ90="
-        }
-      ]
-    },
-    {
-      "Route": "js/carte.4o02k3mahx.js",
-      "AssetFile": "C:\\projets_apps\\archiva\\wwwroot\\js\\carte.js",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "30885"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/javascript"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"HDC/rWn5hfGzRidoMIdneGu1vFzXWqr3l5BpIwwmx1E=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 06 Apr 2026 18:21:25 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "4o02k3mahx"
-        },
-        {
-          "Name": "label",
-          "Value": "js/carte.js"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-HDC/rWn5hfGzRidoMIdneGu1vFzXWqr3l5BpIwwmx1E="
+          "Value": "sha256-2/srxQO3iZP2jmpZvXSl8QRznEc7wFFhQ3L/WW6StMs="
         }
       ]
     },
@@ -5718,7 +5776,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "30885"
+          "Value": "28096"
         },
         {
           "Name": "Content-Type",
@@ -5726,11 +5784,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"HDC/rWn5hfGzRidoMIdneGu1vFzXWqr3l5BpIwwmx1E=\""
+          "Value": "\"PTVl47ra7R1tETHlrC1yIKEjtDFFHd/2ZpKZW5LCKoc=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 06 Apr 2026 18:21:25 GMT"
+          "Value": "Thu, 09 Apr 2026 15:57:16 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5740,7 +5798,52 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-HDC/rWn5hfGzRidoMIdneGu1vFzXWqr3l5BpIwwmx1E="
+          "Value": "sha256-PTVl47ra7R1tETHlrC1yIKEjtDFFHd/2ZpKZW5LCKoc="
+        }
+      ]
+    },
+    {
+      "Route": "js/carte.l6tydsta2c.js",
+      "AssetFile": "C:\\projets_apps\\archiva\\wwwroot\\js\\carte.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "28096"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"PTVl47ra7R1tETHlrC1yIKEjtDFFHd/2ZpKZW5LCKoc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 09 Apr 2026 15:57:16 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "l6tydsta2c"
+        },
+        {
+          "Name": "label",
+          "Value": "js/carte.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-PTVl47ra7R1tETHlrC1yIKEjtDFFHd/2ZpKZW5LCKoc="
         }
       ]
     },
@@ -6073,7 +6176,7 @@
       ]
     },
     {
-      "Route": "js/vpl.ffn38yx6f2.js",
+      "Route": "js/vpl.i8wbkxsvrq.js",
       "AssetFile": "C:\\projets_apps\\archiva\\wwwroot\\js\\vpl.js",
       "Selectors": [],
       "ResponseHeaders": [
@@ -6083,7 +6186,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "26182"
+          "Value": "30328"
         },
         {
           "Name": "Content-Type",
@@ -6091,11 +6194,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"pQYZUIlzFRnJ+TUy0eZM6n4vyiZvVPmkWctJHYFgY0M=\""
+          "Value": "\"DlBVrVipsZOdFndP8rhFvVD+RCa7byQ5HuVXPI8oW/s=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 06 Apr 2026 18:21:24 GMT"
+          "Value": "Thu, 09 Apr 2026 15:16:21 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6105,7 +6208,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "ffn38yx6f2"
+          "Value": "i8wbkxsvrq"
         },
         {
           "Name": "label",
@@ -6113,7 +6216,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-pQYZUIlzFRnJ+TUy0eZM6n4vyiZvVPmkWctJHYFgY0M="
+          "Value": "sha256-DlBVrVipsZOdFndP8rhFvVD+RCa7byQ5HuVXPI8oW/s="
         }
       ]
     },
@@ -6128,7 +6231,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "26182"
+          "Value": "30328"
         },
         {
           "Name": "Content-Type",
@@ -6136,11 +6239,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"pQYZUIlzFRnJ+TUy0eZM6n4vyiZvVPmkWctJHYFgY0M=\""
+          "Value": "\"DlBVrVipsZOdFndP8rhFvVD+RCa7byQ5HuVXPI8oW/s=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 06 Apr 2026 18:21:24 GMT"
+          "Value": "Thu, 09 Apr 2026 15:16:21 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6150,7 +6253,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-pQYZUIlzFRnJ+TUy0eZM6n4vyiZvVPmkWctJHYFgY0M="
+          "Value": "sha256-DlBVrVipsZOdFndP8rhFvVD+RCa7byQ5HuVXPI8oW/s="
         }
       ]
     },

@@ -38,6 +38,14 @@ namespace anahged.Pages
         }
         public void OnGet()
         {
+            // Vérifier si l'utilisateur est connecté
+            if (User?.Identity?.IsAuthenticated != true)
+            {
+                TempData["ErrorMessage"] = "Vous devez être connecté pour accéder à cette page.";
+                Response.Redirect("/Login");
+                return;
+            }
+
             UserList = _administrationService.GetAllUsers().ToList();
             RoleList = _administrationService.GetAllRoles().ToList();
             // Récupérer la liste des statuts

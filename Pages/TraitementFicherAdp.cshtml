@@ -48,23 +48,21 @@
             </ul>
         </div>
         <div class="ms-auto d-flex gap-2">
-            <a class="text-white ms-auto underline btn" 
-                asp-area=""
-                asp-page="/"
+            <button class="text-white ms-auto underline btn" 
+                id="validateSelected"
                 style="background: linear-gradient(135deg, #44f409 0%, #374151 100%);">
                 Valider les fichiers
-            </a>
-            <a class="text-white ms-auto underline btn" 
-                asp-area=""
-                asp-page="/"
+            </button>
+            <button class="text-white ms-auto underline btn" 
+                id="rejectSelected"
                 style="background: linear-gradient(135deg, #eb2b12 0%, #374151 100%);">
                 Rejeter les fichiers
-            </a>
+            </button>
             @if(User.IsInRole("Administrateur")){
-                <button type="button" class="btn text-white ms-auto" data-bs-toggle="modal" data-bs-target="#ajoutFichierModal"
-                        style="background: linear-gradient(135deg, #0db8e8 0%, #374151 100%);">
-                    Indexer un fichier
-                </button>
+            <button type="button" class="btn text-white ms-auto" data-bs-toggle="modal" data-bs-target="#ajoutFichierModal"
+                    style="background: linear-gradient(135deg, #0db8e8 0%, #374151 100%);">
+                Indexer un fichier
+            </button>
             }
         </div>
     </div>
@@ -167,6 +165,11 @@
                                 {
                                     <span class="badge bg-info">Nouveau</span>
                                 }
+                                 else if (adpValidation.DernierStatutAdp?.DescriptionStatut == "Réjeté")
+                                {
+                                    <span class="badge bg-danger">Réjeté</span>
+                                }
+
                                 else
                                 {
                                     <span class="badge bg-secondary">@adpValidation.DernierStatutAdp?.DescriptionStatut</span>

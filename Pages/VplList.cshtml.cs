@@ -685,5 +685,39 @@ namespace anahged.Pages
 
             return RedirectToPage();
         }
+
+        // Methode pour afficher le PDF dans une nouvelle fenêtre
+        public async Task<IActionResult> OnGetPdfData(int id)
+        {
+            try
+            {
+                Console.WriteLine($"Tentative de récupération du PDF pour ID {id}");
+                var fichierPdf = await _gedServices.GetFichierPdfVplAsync(id);
+                
+                if (fichierPdf == null || fichierPdf.Length == 0)
+                    return NotFound("Le fichier est vide.");
+                
+                // Vérifier les 4 premiers octets (doivent être %PDF)
+                if (fichierPdf.Length >= 4 && 
+                    fichierPdf[0] == 0x25 && fichierPdf[1] == 0x50 && 
+                    fichierPdf[2] == 0x44 && fichierPdf[3] == 0x46)
+                {
+                    Console.WriteLine("Signature PDF valide détectée.");
+                }
+                else
+                {
+                    Console.WriteLine("ATTENTION : Signature PDF invalide.");
+                    return BadRequest("Le fichier n'est pas un PDF valide.");
+                }
+                
+                Response.Headers.Append("Content-Disposition", "inline; filename=document.pdf");
+                return File(fichierPdf, "application/pdf");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erreur dans OnGetPdfData : {ex.Message}");
+                return NotFound(ex.Message);
+            }
+        }
     }
 }

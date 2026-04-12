@@ -96,12 +96,23 @@
     {
         // Afficher la liste de résultats
         <div class="filter-container">
-            <div style="max-height:60vh; overflow-y:auto;margin-top:20px;">
-                <div class="filter-input">
-                    <input type="text" id="table-filter" class="form-control form-control-sm" placeholder="Filtrer par boite, code,n° logement, client, document ou ...">
-                </div>
+            <div class="d-flex justify-content-between align-items-center mb-2" style="position: relative; z-index: 10;">
                 <div class="filter-stats">
                     <span id="filterStats" class="text-muted small">@(Model.AdpList?.Count() ?? 0) fichier(s) trouvé(s)</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <label for="pageSizeSelect" class="mb-0 text-muted small">Afficher</label>
+                    <select id="pageSizeSelect" class="form-select form-select-sm" style="width: auto; min-width: 80px; position: relative; z-index: 11;">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+            <div style="max-height:60vh; overflow-y:auto;margin-top:20px;">
+                <div class="filter-input mb-2">
+                    <input type="text" id="table-filter" class="form-control form-control-sm" placeholder="Filtrer par boite, code,n° logement, client, document ou ...">
                 </div>
                 <table class="table mt-1">
                     <thead>
@@ -125,7 +136,7 @@
                         </tr>
                     </thead>
                     <tbody id="adpTableBody">
-                        @foreach (var adp in Model.AdpList)
+                        @foreach (var adp in Model.AdpList ?? new List<Models.Adp>())
                         {
                             <tr>
                                 <td style="font-size: 12px;"><input type="checkbox" class="rowCheckbox" data-adp-id="@adp.IdAdp" style="cursor: pointer;"></td>
@@ -176,15 +187,28 @@
                                 <td style="font-size: 12px;">@(string.IsNullOrWhiteSpace(adp.Ville) ? adp.IdOpeNavigation?.IdVilleNavigation?.DescriptionVille : adp.Ville)</td>
                                 <td style="font-size: 12px;">@(string.IsNullOrWhiteSpace(adp.CommuneQuartier) ? adp.IdOpeNavigation?.DescriptionOpe : adp.CommuneQuartier)</td>
                                 <td style="font-size: 12px;">@adp.DateDocument</td> 
-                                <td style="font-size: 12px;">
+                                @* <td style="font-size: 12px;">
                                     <form method="post" asp-page-handler="View" asp-route-id="@adp.IdAdp" target="_blank">
                                         <button class="btn btn-warning btn-sm">Voir 👁️</button>
                                     </form>
+                                </td> *@
+                                <td style="font-size: 12px;">
+                                    <a href="/ViewPdfSecure?id=@adp.IdAdp" target="_blank" class="btn btn-warning btn-sm">
+                                        Voir 👁️
+                                    </a>
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="text-muted small">
+                        <span id="paginationInfo">Page 1 sur 1</span>
+                    </div>
+                    <nav aria-label="Pagination tableau">
+                        <ul class="pagination pagination-sm mb-0" id="paginationContainer"></ul>
+                    </nav>
+                </div>
             </div>
         </div>
     }

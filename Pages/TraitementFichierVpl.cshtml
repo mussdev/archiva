@@ -50,14 +50,12 @@
     </div>
     <div class="ms-auto d-flex gap-2">
         <a class="text-white ms-auto underline btn" 
-            asp-area=""
-            asp-page="/ValidationsAdpVpl"
+            id="validateSelected"
             style="background: linear-gradient(135deg, #44f409 0%, #374151 100%);">
             Valider les fichiers
         </a>
         <a class="text-white ms-auto underline btn" 
-            asp-area=""
-            asp-page="/ValidationsAdpVpl"
+            id="rejectSelected"
             style="background: linear-gradient(135deg, #eb2b12 0%, #374151 100%);">
             Rejeter les fichiers
         </a>
@@ -173,6 +171,9 @@ else
                                 @if (vpl.DernierStatutVpl?.DescriptionStatut == "En attente")
                                 {
                                     <span class="badge bg-warning text-dark">En attente</span>
+                                }else if (vpl.DernierStatutVpl?.DescriptionStatut == "Réjeté")
+                                {
+                                    <span class="badge bg-danger">Réjeté</span>
                                 }
                                 else if (vpl.DernierStatutVpl?.DescriptionStatut == "Nouveau")
                                 {

@@ -92,6 +92,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHJhaXRlbWVudEZpY2hpZXJWcGwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/projets_apps/archiva/Pages/ViewPdfSecure.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmlld1BkZlNlY3VyZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/projets_apps/archiva/Pages/ViewPdfSecureCarte.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmlld1BkZlNlY3VyZUNhcnRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/projets_apps/archiva/Pages/ViewPdfSecureVpl.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmlld1BkZlNlY3VyZVZwbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/projets_apps/archiva/Pages/VplList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVnBsTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

@@ -205,5 +205,13 @@
     margin: 0;
 }
 
+/*** Style pour masquer ou afficher les conteneurs de tableaux */
+.log-table-container {
+    display: none;
+}
+.log-table-container.active {
+    display: block;
+}
+
 /* Style pour les modifications */
 

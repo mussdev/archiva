@@ -1,59 +1,215 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 DOMContentLoaded - Initialisation du script');
 
-    // Ajouter un événement pour filtrer les données lors de la saisie dans le champ de filtre
-    var table = document.querySelector('table');
-    var rows = table ? table.querySelectorAll('tbody tr') : [];
+    var adpTable = document.querySelector('#adpTableBody')?.closest('table');
+    if (!adpTable) {
+        console.warn('Aucune table ADP trouvée, pagination désactivée.');
+        return;
+    }
+
+    var rowsArray = Array.from(adpTable.querySelectorAll('tbody tr'));
     var filterStats = document.getElementById('filterStats');
-    var totalRows = rows.length;
-
-    // Récupérer le champ de filtre
+    var paginationInfo = document.getElementById('paginationInfo');
+    var paginationContainer = document.getElementById('paginationContainer');
+    var pageSizeSelect = document.getElementById('pageSizeSelect');
     var tableFilter = document.getElementById('table-filter');
+    var selectAllCheckbox = document.getElementById('selectAllCheckbox');
 
-    // Fonction pour mettre à jour les statistiques
-    function updateFilterStats() {
-        var visibleRows = 0;
-        rows.forEach(function(row) {
-            if (row.style.display !== 'none') {
-                visibleRows++;
-            }
+    var currentPage = 1;
+    var pageSize = pageSizeSelect ? parseInt(pageSizeSelect.value, 10) || 10 : 10;
+    var totalRows = rowsArray.length;
+
+    function getFilteredRows() {
+        return rowsArray.filter(function(row) {
+            return row.dataset.matchesFilter !== 'false';
         });
+    }
 
-        if (filterStats) {
-            if (tableFilter && tableFilter.value === '') {
-                filterStats.textContent = totalRows + ' fichier(s) trouvé(s)';
-            } else {
-                filterStats.textContent = visibleRows + ' fichier(s) sur ' + totalRows + ' trouvé(s)';
-            }
+    function getVisibleCheckboxes() {
+        return rowsArray
+            .filter(function(row) {
+                return row.style.display !== 'none';
+            })
+            .map(function(row) {
+                return row.querySelector('.rowCheckbox');
+            })
+            .filter(function(checkbox) {
+                return checkbox !== null;
+            });
+    }
+
+    function updateFilterStats() {
+        if (!filterStats) {
+            return;
+        }
+
+        var filteredRows = getFilteredRows();
+        if (!tableFilter || tableFilter.value.trim() === '') {
+            filterStats.textContent = totalRows + ' fichier(s) trouvé(s)';
+        } else {
+            filterStats.textContent = filteredRows.length + ' fichier(s) sur ' + totalRows + ' trouvé(s)';
         }
     }
 
-    // Fonction pour filtrer les données
-    function filterData() {
-        if (!tableFilter) return;
-        
-        var filterValue = tableFilter.value.toLowerCase();
-        rows.forEach(function(row) {
-            var rowText = row.textContent.toLowerCase();
-            if (rowText.indexOf(filterValue) === -1) {
-                row.style.display = 'none';
-            } else {
+    function renderPagination() {
+        if (!paginationContainer || !paginationInfo) {
+            return;
+        }
+
+        var filteredRows = getFilteredRows();
+        var totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
+        currentPage = Math.min(Math.max(1, currentPage), totalPages);
+
+        paginationInfo.textContent = 'Page ' + currentPage + ' sur ' + totalPages;
+
+        if (totalPages <= 1) {
+            paginationContainer.innerHTML = '';
+            return;
+        }
+
+        var pagesToShow = [];
+        if (totalPages <= 7) {
+            for (var i = 1; i <= totalPages; i++) {
+                pagesToShow.push(i);
+            }
+        } else {
+            pagesToShow = [1];
+            if (currentPage > 3) pagesToShow.push(currentPage - 1);
+            if (currentPage > 2) pagesToShow.push(currentPage);
+            if (currentPage < totalPages - 1) pagesToShow.push(currentPage + 1);
+            if (currentPage < totalPages - 2) pagesToShow.push(totalPages - 1);
+            pagesToShow.push(totalPages);
+        }
+
+        paginationContainer.innerHTML = '';
+
+        function appendPageButton(page, label, disabled) {
+            var li = document.createElement('li');
+            li.className = 'page-item' + (disabled ? ' disabled' : '') + (page === currentPage ? ' active' : '');
+            var a = document.createElement('a');
+            a.className = 'page-link';
+            a.href = '#';
+            a.textContent = label || page;
+            a.addEventListener('click', function(event) {
+                event.preventDefault();
+                if (!disabled && page !== currentPage) {
+                    currentPage = page;
+                    showPage();
+                }
+            });
+            li.appendChild(a);
+            paginationContainer.appendChild(li);
+        }
+
+        appendPageButton(1, '«', currentPage === 1);
+
+        var lastPage = 0;
+        pagesToShow.forEach(function(page) {
+            if (page !== lastPage) {
+                if (page > lastPage + 1) {
+                    var ellipsis = document.createElement('li');
+                    ellipsis.className = 'page-item disabled';
+                    ellipsis.innerHTML = '<span class="page-link">…</span>';
+                    paginationContainer.appendChild(ellipsis);
+                }
+                appendPageButton(page, page, false);
+                lastPage = page;
+            }
+        });
+
+        appendPageButton(totalPages, '»', currentPage === totalPages);
+    }
+
+    function showPage() {
+        var filteredRows = getFilteredRows();
+        var totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
+        currentPage = Math.min(Math.max(1, currentPage), totalPages);
+
+        var startIndex = (currentPage - 1) * pageSize;
+        var endIndex = currentPage * pageSize;
+
+        rowsArray.forEach(function(row) {
+            row.style.display = 'none';
+        });
+
+        filteredRows.forEach(function(row, index) {
+            if (index >= startIndex && index < endIndex) {
                 row.style.display = '';
             }
         });
 
-        // Mettre à jour les statistiques après le filtrage
+        if (selectAllCheckbox) {
+            selectAllCheckbox.checked = false;
+        }
+
+        renderPagination();
         updateFilterStats();
     }
 
-    if (tableFilter && rows.length > 0) {
-        // Initialiser les statistiques au chargement
-        updateFilterStats();
-        // Ajouter un événement pour filtrer les données lors de la saisie dans le champ de filtre
-        tableFilter.addEventListener('input', filterData);
+    function filterData() {
+        if (!tableFilter) return;
+
+        var filterValue = tableFilter.value.toLowerCase();
+        rowsArray.forEach(function(row) {
+            var rowText = row.textContent.toLowerCase();
+            row.dataset.matchesFilter = rowText.indexOf(filterValue) === -1 ? 'false' : 'true';
+        });
+
+        currentPage = 1;
+        showPage();
     }
 
-    // Réinitialiser le formulaire quand le modal est fermé
+    function updateCheckboxListeners() {
+        var visibleCheckboxes = getVisibleCheckboxes();
+        visibleCheckboxes.forEach(function(checkbox) {
+            checkbox.removeEventListener('change', handleRowCheckboxChange);
+            checkbox.addEventListener('change', handleRowCheckboxChange);
+        });
+    }
+
+    function handleRowCheckboxChange() {
+        if (!selectAllCheckbox) return;
+        var visibleCheckboxes = getVisibleCheckboxes();
+        selectAllCheckbox.checked = visibleCheckboxes.length > 0 && visibleCheckboxes.every(function(cb) {
+            return cb.checked;
+        });
+    }
+
+    function updateSelectAllBehavior() {
+        if (!selectAllCheckbox) return;
+
+        selectAllCheckbox.addEventListener('change', function() {
+            var visibleCheckboxes = getVisibleCheckboxes();
+            visibleCheckboxes.forEach(function(checkbox) {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        });
+    }
+
+    rowsArray.forEach(function(row) {
+        row.dataset.matchesFilter = 'true';
+    });
+
+    showPage();
+    updateSelectAllBehavior();
+    updateCheckboxListeners();
+
+    if (tableFilter) {
+        tableFilter.addEventListener('input', function() {
+            filterData();
+            updateCheckboxListeners();
+        });
+    }
+
+    if (pageSizeSelect) {
+        pageSizeSelect.addEventListener('change', function() {
+            pageSize = parseInt(this.value, 10) || 10;
+            currentPage = 1;
+            showPage();
+            updateCheckboxListeners();
+        });
+    }
+
     var ajoutFichierModal = document.getElementById('ajoutFichierModal');
     if (ajoutFichierModal) {
         ajoutFichierModal.addEventListener('hidden.bs.modal', function () {
@@ -61,6 +217,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (uploadForm) {
                 uploadForm.reset();
             }
+        });
+    }
+
+    if (tableFilter && selectAllCheckbox) {
+        tableFilter.addEventListener('input', function() {
+            selectAllCheckbox.checked = false;
         });
     }
 
@@ -497,6 +659,114 @@ if (deleteSelectedBtn) {
             // Soumettre le formulaire
             document.body.appendChild(form);
             form.submit();
+        }
+    });
+}
+
+// === VALIDATION DES FICHIERS ADP SÉLECTIONNÉS ===
+const validateSelectedBtn = document.getElementById('validateSelected');
+if (validateSelectedBtn) {
+    validateSelectedBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+
+        const selectedIds = getSelectedAdpIds(); // fonction existante qui retourne un tableau d'IDs
+        console.log('IDs à valider :', selectedIds);
+
+        if (selectedIds.length === 0) {
+            alert('Veuillez sélectionner au moins un fichier à valider.');
+            return;
+        }
+
+        if (!confirm(`Valider définitivement ${selectedIds.length} fichier(s) ADP ?`)) {
+            return;
+        }
+
+        // Désactiver le bouton pendant l'opération
+        const originalText = validateSelectedBtn.innerText;
+        validateSelectedBtn.innerText = 'Validation en cours...';
+        validateSelectedBtn.disabled = true;
+
+        try {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            const formData = new URLSearchParams();
+            selectedIds.forEach(id => formData.append('selectedIds', id));
+            formData.append('__RequestVerificationToken', token);
+
+            const response = await fetch('?handler=ValidateSelectedFilesAdp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData.toString()
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert(result.message);
+                // Recharger la page pour voir les nouveaux statuts
+                location.reload();
+            } else {
+                alert('Erreur : ' + result.message);
+            }
+        } catch (error) {
+            console.error('Erreur réseau :', error);
+            alert('Une erreur est survenue. Vérifiez votre connexion.');
+        } finally {
+            validateSelectedBtn.innerText = originalText;
+            validateSelectedBtn.disabled = false;
+        }
+    });
+}
+
+// === REJECT DES FICHIERS ADP SÉLECTIONNÉS ===
+const rejectSelectedBtn = document.getElementById('rejectSelected');
+if (rejectSelectedBtn) {
+    rejectSelectedBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+
+        const selectedIds = getSelectedAdpIds(); // fonction existante qui retourne un tableau d'IDs
+        console.log('IDs à rejetter :', selectedIds);
+
+        if (selectedIds.length === 0) {
+            alert('Veuillez sélectionner au moins un fichier à rejetter.');
+            return;
+        }
+
+        if (!confirm(`Rejeter définitivement ${selectedIds.length} fichier(s) ADP ?`)) {
+            return;
+        }
+
+        // Désactiver le bouton pendant l'opération
+        const originalText = rejectSelectedBtn.innerText;
+        rejectSelectedBtn.innerText = 'Rejet en cours...';
+        rejectSelectedBtn.disabled = true;
+
+        try {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            const formData = new URLSearchParams();
+            selectedIds.forEach(id => formData.append('selectedIds', id));
+            formData.append('__RequestVerificationToken', token);
+
+            const response = await fetch('?handler=RejectSelectedFilesAdp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData.toString()
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert(result.message);
+                // Recharger la page pour voir les nouveaux statuts
+                location.reload();
+            } else {
+                alert('Erreur : ' + result.message);
+            }
+        } catch (error) {
+            console.error('Erreur réseau :', error);
+            alert('Une erreur est survenue. Vérifiez votre connexion.');
+        } finally {
+            rejectSelectedBtn.innerText = originalText;
+            rejectSelectedBtn.disabled = false;
         }
     });
 }

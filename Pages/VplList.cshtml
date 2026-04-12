@@ -189,10 +189,15 @@ else
                             <td style="font-size: 12px;">@(string.IsNullOrWhiteSpace(vpl.Ville) ? vpl.IdOpeNavigation?.IdVilleNavigation?.DescriptionVille : vpl.Ville)</td>
                             <td style="font-size: 12px;">@(string.IsNullOrWhiteSpace(vpl.CommuneQuartier) ? vpl.IdOpeNavigation?.DescriptionOpe : vpl.CommuneQuartier)</td>
                             <td style="font-size: 12px;">@vpl.DateDocument</td>
-                            <td style="font-size: 12px;">
+                            @* <td style="font-size: 12px;">
                                 <form method="post" asp-page-handler="View" asp-route-id="@vpl.IdVpl" target="_blank">
                                     <button class="btn btn-warning">👁️ Voir</button>
                                 </form>
+                            </td> *@
+                            <td style="font-size: 12px;">
+                                <a href="/ViewPdfSecureVpl?id=@vpl.IdVpl" target="_blank" class="btn btn-warning btn-sm">
+                                    Voir 👁️
+                                </a>
                             </td>
                         </tr>
                     }

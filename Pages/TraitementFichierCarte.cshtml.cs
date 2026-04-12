@@ -78,7 +78,7 @@ namespace MyApp.Namespace
                 .Include(o => o.IdOpeNavigation)
                 .Include(v => v.IdOpeNavigation.IdVilleNavigation)
                 .Include(s => s.DernierStatutCarte)
-                .Where(s => s.DernierStatutCarte.DescriptionStatut == "En attente" || s.DernierStatutCarte.DescriptionStatut == "Nouveau")
+                .Where(s => s.DernierStatutCarte.DescriptionStatut == "En attente" || s.DernierStatutCarte.DescriptionStatut == "Nouveau" || s.DernierStatutCarte.DescriptionStatut == "Réjeté")
                 .ToListAsync();
 
             ModelState.Clear();
@@ -664,6 +664,181 @@ namespace MyApp.Namespace
             }
 
             return RedirectToPage();
+        }
+
+
+        // Methode de validation des fichiers CARTES sélectionnés
+        public async Task<IActionResult> OnPostValidateSelectedFilesCarte([FromForm] List<int> selectedIds)
+        {
+            try
+            {
+                // Vérifier si l'utilisateur est connecté
+                if (User?.Identity?.IsAuthenticated != true)
+                {
+                    TempData["ErrorMessage"] = "Vous devez être connecté pour effectuer cette action.";
+                    return RedirectToPage("/Login");
+                }
+
+                if (selectedIds == null || !selectedIds.Any())
+                    return new JsonResult(new { success = false, message = "Aucun fichier sélectionné." });
+
+                // Récupérer les CARTES avec leur statut actuel
+                var cartes = await _gedcontext.Cartes
+                    .Include(v => v.DernierStatutCarte)
+                    .Where(v => selectedIds.Contains(v.IdCarte))
+                    .ToListAsync();
+
+                if (!cartes.Any())
+                    return new JsonResult(new { success = false, message = "Aucun CARTE trouvé avec les IDs fournis." });
+
+                // Déterminer l'ID du statut "Validé" (à adapter selon votre base)
+                // Hypothèse : le code statut pour "Validé" est "VALIDE"
+                var statutValide = await _gedcontext.Statuts
+                    .FirstOrDefaultAsync(s => s.CodeStatut == "VALIDE" || s.DescriptionStatut == "Validé");
+
+                if (statutValide == null)
+                    return new JsonResult(new { success = false, message = "Statut 'Validé' introuvable dans la table Statut." });
+
+                // Récupérer l'ID de l'utilisateur connecté (ex: avec Identity)
+                int userId = GetCurrentUserId();
+                if (userId == 0)
+                    return new JsonResult(new { success = false, message = "Utilisateur non authentifié." });
+
+                int countUpdated = 0;
+                var validations = new List<Validationsfile>();
+
+                foreach (var carte in cartes)
+                {
+                    // Vérifier si le CARTE n'est déjà pas dans l'état "Validé"
+                    if (carte.DernierStatutCarteId == statutValide.IdStatut)
+                        continue; // déjà validé, on ignore
+
+                    // 1. Mettre à jour le statut de l'ADP
+                    carte.DernierStatutCarteId = statutValide.IdStatut;
+                    carte.DernierStatutCarte = statutValide; // si vous voulez mettre à jour la navigation
+
+                    // 2. Préparer l'enregistrement dans Validationsfile
+                    var validation = new Validationsfile
+                    {
+                        IdStatut = statutValide.IdStatut,
+                        IdCarte = carte.IdCarte,
+                        UserId = userId, // suppose que UserId est un int
+                        DateValidation = DateTime.Now,
+                        TypeAction = "VALIDATION",
+                        Commentaire = "Validation Automatique des fichiers Carte en cours de validation depuis l'interface",
+                        CreatedAt = DateTime.Now
+                    };
+                    validations.Add(validation);
+                    countUpdated++;
+                }
+
+                if (countUpdated == 0)
+                    return new JsonResult(new { success = false, message = "Aucun CARTE à valider (ils sont déjà dans l'état validé)." });
+
+                // Ajouter les historiques et sauvegarder
+                await _gedcontext.Validationsfiles.AddRangeAsync(validations);
+                await _gedcontext.SaveChangesAsync();
+
+                return new JsonResult(new
+                {
+                    success = true,
+                    message = $"{countUpdated} fichier(s) CARTES validé(s) avec succès.",
+                    total = countUpdated
+                });
+            }
+            catch (Exception ex)
+            {
+                // Journaliser l'erreur (ex: ILogger)
+                Console.WriteLine($"Erreur validation : {ex.Message}");
+                return new JsonResult(new { success = false, message = $"Erreur technique : {ex.Message}" });
+            }
+        }
+
+        // Methode de rejet des fichiers VPL sélectionnés
+        public async Task<IActionResult> OnPostRejectSelectedFilesCarte([FromForm] List<int> selectedIds)
+        {
+            try
+            {
+                // Vérifier si l'utilisateur est connecté
+                if (User?.Identity?.IsAuthenticated != true)
+                {
+                    TempData["ErrorMessage"] = "Vous devez être connecté pour effectuer cette action.";
+                    return RedirectToPage("/Login");
+                }
+
+                if (selectedIds == null || !selectedIds.Any())
+                    return new JsonResult(new { success = false, message = "Aucun fichier sélectionné." });
+
+                // Récupérer les CARTES avec leur statut actuel
+                var cartes = await _gedcontext.Cartes
+                    .Include(c => c.DernierStatutCarte)
+                    .Where(c => selectedIds.Contains(c.IdCarte))
+                    .ToListAsync();
+
+                if (!cartes.Any())
+                    return new JsonResult(new { success = false, message = "Aucun CARTE trouvé avec les IDs fournis." });
+
+                // Déterminer l'ID du statut "Validé" (à adapter selon votre base)
+                // Hypothèse : le code statut pour "Validé" est "VALIDE"
+                var statutValide = await _gedcontext.Statuts
+                    .FirstOrDefaultAsync(s => s.CodeStatut == "REJET" || s.DescriptionStatut == "Réjeté");
+
+                if (statutValide == null)
+                    return new JsonResult(new { success = false, message = "Statut 'Réjeté' introuvable dans la table Statut." });
+
+                // Récupérer l'ID de l'utilisateur connecté (ex: avec Identity)
+                int userId = GetCurrentUserId();
+                if (userId == 0)
+                    return new JsonResult(new { success = false, message = "Utilisateur non authentifié." });
+
+                int countUpdated = 0;
+                var validations = new List<Validationsfile>();
+
+                foreach (var carte in cartes)
+                {
+                    // Vérifier si le CARTE n'est déjà pas dans l'état "Validé"
+                    if (carte.DernierStatutCarteId == statutValide.IdStatut)
+                        continue; // déjà validé, on ignore
+
+                    // 1. Mettre à jour le statut de l'ADP
+                    carte.DernierStatutCarteId = statutValide.IdStatut;
+                    carte.DernierStatutCarte = statutValide; // si vous voulez mettre à jour la navigation
+
+                    // 2. Préparer l'enregistrement dans Validationsfile
+                    var validation = new Validationsfile
+                    {
+                        IdStatut = statutValide.IdStatut,
+                        IdCarte = carte.IdCarte,
+                        UserId = userId, // suppose que UserId est un int
+                        DateValidation = DateTime.Now,
+                        TypeAction = "REJET",
+                        Commentaire = "Rejet Automatique des fichiers CARTES en cours de rejet depuis l'interface",
+                        CreatedAt = DateTime.Now
+                    };
+                    validations.Add(validation);
+                    countUpdated++;
+                }
+
+                if (countUpdated == 0)
+                    return new JsonResult(new { success = false, message = "Aucun CARTE à rejetter (ils sont déjà dans l'état rejeté)." });
+
+                // Ajouter les historiques et sauvegarder
+                await _gedcontext.Validationsfiles.AddRangeAsync(validations);
+                await _gedcontext.SaveChangesAsync();
+
+                return new JsonResult(new
+                {
+                    success = true,
+                    message = $"{countUpdated} fichier(s) CARTES rejeté(s) avec succès.",
+                    total = countUpdated
+                });
+            }
+            catch (Exception ex)
+            {
+                // Journaliser l'erreur (ex: ILogger)
+                Console.WriteLine($"Erreur validation : {ex.Message}");
+                return new JsonResult(new { success = false, message = $"Erreur technique : {ex.Message}" });
+            }
         }
     }
 }

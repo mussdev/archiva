@@ -44,7 +44,7 @@
         <div class="admin-content">
             <!-- Tableau de bord -->
             <div id="dashboard" class="admin-section active">
-                <h2 class="mb-4">Tableau de bord d'administration</h2>
+                @* <h2 class="mb-4">Tableau de bord d'administration</h2> *@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="admin-card">
@@ -80,42 +80,6 @@
                                 <h3>12</h3>
                                 <p>Activité récente</p>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="admin-card mt-4">
-                    <div class="admin-card-header">
-                        Activité récente
-                    </div>
-                    <div class="admin-card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Utilisateur</th>
-                                        <th>Action</th>
-                                        <th>Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>admin@example.com</td>
-                                        <td>Connexion au système</td>
-                                        <td>@DateTime.Now.AddHours(-1).ToString("dd/MM/yyyy HH:mm")</td>
-                                    </tr>
-                                    <tr>
-                                        <td>user@example.com</td>
-                                        <td>Modification d'un document</td>
-                                        <td>@DateTime.Now.AddHours(-3).ToString("dd/MM/yyyy HH:mm")</td>
-                                    </tr>
-                                    <tr>
-                                        <td>archivist@example.com</td>
-                                        <td>Ajout de nouveaux archives</td>
-                                        <td>@DateTime.Now.AddHours(-5).ToString("dd/MM/yyyy HH:mm")</td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
@@ -1266,56 +1230,86 @@
             </div>
             
             <!-- Journalisation -->
-            <div id="logs" class="admin-section">
-                <h2 class="mb-4">Journalisation des activités</h2>
-                
-                <div class="admin-card">
-                    <div class="admin-card-header">
-                        Logs système
-                    </div>
-                    <div class="admin-card-body">
-                        <div class="mb-3">
-                            <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-outline-primary active">Tous</button>
-                                <button type="button" class="btn btn-outline-primary">Connexions</button>
-                                <button type="button" class="btn btn-outline-primary">Modifications</button>
-                                <button type="button" class="btn btn-outline-primary">Erreurs</button>
-                            </div>
-                        </div>
-                        
-                        <div class="log-entry log-success">
-                            <div class="d-flex justify-content-between">
-                                <strong>admin</strong>
-                                <small>@DateTime.Now.AddHours(-1).ToString("dd/MM/yyyy HH:mm")</small>
-                            </div>
-                            <div>Connexion réussie</div>
-                        </div>
-                        
-                        <div class="log-entry">
-                            <div class="d-flex justify-content-between">
-                                <strong>user1</strong>
-                                <small>@DateTime.Now.AddHours(-2).ToString("dd/MM/yyyy HH:mm")</small>
-                            </div>
-                            <div>Document ADP-2023-001 modifié</div>
-                        </div>
-                        
-                        <div class="log-entry log-warning">
-                            <div class="d-flex justify-content-between">
-                                <strong>system</strong>
-                                <small>@DateTime.Now.AddHours(-4).ToString("dd/MM/yyyy HH:mm")</small>
-                            </div>
-                            <div>Sauvegarde automatique terminée</div>
-                        </div>
-                        
-                        <div class="log-entry log-error">
-                            <div class="d-flex justify-content-between">
-                                <strong>editor2</strong>
-                                <small>@DateTime.Now.AddHours(-6).ToString("dd/MM/yyyy HH:mm")</small>
-                            </div>
-                            <div>Échec de l'upload du fichier (taille excessive)</div>
-                        </div>
-                    </div>
+            
+            <div class="mb-3">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-primary active" data-tab="all">Tous</button>
+                    <button type="button" class="btn btn-outline-primary" data-tab="login">Connexions</button>
+                    <button type="button" class="btn btn-outline-primary" data-tab="transactions">Historique ADP</button>
+                    <button type="button" class="btn btn-outline-primary" data-tab="operations">Historique VPL</button>
+                    <button type="button" class="btn btn-outline-primary" data-tab="villes">Historique CARTE</button>
+                    <button type="button" class="btn btn-outline-primary" data-tab="validations">Historique validations</button>
+                    <button type="button" class="btn btn-outline-primary" data-tab="errors">Erreurs</button>
                 </div>
+            </div>
+
+            <!-- Tableau pour Tous les logs (colonies générales) -->
+            <div id="tab-all" class="log-table-container active">
+                <table class="table table-striped">
+                    <thead>
+                        <tr><th>Utilisateur</th><th>Date</th><th>Action</th><th>Catégorie</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- Tableau pour Connexions (mêmes colonnes, mais seulement les connexions) -->
+            <div id="tab-login" class="log-table-container">
+                <table class="table table-striped">
+                    <thead><tr><th>Utilisateur</th><th>Date</th><th>Adresse IP</th><th>Statut</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- Tableau pour Historique  ADP (colonnes spécifiques) -->
+            <div id="tab-transactions" class="log-table-container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr><th>ID Transaction</th><th>Utilisateur</th><th>Date</th><th>Montant</th><th>Type</th><th>Statut</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- Tableau pour Historique VPL (colonnes spécifiques) -->
+            <div id="tab-transactionsvpl" class="log-table-container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr><th>ID Transaction</th><th>Utilisateur</th><th>Date</th><th>Montant</th><th>Type</th><th>Statut</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- Tableau pour Historique CARTE (colonnes spécifiques) -->
+            <div id="tab-transactionscarte" class="log-table-container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr><th>ID Transaction</th><th>Utilisateur</th><th>Date</th><th>Montant</th><th>Type</th><th>Statut</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- Tableau pour Validations (colonnes spécifiques) -->
+            <div id="tab-validations" class="log-table-container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr><th>Document</th><th>Validateur</th><th>Date validation</th><th>Commentaire</th><th>Statut</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- Tableau pour Erreurs -->
+            <div id="tab-errors" class="log-table-container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr><th>Utilisateur</th><th>Date</th><th>Message d'erreur</th><th>Stack trace (optionnel)</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -1325,4 +1319,5 @@
     <script src="~/js/users.js"></script>
     <script src="~/js/importVille.js"></script>
     <script src="~/js/operation.js"></script>
+    <script src="~/js/administration.js"></script>
 }

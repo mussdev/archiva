@@ -117,7 +117,7 @@ namespace MyApp.Namespace
                 .Include(o => o.IdOpeNavigation)
                 .Include(v => v.IdOpeNavigation.IdVilleNavigation)
                 .Include(s => s.DernierStatutVpl)
-                .Where(s => s.DernierStatutVpl.DescriptionStatut == "En attente" || s.DernierStatutVpl.DescriptionStatut == "Nouveau")
+                .Where(s => s.DernierStatutVpl.DescriptionStatut == "En attente" || s.DernierStatutVpl.DescriptionStatut == "Nouveau" || s.DernierStatutVpl.DescriptionStatut == "Réjeté")
                 .ToListAsync();
         }
 
@@ -687,6 +687,180 @@ namespace MyApp.Namespace
             }
 
             return RedirectToPage();
+        }
+
+        // Methode de validation des fichiers VPL sélectionnés
+        public async Task<IActionResult> OnPostValidateSelectedFilesVpl([FromForm] List<int> selectedIds)
+        {
+            try
+            {
+                // Vérifier si l'utilisateur est connecté
+                if (User?.Identity?.IsAuthenticated != true)
+                {
+                    TempData["ErrorMessage"] = "Vous devez être connecté pour effectuer cette action.";
+                    return RedirectToPage("/Login");
+                }
+
+                if (selectedIds == null || !selectedIds.Any())
+                    return new JsonResult(new { success = false, message = "Aucun fichier sélectionné." });
+
+                // Récupérer les VPL avec leur statut actuel
+                var vpls = await _gedContext.Vpls
+                    .Include(v => v.DernierStatutVpl)
+                    .Where(v => selectedIds.Contains(v.IdVpl))
+                    .ToListAsync();
+
+                if (!vpls.Any())
+                    return new JsonResult(new { success = false, message = "Aucun VPL trouvé avec les IDs fournis." });
+
+                // Déterminer l'ID du statut "Validé" (à adapter selon votre base)
+                // Hypothèse : le code statut pour "Validé" est "VALIDE"
+                var statutValide = await _gedContext.Statuts
+                    .FirstOrDefaultAsync(s => s.CodeStatut == "VALIDE" || s.DescriptionStatut == "Validé");
+
+                if (statutValide == null)
+                    return new JsonResult(new { success = false, message = "Statut 'Validé' introuvable dans la table Statut." });
+
+                // Récupérer l'ID de l'utilisateur connecté (ex: avec Identity)
+                int userId = GetCurrentUserId();
+                if (userId == 0)
+                    return new JsonResult(new { success = false, message = "Utilisateur non authentifié." });
+
+                int countUpdated = 0;
+                var validations = new List<Validationsfile>();
+
+                foreach (var vpl in vpls)
+                {
+                    // Vérifier si le VPL n'est déjà pas dans l'état "Validé"
+                    if (vpl.DernierStatutVplId == statutValide.IdStatut)
+                        continue; // déjà validé, on ignore
+
+                    // 1. Mettre à jour le statut de l'ADP
+                    vpl.DernierStatutVplId = statutValide.IdStatut;
+                    vpl.DernierStatutVpl = statutValide; // si vous voulez mettre à jour la navigation
+
+                    // 2. Préparer l'enregistrement dans Validationsfile
+                    var validation = new Validationsfile
+                    {
+                        IdStatut = statutValide.IdStatut,
+                        IdVpl = vpl.IdVpl,
+                        UserId = userId, // suppose que UserId est un int
+                        DateValidation = DateTime.Now,
+                        TypeAction = "VALIDATION",
+                        Commentaire = "Validation Automatique des fichiers Vpl en cours de validation depuis l'interface",
+                        CreatedAt = DateTime.Now
+                    };
+                    validations.Add(validation);
+                    countUpdated++;
+                }
+
+                if (countUpdated == 0)
+                    return new JsonResult(new { success = false, message = "Aucun VPL à valider (ils sont déjà dans l'état validé)." });
+
+                // Ajouter les historiques et sauvegarder
+                await _gedContext.Validationsfiles.AddRangeAsync(validations);
+                await _gedContext.SaveChangesAsync();
+
+                return new JsonResult(new
+                {
+                    success = true,
+                    message = $"{countUpdated} fichier(s) VPL validé(s) avec succès.",
+                    total = countUpdated
+                });
+            }
+            catch (Exception ex)
+            {
+                // Journaliser l'erreur (ex: ILogger)
+                Console.WriteLine($"Erreur validation : {ex.Message}");
+                return new JsonResult(new { success = false, message = $"Erreur technique : {ex.Message}" });
+            }
+        }
+
+        // Methode de rejet des fichiers VPL sélectionnés
+        public async Task<IActionResult> OnPostRejectSelectedFilesVpl([FromForm] List<int> selectedIds)
+        {
+            try
+            {
+                // Vérifier si l'utilisateur est connecté
+                if (User?.Identity?.IsAuthenticated != true)
+                {
+                    TempData["ErrorMessage"] = "Vous devez être connecté pour effectuer cette action.";
+                    return RedirectToPage("/Login");
+                }
+
+                if (selectedIds == null || !selectedIds.Any())
+                    return new JsonResult(new { success = false, message = "Aucun fichier sélectionné." });
+
+                // Récupérer les VPL avec leur statut actuel
+                var vpls = await _gedContext.Vpls
+                    .Include(v => v.DernierStatutVpl)
+                    .Where(v => selectedIds.Contains(v.IdVpl))
+                    .ToListAsync();
+
+                if (!vpls.Any())
+                    return new JsonResult(new { success = false, message = "Aucun VPL trouvé avec les IDs fournis." });
+
+                // Déterminer l'ID du statut "Validé" (à adapter selon votre base)
+                // Hypothèse : le code statut pour "Validé" est "VALIDE"
+                var statutValide = await _gedContext.Statuts
+                    .FirstOrDefaultAsync(s => s.CodeStatut == "REJET" || s.DescriptionStatut == "Réjeté");
+
+                if (statutValide == null)
+                    return new JsonResult(new { success = false, message = "Statut 'Réjeté' introuvable dans la table Statut." });
+
+                // Récupérer l'ID de l'utilisateur connecté (ex: avec Identity)
+                int userId = GetCurrentUserId();
+                if (userId == 0)
+                    return new JsonResult(new { success = false, message = "Utilisateur non authentifié." });
+
+                int countUpdated = 0;
+                var validations = new List<Validationsfile>();
+
+                foreach (var vpl in vpls)
+                {
+                    // Vérifier si le VPL n'est déjà pas dans l'état "Validé"
+                    if (vpl.DernierStatutVplId == statutValide.IdStatut)
+                        continue; // déjà validé, on ignore
+
+                    // 1. Mettre à jour le statut de l'ADP
+                    vpl.DernierStatutVplId = statutValide.IdStatut;
+                    vpl.DernierStatutVpl = statutValide; // si vous voulez mettre à jour la navigation
+
+                    // 2. Préparer l'enregistrement dans Validationsfile
+                    var validation = new Validationsfile
+                    {
+                        IdStatut = statutValide.IdStatut,
+                        IdVpl = vpl.IdVpl,
+                        UserId = userId, // suppose que UserId est un int
+                        DateValidation = DateTime.Now,
+                        TypeAction = "REJET",
+                        Commentaire = "Rejet Automatique des fichiers Vpl en cours de rejet depuis l'interface",
+                        CreatedAt = DateTime.Now
+                    };
+                    validations.Add(validation);
+                    countUpdated++;
+                }
+
+                if (countUpdated == 0)
+                    return new JsonResult(new { success = false, message = "Aucun VPL à rejetter (ils sont déjà dans l'état rejeté)." });
+
+                // Ajouter les historiques et sauvegarder
+                await _gedContext.Validationsfiles.AddRangeAsync(validations);
+                await _gedContext.SaveChangesAsync();
+
+                return new JsonResult(new
+                {
+                    success = true,
+                    message = $"{countUpdated} fichier(s) VPL rejeté(s) avec succès.",
+                    total = countUpdated
+                });
+            }
+            catch (Exception ex)
+            {
+                // Journaliser l'erreur (ex: ILogger)
+                Console.WriteLine($"Erreur validation : {ex.Message}");
+                return new JsonResult(new { success = false, message = $"Erreur technique : {ex.Message}" });
+            }
         }
     }
 }

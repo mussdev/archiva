@@ -1,0 +1,133 @@
+@page
+@model CartesListModel
+
+@{
+    Layout = null; // Pas de menu, pas de barre d'outils
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visualisation sécurisée</title>
+    <style>
+        body { margin: 0; background: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        @* canvas { box-shadow: 0 0 10px rgba(0,0,0,0.5); background: white; } *@
+        #controls { position: fixed; bottom: 10px; left: 0; right: 0; text-align: center; background: rgba(0,0,0,0.7); padding: 8px; z-index: 100; }
+        button { margin: 0 5px; padding: 6px 12px; cursor: pointer; }
+        /* Désactiver la sélection de texte et le clic droit */
+        body { user-select: none; -webkit-user-select: none; }
+        body.no-context-menu { -webkit-touch-callout: none; }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 90vw;
+            max-height: 85vh;
+            width: auto;
+            height: auto;
+        }
+
+        #controls span {
+            color: white;
+            font-weight: bold;
+            margin: 0 8px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script>
+        // Empêcher le clic droit (optionnel)
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // Désactiver Ctrl+S, Ctrl+P, etc.
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'p' || e.key === 'PrintScreen')) {
+                e.preventDefault();
+                alert("Téléchargement et impression désactivés.");
+                return false;
+            }
+        });
+    </script>
+</head>
+<body>
+    <canvas id="pdfCanvas"></canvas>
+
+    <div id="controls">
+        <button id="prev">◀ Page précédente</button>
+        <span id="pageInfo">Page 1 / 1</span>
+        <button id="next">Page suivante ▶</button>
+        <button id="zoomOut">🔍- Zoom arrière</button>
+        <span id="zoomPercent">100%</span>
+        <button id="zoomIn">🔍+ Zoom avant</button>
+        <button id="zoomReset">🔍 100%</button>
+    </div>
+
+    <script>
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        const pdfUrl = `?handler=PdfData&id=${id}`;
+
+        let pdfDoc = null;
+        let currentPage = 1;
+        let totalPages = 0;
+        let currentScale = 1.0;
+        const scaleStep = 0.1;
+        const minScale = 0.5;
+        const maxScale = 3.0;
+
+        const canvas = document.getElementById('pdfCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+
+        pdfjsLib.getDocument(pdfUrl).promise.then(function(doc) {
+            pdfDoc = doc;
+            totalPages = doc.numPages;
+            document.getElementById('pageInfo').innerText = `Page 1 / ${totalPages}`;
+            renderPage(currentPage);
+        }).catch(function(err) {
+            alert('Impossible de charger le PDF : ' + err.message);
+        });
+
+        function renderPage(num) {
+            pdfDoc.getPage(num).then(function(page) {
+                const viewport = page.getViewport({ scale: currentScale });
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                const renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+                page.render(renderContext);
+            });
+            document.getElementById('pageInfo').innerText = `Page ${num} / ${totalPages}`;
+            document.getElementById('zoomPercent').innerText = `${Math.round(currentScale * 100)}%`;
+        }
+
+        // Gestionnaires de boutons
+        document.getElementById('prev').addEventListener('click', () => { if (currentPage > 1) renderPage(--currentPage); });
+        document.getElementById('next').addEventListener('click', () => { if (currentPage < totalPages) renderPage(++currentPage); });
+        document.getElementById('zoomIn').addEventListener('click', () => { if (currentScale + scaleStep <= maxScale) { currentScale += scaleStep; renderPage(currentPage); } });
+        document.getElementById('zoomOut').addEventListener('click', () => { if (currentScale - scaleStep >= minScale) { currentScale -= scaleStep; renderPage(currentPage); } });
+        document.getElementById('zoomReset').addEventListener('click', () => { currentScale = 1.0; renderPage(currentPage); });
+
+        // Zoom avec molette (touche Ctrl enfoncée)
+        canvas.addEventListener('wheel', function(e) {
+            if (e.ctrlKey) {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? -scaleStep : scaleStep;
+                let newScale = currentScale + delta;
+                newScale = Math.min(maxScale, Math.max(minScale, newScale));
+                if (newScale !== currentScale) {
+                    currentScale = newScale;
+                    renderPage(currentPage);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

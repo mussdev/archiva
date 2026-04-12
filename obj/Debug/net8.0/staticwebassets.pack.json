@@ -73,6 +73,10 @@
       "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\CS_14076-05_FR_05.pdf"
     },
     {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\Quittance de paiement.pdf",
+      "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\Quittance de paiement.pdf"
+    },
+    {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\CARTES\\NewCARTES\\Quittancedepaiement.pdf",
       "PackagePath": "staticwebassets\\CARTES\\NewCARTES\\Quittancedepaiement.pdf"
     },

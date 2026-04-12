@@ -291,149 +291,6 @@ document.addEventListener("DOMContentLoaded", function () {
         // Ici vous pouvez ajouter votre logique (suppression groupée, export, etc.)
     }
 
-    /* === GESTION DU MODAL DE MODIFICATION Carte === */
-    /* const carteModal = document.getElementById('carteModal');
-    if (carteModal) {
-        carteModal.addEventListener('show.bs.modal', function (event) {
-            const button = event.relatedTarget;
-
-            // Réinitialiser le flag de suppression
-            document.getElementById('deleteFileFlag').value = 'false';
-            
-            // Extraire TOUTES les données des attributs data-*
-            const carteId = button.getAttribute('data-carte-id');
-            const legendeValue = button.getAttribute('data-legende');
-            const tube = button.getAttribute('data-tube');
-            const datecarte = button.getAttribute('data-datecarte');
-            const ville = button.getAttribute('data-ville');
-            const operation = button.getAttribute('data-operation');
-            const originalite = button.getAttribute('data-originalite'); // Ajouté
-            const echelle = button.getAttribute('data-echelle');
-            const cote = button.getAttribute('data-cote');
-            const operationId = button.getAttribute('data-idoperation');
-            const idstatut = button.getAttribute('data-idstatut');
-            const fichier = button.getAttribute('data-fichier');
-
-            // Convertir la date du format dd/MM/yyyy vers yyyy-MM-dd pour l'input date
-            let htmlDate = '';
-            if (datecarte) {
-                const parts = datecarte.split('/');
-                if (parts.length === 3) {
-                    htmlDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // yyyy-MM-dd
-                }
-            }
-            
-            function setFieldValue(fieldId, value) {
-                const field = document.getElementById(fieldId);
-                if (!field) {
-                    console.warn(`[carte.js] Élément manquant (ou non rendu) : #${fieldId}`);
-                    return;
-                }
-                field.value = value;
-            }
-
-            // Mettre à jour TOUS les champs du formulaire avec protection d'élément manquant
-            setFieldValue('carteId', carteId || '');
-            setFieldValue('legende', legendeValue || '');
-            setFieldValue('tube', tube || '');
-            setFieldValue('dateCarte', htmlDate);
-            setFieldValue('ville', ville || '');
-            setFieldValue('operation', operation || '');
-            setFieldValue('originalite', originalite || '');
-            setFieldValue('echelle', echelle || '');
-            setFieldValue('cote', cote || '');
-            setFieldValue('code', operationId || '');
-            setFieldValue('statutId', idstatut || '');
-
-            // Gestion spéciale du statut avec conversion de type
-            if (idstatut) {
-                const statutSelect = document.getElementById('statutId');
-                if (statutSelect) {
-                    // Convertir idstatut en string pour comparaison correcte
-                    const idstatutStr = String(idstatut);
-                    const optionStatut = Array.from(statutSelect.options).find(o => String(o.value) === idstatutStr);
-                    if (optionStatut) {
-                        statutSelect.value = idstatutStr;
-                        console.debug('[carte.js] Statut sélectionné:', idstatutStr);
-                    } else {
-                        console.warn('[carte.js] statut non trouvé dans select:', idstatut, 'options disponibles:', Array.from(statutSelect.options).map(o => o.value));
-                    }
-                }
-            }
-
-            const codeSelect = document.getElementById('code');
-            if (codeSelect) {
-                let found = false;
-                
-                // 1. Essayer avec l'ID de l'opération (data-idoperation)
-                if (operationId) {
-                    codeSelect.value = operationId;
-                    if (codeSelect.value) {
-                        found = true;
-                    }
-                }
-                
-                // 2. Si pas trouvé, essayer avec la description (data-operation)
-                if (!found && operation) {
-                    const matchingOption = Array.from(codeSelect.options).find(o => 
-                        (o.dataset.operation || '').trim() === operation.trim() ||
-                        (o.textContent || '').trim().startsWith(operation.trim())
-                    );
-                    if (matchingOption) {
-                        codeSelect.value = matchingOption.value;
-                        found = true;
-                    }
-                }
-
-                // 3. Si toujours pas trouvé, si option active / default disponible
-                if (!found) {
-                    const firstOption = Array.from(codeSelect.options).find(o => o.value && o.value !== '');
-                    if (firstOption) {
-                        codeSelect.value = firstOption.value;
-                        found = true;
-                    }
-                }
-
-                if (found) {
-                    syncOperationAndVilleFromCode(codeSelect);
-                }
-
-                console.debug('[carte.js] codeSelect', {operationId, operation, codeSelectValue: codeSelect.value, found});
-            }
-
-            if (idstatut) {
-                const statutSelect = document.getElementById('statutId');
-                if (statutSelect) {
-                    const optionStatut = Array.from(statutSelect.options).find(o => o.value === idstatut);
-                    if (optionStatut) {
-                        statutSelect.value = idstatut;
-                    } else {
-                        console.warn('[carte.js] statut non trouvé dans select:', idstatut);
-                    }
-                }
-            }
-
-            setFieldValue('statutId', idstatut || '');
-            
-            // Mettre à jour le nom du fichier actuel et gérer le bouton de suppression
-            const deleteFileBtn = document.getElementById('deleteCurrentFile');
-            const currentFileElement = document.getElementById('currentFile');
-            
-            if(fichier && fichier.trim() !== ''){
-                let filename = fichier.split('\\').pop().split('/').pop();
-                currentFileElement.textContent = `Fichier actuel : ${filename}`;
-                deleteFileBtn.setAttribute('data-current-filename', filename);
-                deleteFileBtn.style.display = 'block';
-            } else {
-                currentFileElement.textContent = 'Aucun fichier associé';
-                deleteFileBtn.style.display = 'none';
-            }
-            
-            // Mettre à jour le titre de la modale
-            document.getElementById('carteModalLabel').textContent = `Modifier ${legendeValue || 'la carte'}`;
-        });
-    } */
-
     carteModal.addEventListener('show.bs.modal', function (event) {
     const button = event.relatedTarget;
     document.getElementById('deleteFileFlag').value = 'false';
@@ -718,4 +575,113 @@ document.addEventListener("DOMContentLoaded", function () {
             form.submit();
         }
     });
+
+    // === VALIDATION DES FICHIERS ADP SÉLECTIONNÉS ===
+    const validateSelectedBtn = document.getElementById('validateSelected');
+    if (validateSelectedBtn) {
+        validateSelectedBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+
+            const selectedIds = getSelectedCartesIds(); // fonction existante qui retourne un tableau d'IDs
+            console.log('IDs à valider :', selectedIds);
+
+            if (selectedIds.length === 0) {
+                alert('Veuillez sélectionner au moins un fichier à valider.');
+                return;
+            }
+
+            if (!confirm(`Valider définitivement ${selectedIds.length} fichier(s) VPL ?`)) {
+                return;
+            }
+
+            // Désactiver le bouton pendant l'opération
+            const originalText = validateSelectedBtn.innerText;
+            validateSelectedBtn.innerText = 'Validation en cours...';
+            validateSelectedBtn.disabled = true;
+
+            try {
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                const formData = new URLSearchParams();
+                selectedIds.forEach(id => formData.append('selectedIds', id));
+                formData.append('__RequestVerificationToken', token);
+
+                const response = await fetch('?handler=ValidateSelectedFilesCarte', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData.toString()
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    // Recharger la page pour voir les nouveaux statuts
+                    location.reload();
+                } else {
+                    alert('Erreur : ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur réseau :', error);
+                alert('Une erreur est survenue. Vérifiez votre connexion.');
+            } finally {
+                validateSelectedBtn.innerText = originalText;
+                validateSelectedBtn.disabled = false;
+            }
+        });
+    }
+
+    // === REJECT DES FICHIERS ADP SÉLECTIONNÉS ===
+    const rejectSelectedBtn = document.getElementById('rejectSelected');
+    if (rejectSelectedBtn) {
+        rejectSelectedBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+
+            const selectedIds = getSelectedCartesIds(); // fonction existante qui retourne un tableau d'IDs
+            console.log('IDs à rejetter :', selectedIds);
+
+            if (selectedIds.length === 0) {
+                alert('Veuillez sélectionner au moins un fichier à rejetter.');
+                return;
+            }
+
+            if (!confirm(`Rejeter définitivement ${selectedIds.length} fichier(s) VPL ?`)) {
+                return;
+            }
+
+            // Désactiver le bouton pendant l'opération
+            const originalText = rejectSelectedBtn.innerText;
+            rejectSelectedBtn.innerText = 'Rejet en cours...';
+            rejectSelectedBtn.disabled = true;
+
+            try {
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                const formData = new URLSearchParams();
+                selectedIds.forEach(id => formData.append('selectedIds', id));
+                formData.append('__RequestVerificationToken', token);
+
+                const response = await fetch('?handler=RejectSelectedFilesCarte', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData.toString()
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    // Recharger la page pour voir les nouveaux statuts
+                    location.reload();
+                } else {
+                    alert('Erreur : ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur réseau :', error);
+                alert('Une erreur est survenue. Vérifiez votre connexion.');
+            } finally {
+                rejectSelectedBtn.innerText = originalText;
+                rejectSelectedBtn.disabled = false;
+            }
+        });
+    }
+
 });

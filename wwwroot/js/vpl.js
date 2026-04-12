@@ -622,6 +622,114 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // === VALIDATION DES FICHIERS ADP SÉLECTIONNÉS ===
+    const validateSelectedBtn = document.getElementById('validateSelected');
+    if (validateSelectedBtn) {
+        validateSelectedBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+
+            const selectedIds = getSelectedVplIds(); // fonction existante qui retourne un tableau d'IDs
+            console.log('IDs à valider :', selectedIds);
+
+            if (selectedIds.length === 0) {
+                alert('Veuillez sélectionner au moins un fichier à valider.');
+                return;
+            }
+
+            if (!confirm(`Valider définitivement ${selectedIds.length} fichier(s) VPL ?`)) {
+                return;
+            }
+
+            // Désactiver le bouton pendant l'opération
+            const originalText = validateSelectedBtn.innerText;
+            validateSelectedBtn.innerText = 'Validation en cours...';
+            validateSelectedBtn.disabled = true;
+
+            try {
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                const formData = new URLSearchParams();
+                selectedIds.forEach(id => formData.append('selectedIds', id));
+                formData.append('__RequestVerificationToken', token);
+
+                const response = await fetch('?handler=ValidateSelectedFilesVpl', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData.toString()
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    // Recharger la page pour voir les nouveaux statuts
+                    location.reload();
+                } else {
+                    alert('Erreur : ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur réseau :', error);
+                alert('Une erreur est survenue. Vérifiez votre connexion.');
+            } finally {
+                validateSelectedBtn.innerText = originalText;
+                validateSelectedBtn.disabled = false;
+            }
+        });
+    }
+
+    // === REJECT DES FICHIERS ADP SÉLECTIONNÉS ===
+    const rejectSelectedBtn = document.getElementById('rejectSelected');
+    if (rejectSelectedBtn) {
+        rejectSelectedBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+
+            const selectedIds = getSelectedVplIds(); // fonction existante qui retourne un tableau d'IDs
+            console.log('IDs à rejetter :', selectedIds);
+
+            if (selectedIds.length === 0) {
+                alert('Veuillez sélectionner au moins un fichier à rejetter.');
+                return;
+            }
+
+            if (!confirm(`Rejeter définitivement ${selectedIds.length} fichier(s) VPL ?`)) {
+                return;
+            }
+
+            // Désactiver le bouton pendant l'opération
+            const originalText = rejectSelectedBtn.innerText;
+            rejectSelectedBtn.innerText = 'Rejet en cours...';
+            rejectSelectedBtn.disabled = true;
+
+            try {
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                const formData = new URLSearchParams();
+                selectedIds.forEach(id => formData.append('selectedIds', id));
+                formData.append('__RequestVerificationToken', token);
+
+                const response = await fetch('?handler=RejectSelectedFilesVpl', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData.toString()
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    // Recharger la page pour voir les nouveaux statuts
+                    location.reload();
+                } else {
+                    alert('Erreur : ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur réseau :', error);
+                alert('Une erreur est survenue. Vérifiez votre connexion.');
+            } finally {
+                rejectSelectedBtn.innerText = originalText;
+                rejectSelectedBtn.disabled = false;
+            }
+        });
+    }
+
 });
 
 

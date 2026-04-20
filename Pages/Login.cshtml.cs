@@ -46,40 +46,90 @@ namespace anahged.Pages
 
         public async Task<IActionResult> OnPost()
         {
-            if (Email == null)
+            if (string.IsNullOrWhiteSpace(Email))
             {
                 ModelState.AddModelError("", "Nom d'utilisateur est obligatoire");
                 return Page();
             }
 
-            bool result = _connexionService.Authentifier(Email, Pwd); // _connexionService.Authentifier(Email, Pwd);
-            if (result)
+            bool result = _connexionService.Authentifier(Email, Pwd);
+
+            // 🔴 CAS : CONNEXION ÉCHOUÉE
+            if (!result)
             {
-                var utilisateur = _gedContext.Users.FirstOrDefault(u => u.Email == Email);
-                var initiales = _connexionService.GetUserInitiales(utilisateur!);
-
-                // Récuperer le role de l'utilisateur
-                var role = _gedContext.Groupes.FirstOrDefault(g => g.GroupeId == utilisateur!.GroupeId)?.NomGroupe;
-
-                // Stocker les initiales dans une session ou un cookie si nécessaire 'Claim'
-                var claims = new List<Claim>
+                var userFail = _gedContext.Users.FirstOrDefault(u => u.Email == Email);
+                if (userFail != null)
                 {
-                    new Claim(ClaimTypes.Name, Email),
-                    new Claim("initiales", initiales), // Ajouter les initiales en tant que revendication personnalisée
-                    new Claim(ClaimTypes.Role, role ), // Ajouter le rôle de l'utilisateur
-                    new Claim("UserId", utilisateur!.UserId.ToString())
-                };
-                
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    _gedContext.Userconnexionlogs.Add(new Userconnexionlog
+                    {
+                        UserId = userFail.UserId,
+                        DateEvenement = DateTime.Now,
+                        AdresseIp = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                        TypeEvenement = "FAIL"
+                    });
 
-                return Redirect("/TableauDeBord");
-            }
-            else
-            {
+                    _gedContext.SaveChanges();
+                }
+
                 ModelState.AddModelError("", "Nom d'utilisateur ou mot de passe incorrect");
-                return Page(); // Return a value in the else block
+                return Page();
             }
+
+            // ✅ CAS : CONNEXION RÉUSSIE
+            var utilisateur = _gedContext.Users.First(u => u.Email == Email);
+            var initiales = _connexionService.GetUserInitiales(utilisateur);
+
+            var role = _gedContext.Groupes
+                .FirstOrDefault(g => g.GroupeId == utilisateur.GroupeId)?.NomGroupe ?? "";
+
+            // 🔐 Claims
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, Email),
+                new Claim("initiales", initiales),
+                new Claim(ClaimTypes.Role, role),
+                new Claim("UserId", utilisateur.UserId.ToString())
+            };
+
+            var claimsIdentity = new ClaimsIdentity(
+                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity));
+
+            // ✅ CRÉATION SESSION
+            var sessionToken = Guid.NewGuid().ToString("N");
+
+            _gedContext.Usersessions.Add(new Usersession
+            {
+                UserId = utilisateur.UserId,
+                SessionToken = Guid.Parse(sessionToken),
+                DateConnexion = DateTime.Now,
+                AdresseIp = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                IsActive = true
+            });
+
+            // ✅ LOG LOGIN
+            _gedContext.Userconnexionlogs.Add(new Userconnexionlog
+            {
+                UserId = utilisateur.UserId,
+                DateEvenement = DateTime.Now,
+                AdresseIp = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                TypeEvenement = "LOGIN"
+            });
+
+            _gedContext.SaveChanges();
+
+            // 🍪 Cookie Session
+            Response.Cookies.Append("SESSION_ID", sessionToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            });
+
+            return Redirect("/TableauDeBord");   
         }
     }
 }

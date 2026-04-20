@@ -35,6 +35,10 @@ public partial class GedContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<Userconnexionlog> Userconnexionlogs { get; set; }
+
+    public virtual DbSet<Usersession> Usersessions { get; set; }
+
     public virtual DbSet<Userstatut> Userstatuts { get; set; }
 
     public virtual DbSet<Validationsfile> Validationsfiles { get; set; }
@@ -43,7 +47,7 @@ public partial class GedContext : DbContext
 
     public virtual DbSet<Vpl> Vpls { get; set; }
 
-   /*  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+ /*    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseMySql("server=127.0.0.1;database=bdsicogi;user=root", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.2.0-mysql"));
  */
@@ -422,6 +426,51 @@ public partial class GedContext : DbContext
             entity.Property(e => e.Pwd)
                 .HasMaxLength(100)
                 .HasColumnName("pwd");
+        });
+
+        modelBuilder.Entity<Userconnexionlog>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("userconnexionlogs")
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => new { e.UserId, e.DateEvenement }, "idx_user_log_date");
+
+            entity.Property(e => e.AdresseIp)
+                .HasMaxLength(45)
+                .HasColumnName("AdresseIP");
+            entity.Property(e => e.DateEvenement).HasColumnType("datetime");
+            entity.Property(e => e.TypeEvenement).HasColumnType("enum('LOGIN','LOGOUT','FAIL','TIMEOUT')");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Userconnexionlogs)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("fk_userlogs_user");
+        });
+
+        modelBuilder.Entity<Usersession>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("usersessions")
+                .UseCollation("utf8mb4_unicode_ci");
+
+            entity.HasIndex(e => new { e.UserId, e.IsActive }, "idx_user_session_active");
+
+            entity.Property(e => e.AdresseIp)
+                .HasMaxLength(45)
+                .HasColumnName("AdresseIP");
+            entity.Property(e => e.DateConnexion).HasColumnType("datetime");
+            entity.Property(e => e.DateDeconnexion).HasColumnType("datetime");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Usersessions)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("fk_usersessions_user");
         });
 
         modelBuilder.Entity<Userstatut>(entity =>

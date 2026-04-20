@@ -289,6 +289,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\projets_apps\\archiva\\wwwroot\\js\\administration.js",
+      "PackagePath": "staticwebassets\\js\\administration.js"
+    },
+    {
       "Id": "C:\\projets_apps\\archiva\\wwwroot\\js\\adp.js",
       "PackagePath": "staticwebassets\\js\\adp.js"
     },

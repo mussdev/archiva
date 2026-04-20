@@ -5195,7 +5195,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 09 Apr 2026 18:01:33 GMT"
+          "Value": "Sun, 19 Apr 2026 14:29:29 GMT"
         }
       ],
       "EndpointProperties": [
@@ -5240,7 +5240,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 09 Apr 2026 18:01:33 GMT"
+          "Value": "Sun, 19 Apr 2026 14:29:29 GMT"
         }
       ],
       "EndpointProperties": [
@@ -5903,6 +5903,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM="
+        }
+      ]
+    },
+    {
+      "Route": "js/administration.b38vvq48u0.js",
+      "AssetFile": "js/administration.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "34976"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"t6HxT38WVgs6c0aOSvJblh3+LQHNo1DsZ6h1X007SDw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 19 Apr 2026 13:40:15 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "b38vvq48u0"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-t6HxT38WVgs6c0aOSvJblh3+LQHNo1DsZ6h1X007SDw="
+        },
+        {
+          "Name": "label",
+          "Value": "js/administration.js"
+        }
+      ]
+    },
+    {
+      "Route": "js/administration.js",
+      "AssetFile": "js/administration.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "34976"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"t6HxT38WVgs6c0aOSvJblh3+LQHNo1DsZ6h1X007SDw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 19 Apr 2026 13:40:15 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-t6HxT38WVgs6c0aOSvJblh3+LQHNo1DsZ6h1X007SDw="
         }
       ]
     },

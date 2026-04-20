@@ -20,6 +20,16 @@ namespace anahged.Pages
         public IList<Models.Statut> StatutList { get; set; } = default!;
         public IList<Models.Operation> OperationList { get; set; } = default!;
         public IList<Models.Ville> VilleList { get; set; } = default!;
+        public IList<Models.Validationsfile> ValidationList { get; set; } = default!;
+        public IList<Models.HistoriqueAdp> HistoriqueAdpList { get; set; } = default!;
+        public IList<Models.HistoriqueVpl> HistoriqueVplList { get; set; } = default!;
+        public IList<Models.HistoriqueCarte> HistoriqueCarteList { get; set; } = default!;
+        public IList<Models.Usersession> UserSessionList { get; set; } = default!;
+        public IList<Models.Userconnexionlog> UserConnexionLogList { get; set; } = default!;
+      /*   public int ValidationPageIndex { get; set; } = 1;
+        public int ValidationPageSize { get; set; } = 10;
+        public int ValidationTotalPages { get; set; }
+        public int ValidationTotalCount { get; set; } */
 
         [BindProperty]
         public IFormFile? ExcelFile { get; set; }
@@ -52,6 +62,19 @@ namespace anahged.Pages
             StatutList = _administrationService.GetAllStatuts().ToList();
             OperationList = _administrationService.GetOperationList().ToList();
             VilleList = _administrationService.GetAllVilles().ToList();
+
+            // Récupérer la liste des validations
+            ValidationList = _administrationService.GetAllValidations().ToList();
+            // Récupérer la liste des historiques de traitement des fichiers Adp
+            HistoriqueAdpList = _administrationService.GetAllHistoriqueAdp().ToList();
+            // Récupérer la liste des historiques de traitement des fichiers Vpl
+            HistoriqueVplList = _administrationService.GetAllHistoriqueVpl().ToList();
+            // Récupérer la liste des historiques de traitement des fichiers Carte
+            HistoriqueCarteList = _administrationService.GetAllHistoriqueCarte().ToList();
+            // Récupérer la liste des sessions utilisateurs
+            UserSessionList = _administrationService.GetAllUserSessions().ToList();
+            // Récupérer la liste des logs de connexion des utilisateurs
+            UserConnexionLogList = _administrationService.GetAllUserConnexionLogs().ToList();
         }
 
         // Handler pour la modification d'utilisateur

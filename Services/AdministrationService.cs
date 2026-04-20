@@ -47,6 +47,66 @@ namespace anahged.Services
             return _gedContext.Operations.ToList();
         }
 
+        // Liste des transactions de validations de fichiers
+        public IEnumerable<Validationsfile> GetAllValidations()
+        {
+            return _gedContext.Validationsfiles
+                .Include(val => val.UserNavigation)
+                .Include(a => a.AdpNavigation)
+                .Include(vp => vp.VplNavigation)
+                .Include(c => c.CarteNavigation)
+                .OrderByDescending(val => val.DateValidation)
+                .ToList();
+        }
+
+        // Methode pour récupérer la liste des historiques de traitement des fichiers Adp
+        public IEnumerable<HistoriqueAdp> GetAllHistoriqueAdp()
+        {
+            return _gedContext.HistoriqueAdps
+                              .Include(h => h.User)
+                              .Include(a => a.IdAdpNavigation)
+                              .OrderByDescending(h => h.DateHisto)
+                              .ToList();
+        }
+
+        // Methode pour récupérer la liste des historiques de traitement des fichiers Vpl
+        public IEnumerable<HistoriqueVpl> GetAllHistoriqueVpl()
+        {
+            return _gedContext.HistoriqueVpls
+                              .Include(h => h.User)
+                              .Include(v => v.IdVplNavigation)
+                              .OrderByDescending(h => h.DateHisto)
+                              .ToList();
+        }
+
+        // Methode pour récupérer la liste des transactions des fichiers Carte
+        public IEnumerable<HistoriqueCarte> GetAllHistoriqueCarte()
+        {
+            return _gedContext.HistoriqueCartes
+                              .Include(c => c.User)
+                              .Include(a => a.IdCarteNavigation)
+                              .OrderByDescending(c => c.DateHisto)
+                              .ToList();
+        }
+
+        // Methode pour récupérer la liste des sessions utilisateurs
+        public IEnumerable<Usersession> GetAllUserSessions()
+        {
+            return _gedContext.Usersessions
+                              .Include(s => s.User)
+                              .OrderByDescending(s => s.DateConnexion)
+                              .ToList();
+        }
+
+        // Methode pour récupérer la liste des logs de connexion des utilisateurs
+        public IEnumerable<Userconnexionlog> GetAllUserConnexionLogs()
+        {
+            return _gedContext.Userconnexionlogs
+                              .Include(l => l.User)
+                              .OrderByDescending(l => l.DateEvenement)
+                              .ToList();
+        }
+        
         // Methode pour récuperer un utilisateur par son ID
         public async Task<User> GetUserByIdAsync(int userId)
         {
@@ -565,20 +625,4 @@ namespace anahged.Services
 
     }
 
-    // Classes pour le résultat de suppression
-    /* public class DeleteResult
-    {
-        public bool IsSuccess { get; set; }
-        public int SuccessCount { get; set; }
-        public List<int> DeletedIds { get; set; } = new List<int>();
-        public List<FailedOperation> FailedOperations { get; set; } = new List<FailedOperation>();
-        public string ErrorMessage { get; set; }
-    } */
-
-    /* public class FailedOperation
-    {
-        public int Id { get; set; }
-        public string Code { get; set; }
-        public string Reason { get; set; }
-    } */
 }

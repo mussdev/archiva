@@ -1230,86 +1230,304 @@
             </div>
             
             <!-- Journalisation -->
-            
-            <div class="mb-3">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-outline-primary active" data-tab="all">Tous</button>
-                    <button type="button" class="btn btn-outline-primary" data-tab="login">Connexions</button>
-                    <button type="button" class="btn btn-outline-primary" data-tab="transactions">Historique ADP</button>
-                    <button type="button" class="btn btn-outline-primary" data-tab="operations">Historique VPL</button>
-                    <button type="button" class="btn btn-outline-primary" data-tab="villes">Historique CARTE</button>
-                    <button type="button" class="btn btn-outline-primary" data-tab="validations">Historique validations</button>
-                    <button type="button" class="btn btn-outline-primary" data-tab="errors">Erreurs</button>
+            <div id="logs" class="admin-section">
+                <div class="mb-3">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-primary active" data-tab="all" data-log-tab="all">Connexions logs</button>
+                        <button type="button" class="btn btn-outline-primary" data-tab="login" data-log-tab="login">Connexions</button>
+                        <button type="button" class="btn btn-outline-primary" data-tab="transactions" data-log-tab="transactions">Historique ADP</button>
+                        <button type="button" class="btn btn-outline-primary" data-tab="operations" data-log-tab="operations">Historique VPL</button>
+                        <button type="button" class="btn btn-outline-primary" data-tab="villes" data-log-tab="villes">Historique CARTE</button>
+                        <button type="button" class="btn btn-outline-primary" data-tab="validations" data-log-tab="validations">Historique validations</button>
+                        <button type="button" class="btn btn-outline-primary" data-tab="errors" data-log-tab="errors">Erreurs</button>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Tableau pour Tous les logs (colonies générales) -->
-            <div id="tab-all" class="log-table-container active">
-                <table class="table table-striped">
-                    <thead>
-                        <tr><th>Utilisateur</th><th>Date</th><th>Action</th><th>Catégorie</th></tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+                <!-- Tableau pour Tous les logs de connexion (colonies générales) -->
+                <div id="tab-all" class="log-table-container active" data-log-tab="all">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <label for="allPageSizeSelect" class="mb-0 text-muted small">Afficher</label>
+                        <select id="allPageSizeSelect" class="form-select form-select-sm" style="width: auto; min-width: 80px; position: relative; z-index: 11;">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
 
-            <!-- Tableau pour Connexions (mêmes colonnes, mais seulement les connexions) -->
-            <div id="tab-login" class="log-table-container">
-                <table class="table table-striped">
-                    <thead><tr><th>Utilisateur</th><th>Date</th><th>Adresse IP</th><th>Statut</th></tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+                    <div class="table-responsive" style="max-height:40vh; overflow-y:auto; overflow-x:auto;">
+                        <table class="table table-striped mb-0">
+                            <thead>
+                                <tr><th>Utilisateur</th><th>Date</th><th>Action</th><th>Adresse IP</th></tr>
+                            </thead>
+                            <tbody id="allTableBody">
+                                @{ int allCounter = 1; }
+                                @foreach(var log in Model.UserConnexionLogList)
+                                {
+                                    <tr>
+                                        <td>@log.User?.Email</td>
+                                        <td>@log.DateEvenement</td>
+                                        <td>@log.TypeEvenement</td>
+                                        <td>@log.AdresseIp</td>
+                                    </tr>
+                                    allCounter++;
+                                }
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-between align-items-center mt-5">
+                            <div class="text-muted small">
+                                <span id="allPaginationInfo">Page 1 sur 1</span>
+                            </div>
+                            <nav aria-label="Pagination tableau">
+                                <ul class="pagination pagination-sm mb-0" id="allPaginationContainer"></ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
 
-            <!-- Tableau pour Historique  ADP (colonnes spécifiques) -->
-            <div id="tab-transactions" class="log-table-container">
-                <table class="table table-striped">
-                    <thead>
-                        <tr><th>ID Transaction</th><th>Utilisateur</th><th>Date</th><th>Montant</th><th>Type</th><th>Statut</th></tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+                <!-- Tableau pour les sessions de connexion (mêmes colonnes, mais seulement les connexions) -->
+                <div id="tab-login" class="log-table-container" data-log-tab="login" hidden>
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <label for="loginPageSizeSelect" class="mb-0 text-muted small">Afficher</label>
+                        <select id="loginPageSizeSelect" class="form-select form-select-sm" style="width: auto; min-width: 80px; position: relative; z-index: 11;">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
 
-            <!-- Tableau pour Historique VPL (colonnes spécifiques) -->
-            <div id="tab-transactionsvpl" class="log-table-container">
-                <table class="table table-striped">
-                    <thead>
-                        <tr><th>ID Transaction</th><th>Utilisateur</th><th>Date</th><th>Montant</th><th>Type</th><th>Statut</th></tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+                    <div class="table-responsive" style="max-height:40vh; overflow-y:auto; overflow-x:auto;">
+                        <table class="table table-striped mb-0">
+                            <thead><tr><th>Utilisateur</th><th>Adresse IP</th><th>Date connexion</th><th>Date déconnexion</th><th>Statut de con.</th></tr>
+                            </thead>
+                            <tbody id="loginTableBody">
+                                @{ int loginCounter = 1; }
+                                @foreach(var session in Model.UserSessionList)
+                                {
+                                    <tr>
+                                        <td>@session.User?.Email</td>
+                                        <td>@session.AdresseIp</td>
+                                        <td>@session.DateConnexion</td>
+                                        <td>@session.DateDeconnexion</td>
+                                        <td>
+                                            @if (session.IsActive == true)
+                                            {
+                                                <span class="badge bg-success">Active</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">Terminée</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                    loginCounter++;
+                                }
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-between align-items-center mt-5">
+                            <div class="text-muted small">
+                                <span id="loginPaginationInfo">Page 1 sur 1</span>
+                            </div>
+                            <nav aria-label="Pagination tableau">
+                                <ul class="pagination pagination-sm mb-0" id="loginPaginationContainer"></ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                </div>
 
-            <!-- Tableau pour Historique CARTE (colonnes spécifiques) -->
-            <div id="tab-transactionscarte" class="log-table-container">
-                <table class="table table-striped">
-                    <thead>
-                        <tr><th>ID Transaction</th><th>Utilisateur</th><th>Date</th><th>Montant</th><th>Type</th><th>Statut</th></tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+                <!-- Tableau pour Historique  ADP (colonnes spécifiques) -->
+                <div id="tab-transactions" class="log-table-container" data-log-tab="transactions" hidden>
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <label for="transactionPageSizeSelect" class="mb-0 text-muted small">Afficher</label>
+                        <select id="transactionPageSizeSelect" class="form-select form-select-sm" style="width: auto; min-width: 80px; position: relative; z-index: 11;">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
 
-            <!-- Tableau pour Validations (colonnes spécifiques) -->
-            <div id="tab-validations" class="log-table-container">
-                <table class="table table-striped">
-                    <thead>
-                        <tr><th>Document</th><th>Validateur</th><th>Date validation</th><th>Commentaire</th><th>Statut</th></tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+                    <div class="table-responsive" style="max-height:40vh; overflow-y:auto; overflow-x:auto;">
+                        <table class="table table-striped mb-0">
+                            <thead>
+                                <tr><th>N°</th><th>Utilisateur</th><th>Date</th><th>Document</th><th>Type</th><th>Statut</th></tr>
+                            </thead>
+                            <tbody id="transactionTableBody">
+                                @{ int transactionCounter = 1; }
+                                @foreach(var histAdp in Model.HistoriqueAdpList)
+                                {
+                                    <tr>
+                                        <td>@transactionCounter</td>
+                                        <td>@histAdp.User?.Email</td>
+                                        <td>@histAdp.DateHisto</td>
+                                        <td>@histAdp.IdAdpNavigation?.Document</td>
+                                        <td>@histAdp.TypeAction</td>
+                                        <td>@histAdp.IdAdpNavigation?.DernierStatutAdp?.DescriptionStatut</td>
+                                    </tr>
+                                    transactionCounter++;
+                                }
+                            </tbody>
+                        </table>
+                        <!-- Pagination pour les transactions -->
+                        <div class="d-flex justify-content-between align-items-center mt-5">
+                            <div class="text-muted small">
+                                <span id="transactionPaginationInfo">Page 1 sur 1</span>
+                            </div>
+                            <nav aria-label="Pagination tableau">
+                                <ul class="pagination pagination-sm mb-0" id="transactionPaginationContainer"></ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
 
-            <!-- Tableau pour Erreurs -->
-            <div id="tab-errors" class="log-table-container">
-                <table class="table table-striped">
-                    <thead>
-                        <tr><th>Utilisateur</th><th>Date</th><th>Message d'erreur</th><th>Stack trace (optionnel)</th></tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                <!-- Tableau pour Historique VPL (colonnes spécifiques) -->
+                <div id="tab-operations" class="log-table-container" data-log-tab="operations" hidden>
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <label for="operationPageSizeSelect" class="mb-0 text-muted small">Afficher</label>
+                        <select id="operationPageSizeSelect" class="form-select form-select-sm" style="width: auto; min-width: 80px; position: relative; z-index: 11;">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+
+                    <div class="table-responsive" style="max-height:40vh; overflow-y:auto; overflow-x:auto;">
+                        <table class="table table-striped mb-0">
+                            <thead>
+                                <tr><th>N°</th><th>Utilisateur</th><th>Date</th><th>Document</th><th>Type action</th><th>Statut</th></tr>
+                            </thead>
+                            <tbody id="operationTableBody">
+                                @{ int operationCounter = 1; }
+                                @foreach(var histVpl in Model.HistoriqueVplList)
+                                {
+                                    <tr>
+                                        <td>@operationCounter</td>
+                                        <td>@histVpl.User?.Email</td>
+                                        <td>@histVpl.DateHisto</td>
+                                        <td>@histVpl.IdVplNavigation?.Document</td>
+                                        <td>@histVpl.TypeAction</td>
+                                        <td>@histVpl.IdVplNavigation?.DernierStatutVpl?.DescriptionStatut</td>
+                                    </tr>
+                                    operationCounter++;
+                                }
+                            </tbody>
+                        </table>
+                        <!-- Pagination pour les opérations -->
+                        <div class="d-flex justify-content-between align-items-center mt-5">
+                            <div class="text-muted small">
+                                <span id="operationPaginationInfo">Page 1 sur 1</span>
+                            </div>
+                            <nav aria-label="Pagination tableau">
+                                <ul class="pagination pagination-sm mb-0" id="operationPaginationContainer"></ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tableau pour Historique CARTE (colonnes spécifiques) -->
+                <div id="tab-villes" class="log-table-container" data-log-tab="villes" hidden>
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <label for="cartePageSizeSelect" class="mb-0 text-muted small">Afficher</label>
+                        <select id="cartePageSizeSelect" class="form-select form-select-sm" style="width: auto; min-width: 80px; position: relative; z-index: 11;">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+
+                    <div class="table-responsive" style="max-height:40vh; overflow-y:auto; overflow-x:auto;">
+                        <table class="table table-striped mb-0">
+                            <thead>
+                                <tr><th>N°</th><th>Utilisateur</th><th>Date</th><th>Document</th><th>Type</th><th>Statut</th></tr>
+                            </thead>
+                            <tbody id="carteTableBody">
+                                @{ int carteCounter = 1; }
+                                @foreach(var histCarte in Model.HistoriqueCarteList)
+                                {
+                                    <tr>
+                                        <td>@carteCounter</td>
+                                        <td>@histCarte.User?.Email</td>
+                                        <td>@histCarte.DateHisto</td>
+                                        <td>@histCarte.IdCarteNavigation?.Legende</td>
+                                        <td>@histCarte.TypeAction</td>
+                                        <td>@histCarte.IdCarteNavigation?.DernierStatutCarte?.DescriptionStatut</td>
+                                    </tr>
+                                    carteCounter++;
+                                }
+                            </tbody>
+                        </table>
+                        <!-- Pagination pour les cartes -->
+                        <div class="d-flex justify-content-between align-items-center mt-5">
+                            <div class="text-muted small">
+                                <span id="cartePaginationInfo">Page 1 sur 1</span>
+                            </div>
+                            <nav aria-label="Pagination tableau">
+                                <ul class="pagination pagination-sm mb-0" id="cartePaginationContainer"></ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tableau pour Validations (colonnes spécifiques) -->
+                <div id="tab-validations" class="log-table-container" data-log-tab="validations" hidden>
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <label for="validationPageSizeSelect" class="mb-0 text-muted small">Afficher</label>
+                        <select id="validationPageSizeSelect" class="form-select form-select-sm" style="width: auto; min-width: 80px; position: relative; z-index: 11;">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+
+                    <div class="table-responsive" style="max-height:40vh; overflow-y:auto; overflow-x:auto;">
+                        <table class="table table-striped mb-0">
+                            <thead>
+                                <tr>
+                                    <th>N°</th><th>Utilisateur</th><th>Document</th><th>Date validation</th><th>Type de validation</th><th>Commentaire</th>
+                                </tr>
+                            </thead>
+                            <tbody id="validationTableBody">
+                                @{ int validationCounter = 1; }
+                                @foreach(var itmValid in Model.ValidationList)
+                                {
+                                    <tr>
+                                        <td>@validationCounter</td>
+                                        <td>@itmValid.UserNavigation?.Email</td>
+                                        <td>@(itmValid.AdpNavigation?.Document ?? @itmValid.VplNavigation?.Document ?? @itmValid.CarteNavigation?.Legende)</td>
+                                        <td>@itmValid.DateValidation</td>
+                                        <td>@itmValid.TypeAction</td>
+                                        <td>@itmValid.Commentaire</td>
+                                    </tr>
+                                    validationCounter++;
+                                }
+                            </tbody>
+                        </table>
+                        <!-- Pagination pour les validations -->
+                        <div class="d-flex justify-content-between align-items-center mt-5">
+                            <div class="text-muted small">
+                                <span id="validationPaginationInfo">Page 1 sur 1</span>
+                            </div>
+                            <nav aria-label="Pagination tableau">
+                                <ul class="pagination pagination-sm mb-0" id="validationPaginationContainer"></ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tableau pour Erreurs -->
+                <div id="tab-errors" class="log-table-container" data-log-tab="errors" hidden>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr><th>Utilisateur</th><th>Date</th><th>Message d'erreur</th><th>Stack trace (optionnel)</th></tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

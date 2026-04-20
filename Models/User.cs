@@ -20,9 +20,7 @@ public partial class User
     public int Actif { get; set; }
 
     public int GroupeId { get; set; }
-
     public virtual Groupe Groupe { get; set; } = null!;
-
     public virtual ICollection<Userstatut> Userstatuts { get; set; } = new List<Userstatut>();
 
     public virtual ICollection<HistoriqueAdp> HistoriqueAdps { get; set; } = new List<HistoriqueAdp>();
@@ -30,4 +28,8 @@ public partial class User
     public virtual ICollection<HistoriqueCarte> HistoriqueCartes { get; set; } = new List<HistoriqueCarte>();
 
     public virtual ICollection<HistoriqueVpl> HistoriqueVpls { get; set; } = new List<HistoriqueVpl>();
+
+    public virtual ICollection<Userconnexionlog> Userconnexionlogs { get; set; } = new List<Userconnexionlog>();
+
+    public virtual ICollection<Usersession> Usersessions { get; set; } = new List<Usersession>();
 }
